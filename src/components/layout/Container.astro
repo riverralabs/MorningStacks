@@ -1,0 +1,21 @@
+---
+interface Props {
+  width?: 'article' | 'grid' | 'email';
+  as?: string;
+  class?: string;
+}
+
+const { width = 'grid', as = 'div', class: className = '' } = Astro.props;
+const Tag = as as 'div' | 'section' | 'main' | 'article' | 'aside' | 'header' | 'footer' | 'nav';
+
+const widthClass =
+  width === 'article'
+    ? 'container-article'
+    : width === 'email'
+      ? 'mx-auto max-w-[var(--container-email)] px-6'
+      : 'container-grid';
+---
+
+<Tag class:list={[widthClass, className]}>
+  <slot />
+</Tag>

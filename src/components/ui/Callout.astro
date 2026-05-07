@@ -1,0 +1,47 @@
+---
+type Tone = 'info' | 'good' | 'warn' | 'bad';
+
+type Props = {
+  tone?: Tone;
+  title?: string;
+};
+
+const { tone = 'info', title } = Astro.props;
+
+const toneRing: Record<Tone, string> = {
+  info: 'border-[var(--color-blue)]',
+  good: 'border-[var(--color-good)]',
+  warn: 'border-[var(--color-warn)]',
+  bad: 'border-[var(--color-bad)]',
+};
+
+const toneLabelColor: Record<Tone, string> = {
+  info: 'text-[var(--color-blue)]',
+  good: 'text-[var(--color-good)]',
+  warn: 'text-[var(--color-warn)]',
+  bad: 'text-[var(--color-bad)]',
+};
+---
+
+<aside
+  class:list={[
+    'not-prose my-8 rounded-[var(--radius-lg)] border-l-[3px] bg-[var(--color-cream)] px-5 py-4',
+    toneRing[tone],
+  ]}
+>
+  {
+    title && (
+      <p
+        class:list={[
+          'mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.16em]',
+          toneLabelColor[tone],
+        ]}
+      >
+        {title}
+      </p>
+    )
+  }
+  <div class="font-serif text-[15px] leading-relaxed text-[var(--color-ink-85)]">
+    <slot />
+  </div>
+</aside>

@@ -1,0 +1,38 @@
+---
+type Props = {
+  size?: 'sm' | 'md' | 'lg';
+  compact?: boolean;
+  class?: string;
+};
+
+const { size = 'md', compact = false, class: className = '' } = Astro.props;
+
+const sizeClass = {
+  sm: 'text-[20px]',
+  md: 'text-[28px]',
+  lg: 'text-[40px]',
+}[size];
+---
+
+<a
+  href="/"
+  aria-label="MorningStacks home"
+  class:list={[
+    'inline-block font-serif font-medium leading-none tracking-[-0.025em]',
+    'text-[var(--color-ink)] transition-opacity duration-150 hover:opacity-80',
+    sizeClass,
+    className,
+  ]}
+>
+  {
+    compact ? (
+      <span>
+        M<span class="text-[var(--color-blue)]">.</span>
+      </span>
+    ) : (
+      <span>
+        MorningStacks<span class="text-[var(--color-blue)]">.</span>
+      </span>
+    )
+  }
+</a>

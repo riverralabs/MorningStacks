@@ -1,0 +1,34 @@
+---
+type Props = {
+  rating: number;
+  max?: number;
+  showNumber?: boolean;
+  ariaLabel?: string;
+};
+
+const { rating, max = 5, showNumber = true, ariaLabel } = Astro.props;
+
+const clamped = Math.max(0, Math.min(rating, max));
+const pct = (clamped / max) * 100;
+const label = ariaLabel ?? `${clamped.toFixed(1)} out of ${max}`;
+---
+
+<span class="inline-flex items-center gap-2" role="img" aria-label={label}>
+  <span class="relative inline-block font-sans text-[16px] leading-none tracking-[2px]">
+    <span aria-hidden="true" class="text-[var(--color-ink-15)]">★★★★★</span>
+    <span
+      aria-hidden="true"
+      class="absolute inset-0 overflow-hidden text-[var(--color-blue)]"
+      style={`width:${pct}%`}
+    >
+      ★★★★★
+    </span>
+  </span>
+  {
+    showNumber && (
+      <span class="font-sans text-[12px] font-medium tabular-nums text-[var(--color-ink-70)]">
+        {clamped.toFixed(1)}
+      </span>
+    )
+  }
+</span>

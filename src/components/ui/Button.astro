@@ -1,0 +1,51 @@
+---
+type Variant = 'primary' | 'secondary' | 'tertiary' | 'small';
+
+type Props = {
+  variant?: Variant;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  rel?: string;
+  target?: string;
+  ariaLabel?: string;
+  class?: string;
+};
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  rel,
+  target,
+  ariaLabel,
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center font-sans font-semibold tracking-[-0.005em] transition-transform duration-150 ease-out hover:-translate-y-[1px] focus-visible:-translate-y-[1px]';
+
+const variants: Record<Variant, string> = {
+  primary:
+    'rounded-md bg-[var(--color-blue)] px-5 py-3 text-[14px] text-[var(--color-cream)] hover:opacity-95',
+  secondary:
+    'rounded-md border border-[var(--color-ink)] bg-transparent px-5 py-3 text-[14px] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)]',
+  tertiary:
+    'px-1 text-[14px] text-[var(--color-blue)] underline underline-offset-4 hover:opacity-75',
+  small:
+    'rounded-md bg-[var(--color-blue)] px-4 py-2 text-[12px] text-[var(--color-cream)] hover:opacity-95',
+};
+
+const cls = [base, variants[variant], className];
+---
+
+{
+  href ? (
+    <a href={href} rel={rel} target={target} aria-label={ariaLabel} class:list={cls}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} aria-label={ariaLabel} class:list={cls}>
+      <slot />
+    </button>
+  )
+}

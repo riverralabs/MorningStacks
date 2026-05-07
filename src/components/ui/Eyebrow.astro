@@ -1,0 +1,22 @@
+---
+type Props = {
+  href?: string;
+  class?: string;
+};
+
+const { href, class: className = '' } = Astro.props;
+const base =
+  'font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]';
+---
+
+{
+  href ? (
+    <a href={href} class:list={[base, 'hover:opacity-75', className]}>
+      <slot />
+    </a>
+  ) : (
+    <span class:list={[base, className]}>
+      <slot />
+    </span>
+  )
+}
