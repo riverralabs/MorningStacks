@@ -1,0 +1,58 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import { SITE } from '~/lib/seo';
+---
+
+<PageLayout
+  title="Contact and pitches"
+  description="Pitch a product, send a tip, flag a correction, or just say hello. The fastest path is email — we read every message."
+  eyebrow="Contact"
+  ogSlug="contact"
+>
+  <p>
+    The fastest way to reach us is email. We read every message that comes in. We don't reply to all of them — usually because the answer is "yes, we'll consider it" or "no, but thanks." If we have something specific to say, we say it.
+  </p>
+
+  <h2>By type</h2>
+
+  <h3>Pitching a product for review</h3>
+  <p>
+    Send a one-paragraph email. We need: what the product does, who it's for, and a way to test it ourselves (a free trial is fine — we do not accept paid placements). Don't send a press kit. Don't follow up on the same week.
+  </p>
+  <p>
+    <a href={`mailto:${SITE.email}?subject=Pitch%3A%20`}>{SITE.email}</a>
+  </p>
+
+  <h3>Tip-offs and story leads</h3>
+  <p>
+    Anything from "this category is broken and nobody is writing about it" to "the vendor of X just shipped Y, you should know." We'll never reveal a source without permission.
+  </p>
+  <p>
+    <a href={`mailto:${SITE.email}?subject=Tip%3A%20`}>{SITE.email}</a>
+  </p>
+
+  <h3>Corrections</h3>
+  <p>
+    If we got something wrong, please tell us. Include the URL and what's wrong. We will respond and update the piece, often within 24 hours.
+  </p>
+  <p>
+    <a href={`mailto:${SITE.email}?subject=Correction%3A%20`}>{SITE.email}</a>
+  </p>
+
+  <h3>Editorial inquiries (other publications)</h3>
+  <p>
+    Republication, syndication, quotes, podcasts: same address, same response time.
+  </p>
+
+  <h2>What we don't accept</h2>
+  <ul>
+    <li>Sponsored content of any kind.</li>
+    <li>"Guest posts" — we don't run them.</li>
+    <li>Paid product placements.</li>
+    <li>SEO link insertions on existing pieces.</li>
+  </ul>
+
+  <p>
+    If you're sending one of the above, save your time and ours. The answer is no.
+  </p>
+</PageLayout>
