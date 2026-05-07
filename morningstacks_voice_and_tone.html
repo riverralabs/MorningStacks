@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MorningStacks — Voice &amp; Tone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF4E8;
+      --page: #F2EEE5;
+      --ink: #1C1916;
+      --blue: #1E3A5F;
+      --good: #3A7D5C;
+      --bad: #A84E2E;
+      --ink-70: rgba(28,25,22,0.7);
+      --ink-55: rgba(28,25,22,0.55);
+      --rule: rgba(28,25,22,0.1);
+      --rule-soft: rgba(28,25,22,0.06);
+      --sans: 'Space Grotesk', system-ui, sans-serif;
+      --serif: 'Lora', Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--serif);
+      background: var(--page);
+      color: var(--ink);
+      padding: 56px 32px 80px;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 28px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .brand .period { color: var(--blue); }
+    .doc-meta {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: var(--ink-55);
+      text-transform: uppercase;
+    }
+
+    .doc-title {
+      font-family: var(--sans);
+      font-size: 56px;
+      font-weight: 700;
+      letter-spacing: -1.8px;
+      line-height: 1.05;
+      margin: 0 0 18px;
+    }
+    .doc-lede {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.55;
+      color: var(--ink-70);
+      max-width: 720px;
+      margin: 0 0 56px;
+    }
+
+    section { margin-bottom: 56px; }
+    .section-eyebrow {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: var(--ink-55);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-eyebrow .idx { color: var(--blue); margin-right: 10px; font-weight: 700; }
+    h2 {
+      font-family: var(--sans);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin: 0 0 20px;
+    }
+    h3 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 32px 0 12px;
+    }
+    p {
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+    p.intro {
+      font-size: 18px;
+      color: var(--ink-70);
+      margin: 0 0 24px;
+    }
+
+    /* Callout cards */
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--rule-soft);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin: 20px 0;
+    }
+    .card-ink {
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 20px 0;
+    }
+    .card-ink h3 { color: var(--cream); margin-top: 0; }
+    .card-ink p { color: rgba(250,244,232,0.8); font-style: italic; }
+
+    /* Do/Don't */
+    .do-dont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .do-card, .dont-card {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px 28px;
+      border: 1px solid var(--rule-soft);
+      border-left-width: 4px;
+    }
+    .do-card { border-left-color: var(--good); }
+    .dont-card { border-left-color: var(--bad); }
+    .do-label, .dont-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .do-label { color: var(--good); }
+    .dont-label { color: var(--bad); }
+    .do-card p, .dont-card p {
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0 0 10px;
+    }
+    .do-card p:last-child, .dont-card p:last-child { margin-bottom: 0; }
+    .do-card em, .dont-card em {
+      font-style: normal;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-55);
+      letter-spacing: 0.3px;
+      display: block;
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px solid var(--rule-soft);
+    }
+
+    /* Vocabulary lists */
+    .vocab {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .vocab-col {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px 28px;
+      border: 1px solid var(--rule-soft);
+    }
+    .vocab-col h4 {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 14px;
+    }
+    .vocab-col h4.use { color: var(--good); }
+    .vocab-col h4.avoid { color: var(--bad); }
+    .vocab-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .vocab-col li {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--rule-soft);
+      color: var(--ink);
+    }
+    .vocab-col li:last-child { border: none; }
+    .vocab-col .note {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--ink-55);
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* Principles */
+    .principles-list {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+      counter-reset: principle;
+    }
+    .principles-list li {
+      position: relative;
+      padding: 20px 0 20px 56px;
+      counter-increment: principle;
+      border-bottom: 1px solid var(--rule);
+    }
+    .principles-list li:last-child { border-bottom: none; }
+    .principles-list li::before {
+      content: counter(principle, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 20px;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 32px;
+      color: var(--blue);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .principles-list h4 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0 0 6px;
+    }
+    .principles-list p {
+      font-size: 16px;
+      margin: 0;
+      color: var(--ink-70);
+    }
+
+    /* Quick reference */
+    .quick-ref {
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 14px;
+      padding: 48px 40px;
+      margin: 40px 0 0;
+    }
+    .quick-ref h2 { color: var(--cream); margin-top: 0; }
+    .quick-ref .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 28px;
+    }
+    .quick-ref h4 {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: rgba(250,244,232,0.55);
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    .quick-ref p {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.65;
+      color: rgba(250,244,232,0.85);
+      margin: 0;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--blue);
+      padding: 8px 20px;
+      margin: 20px 0;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-70);
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 32px 20px 60px; }
+      .doc-title { font-size: 36px; }
+      .do-dont, .vocab, .quick-ref .grid { grid-template-columns: 1fr; }
+      h2 { font-size: 24px; }
+      .principles-list li { padding-left: 44px; }
+      .principles-list li::before { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <div class="doc-header">
+      <div class="brand">MorningStacks<span class="period">.</span></div>
+      <div class="doc-meta">Voice &amp; tone · v1.0</div>
+    </div>
+
+    <h1 class="doc-title">How we write.</h1>
+    <p class="doc-lede">This is the editorial voice of MorningStacks — what we sound like, what we don't sound like, and how to tell the difference. Use this when writing, editing, and calling each other out.</p>
+
+    <!-- 01 THE VOICE -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">01</span>The voice</div>
+      <h2>A knowledgeable friend, over coffee.</h2>
+
+      <p class="intro">Imagine the kind of person you'd text before buying something — someone who actually researches, actually has opinions, and who tells you plainly what's worth it and what isn't. That's who writes for MorningStacks.</p>
+
+      <p>We're not journalists. We're not critics. We're definitely not salespeople. We're people who have used the thing, have opinions about it, and have no financial incentive to lie. The reader came to us because they trusted a friend would be straighter with them than a brand would. If we sound like a brand, we've broken the contract.</p>
+
+      <div class="card-ink">
+        <h3>The one-line test</h3>
+        <p>Before publishing, read the piece out loud. If any sentence would sound weird coming out of your mouth in a normal conversation — cut it.</p>
+      </div>
+    </section>
+
+    <!-- 02 PRINCIPLES -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">02</span>Principles</div>
+      <h2>Seven rules, in priority order.</h2>
+
+      <ol class="principles-list">
+        <li>
+          <h4>Own your opinion.</h4>
+          <p>"We think the Focus Pro 3 is the best timer under $100" — not "The Focus Pro 3 may be considered one of the better timers." Hedge words are where trust goes to die.</p>
+        </li>
+        <li>
+          <h4>Specificity over hype.</h4>
+          <p>"Boiled water in 2:14 from cold" beats "boils water fast." Numbers, times, comparisons — anything a competitor could replicate but wouldn't. That's how readers know you actually tested it.</p>
+        </li>
+        <li>
+          <h4>Admit what's bad.</h4>
+          <p>Every product has flaws. Calling them out makes the rest of your praise credible. "The handle gets hot after five minutes — we'd live with it; here's why" is worth a thousand five-star reviews.</p>
+        </li>
+        <li>
+          <h4>Short sentences. Then long ones. Then short again.</h4>
+          <p>Rhythm matters. If three sentences in a row are the same length, the reader starts skimming. Vary the tempo, especially when making a point you want remembered.</p>
+        </li>
+        <li>
+          <h4>No stacking adjectives.</h4>
+          <p>"Premium, durable, beautifully-designed coffee maker" is ad copy. "A coffee maker that survived three housemoves and one toddler" is a review. Adjectives weaken each other; one specific detail outperforms four vague ones.</p>
+        </li>
+        <li>
+          <h4>Say we, not I. Unless it matters.</h4>
+          <p>Default to "we" — it represents the editorial team and the testing process. Break to "I" only when a single person's specific experience is the point ("I've owned a French press for eleven years; here's what finally replaced it"). Make "I" earn its place.</p>
+        </li>
+        <li>
+          <h4>No exclamation points. Ever.</h4>
+          <p>Not even in newsletters. Not even at the end of "Don't buy this!" If a sentence needs a bang to land, rewrite the sentence. The only time an exclamation is acceptable is in quoted dialogue.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 03 VOCABULARY -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">03</span>Vocabulary</div>
+      <h2>Words we use. Words we don't.</h2>
+
+      <p class="intro">Not a comprehensive list — a directional one. The pattern matters more than the specific words.</p>
+
+      <div class="vocab">
+        <div class="vocab-col">
+          <h4 class="use">✓ We use</h4>
+          <ul>
+            <li>our pick<span class="note">the top recommendation</span></li>
+            <li>worth the money<span class="note">instead of "great value"</span></li>
+            <li>after six weeks of testing<span class="note">specific, credible</span></li>
+            <li>we'd buy it again<span class="note">the real test</span></li>
+            <li>the honest thing<span class="note">sets up a true statement</span></li>
+            <li>skip it<span class="note">clean, clear rejection</span></li>
+            <li>it earns its price<span class="note">not "it's worth it"</span></li>
+            <li>tested, not just reviewed<span class="note">signals depth</span></li>
+          </ul>
+        </div>
+        <div class="vocab-col">
+          <h4 class="avoid">✕ We avoid</h4>
+          <ul>
+            <li>game-changer, revolutionary, life-changing<span class="note">ad copy</span></li>
+            <li>must-have, must-buy, need<span class="note">manufactures urgency</span></li>
+            <li>amazing, incredible, awesome<span class="note">empty</span></li>
+            <li>"you can't go wrong with"<span class="note">yes you can; that's why we review</span></li>
+            <li>"perfect for"<span class="note">nothing is perfect</span></li>
+            <li>premium, top-tier, best-in-class<span class="note">brand-speak</span></li>
+            <li>"just simply"<span class="note">word clutter</span></li>
+            <li>"in conclusion"<span class="note">the reader knows; just conclude</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 HOW TO OPEN A REVIEW -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">04</span>How to open a review</div>
+      <h2>The first sentence is the whole job.</h2>
+
+      <p class="intro">Most readers decide whether to keep reading within about twelve words. Don't open with throat-clearing. Don't open with "In today's fast-paced world." Open with a specific observation, a surprising fact from your testing, or a direct opinion. Three openings we like; three we never publish.</p>
+
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="do-label">✓ Good opening</div>
+          <p>"After six weeks of daily use, the Focus Pro 3 is the only focus timer we haven't quietly stopped using."</p>
+          <em>Specific time frame. Implicit admission that most products fail the use-test. Opinion up front.</em>
+        </div>
+        <div class="dont-card">
+          <div class="dont-label">✕ Bad opening</div>
+          <p>"In today's fast-paced world, finding the right focus tool can be a game-changer for your productivity journey."</p>
+          <em>Throat-clearing. Generic framing. "Game-changer." "Journey." Every word is filler.</em>
+        </div>
+      </div>
+
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="do-label">✓ Good opening</div>
+          <p>"The $32 French press beat the $140 one. We didn't expect that, and we spent a week trying to figure out why."</p>
+          <em>Surprise + promise. Curiosity guaranteed. Framed as honest discovery.</em>
+        </div>
+        <div class="dont-card">
+          <div class="dont-label">✕ Bad opening</div>
+          <p>"We're excited to share our review of the latest French presses on the market today!"</p>
+          <em>Performs excitement. Exclamation point. "On the market today" is meaningless filler.</em>
+        </div>
+      </div>
+
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="do-label">✓ Good opening</div>
+          <p>"If you've bought a wake-up light before and thrown it in a drawer — we have too. This is the one that didn't end up there."</p>
+          <em>Meets the reader where they are. Shared skepticism. Opinion already signaled.</em>
+        </div>
+        <div class="dont-card">
+          <div class="dont-label">✕ Bad opening</div>
+          <p>"Wake-up lights have become increasingly popular in recent years, offering a more natural way to start your morning."</p>
+          <em>Wikipedia voice. Tells the reader things they already know. Zero personality.</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 HOW TO DESCRIBE A PRODUCT -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">05</span>How to describe a product</div>
+      <h2>Tell me something a spec sheet can't.</h2>
+
+      <p>A spec sheet lists what's in the box. A review tells me what it's like to live with. Every product description should answer at least one of these: What does it feel like to use every day? What did you notice in week two that you didn't in week one? What would you tell a friend about it that isn't on the brand's website?</p>
+
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="do-label">✓ Good description</div>
+          <p>"The buttons are satisfyingly deep — you feel the click. After a month the plastic around the dial picked up a fingerprint polish we actually like. Battery lasted 28 days on our test unit; the manual claims 21."</p>
+          <em>Haptic detail, aging detail, test-vs-claim detail. Three things no brand would write.</em>
+        </div>
+        <div class="dont-card">
+          <div class="dont-label">✕ Bad description</div>
+          <p>"The Focus Pro 3 features a premium build quality with intuitive controls and long-lasting battery life."</p>
+          <em>Three things the brand's website already said. Zero signal of actual use.</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 HOW TO SAY NO -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">06</span>How to say no</div>
+      <h2>A negative review is the most valuable review.</h2>
+
+      <p class="intro">Every skipped product is a trust deposit. Readers remember the ones you told them not to buy — because those ones cost you a commission. Be clear, be specific, be fair. Give the product its due before the verdict.</p>
+
+      <div class="do-dont">
+        <div class="do-card">
+          <div class="do-label">✓ Good "skip it"</div>
+          <p>"The Tempo ONE is thoughtfully designed — the weight, the finish, the app are all good. But it crashed three times in our first two weeks and the company's support answered our email with a copy-paste reply. At $189 we'd expect better. Skip it for now; we'll revisit after the next firmware update."</p>
+          <em>Acknowledges strengths. Specific failures. Specific evidence. Leaves door open for re-review.</em>
+        </div>
+        <div class="dont-card">
+          <div class="dont-label">✕ Bad "skip it"</div>
+          <p>"Unfortunately, the Tempo ONE didn't live up to our expectations and we wouldn't recommend it."</p>
+          <em>Vague. No evidence. Reader has to trust you on blind faith, which is the opposite of what a review is for.</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 HEADLINES -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">07</span>Headlines</div>
+      <h2>The headline promises. The piece keeps the promise.</h2>
+
+      <p class="intro">Our headline style is direct and descriptive — not clever, not punny, not clickbait. Tell the reader what they're about to read in a way that makes them want to read it. That's a higher bar than it sounds.</p>
+
+      <h3>Patterns that work</h3>
+      <blockquote>Five tools for a sharper morning focus</blockquote>
+      <blockquote>The best French press under $80, tested across three weeks</blockquote>
+      <blockquote>Wake-up lights, reviewed: not all sunrises are equal</blockquote>
+      <blockquote>Four pomodoro timers we actually kept using</blockquote>
+
+      <h3>Patterns we avoid</h3>
+      <blockquote style="color: var(--bad); opacity: 0.9;">"You won't believe what we found when we tested these timers"</blockquote>
+      <blockquote style="color: var(--bad); opacity: 0.9;">"This one weird focus tool will change your mornings forever"</blockquote>
+      <blockquote style="color: var(--bad); opacity: 0.9;">"The Ultimate Guide to Morning Productivity in 2026"</blockquote>
+
+      <p>Clickbait gets clicks. It also gets bounces, distrust, and unsubscribes. We'd rather have 5,000 loyal readers than 50,000 who bounced.</p>
+    </section>
+
+    <!-- 08 DISCLOSURES -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">08</span>Disclosures &amp; transparency</div>
+      <h2>Plain, honest, visible.</h2>
+
+      <p class="intro">Our affiliate disclosure is not a legal afterthought. It's a brand statement. It says: we make money when you click, and we're not hiding it from you. Read our standard disclosure out loud and make sure it sounds like a real sentence.</p>
+
+      <div class="card">
+        <h3 style="margin-top: 0;">Standard disclosure</h3>
+        <p style="margin: 0 0 10px; font-style: italic;">"MorningStacks earns a commission on some purchases made through links in this article. Every pick is independently tested and chosen by our editorial team — our recommendations are never paid for or influenced by brands."</p>
+      </div>
+
+      <p>Where it goes: top of every review, above the fold. Also in every newsletter. Also in the footer of every page. If a reader ever feels surprised about how we make money, we've failed.</p>
+    </section>
+
+    <!-- 09 COMMON MISTAKES -->
+    <section>
+      <div class="section-eyebrow"><span class="idx">09</span>Common mistakes</div>
+      <h2>Things that slip in and shouldn't.</h2>
+
+      <h3>"A great option for those who..."</h3>
+      <p>Replace with: "If you..." Direct address is warmer. "A great option for those who love quality coffee" → "If you love quality coffee." Four words shorter. Reads like a friend talking.</p>
+
+      <h3>"I'll be honest with you..."</h3>
+      <p>If you have to announce honesty, you've already lost it. Just be honest. Same with "to tell you the truth," "frankly," and "let me be clear."</p>
+
+      <h3>Adverb stacking: "really, very, quite, extremely..."</h3>
+      <p>"Really good" is almost never better than "good" — it's softer. Strong claims don't need adverbs propping them up. If you wrote "really," cut it and re-read.</p>
+
+      <h3>The "but" that kills the verdict</h3>
+      <p>"This is a solid pick, but it's not for everyone" — everything after the but undoes everything before it. If you need to qualify a verdict, do it in a new sentence with a clear subject. "This is a solid pick. It's not right if you want X" — same content, five times clearer.</p>
+    </section>
+
+    <!-- QUICK REFERENCE -->
+    <div class="quick-ref">
+      <h2>Quick reference.</h2>
+      <p style="font-family: var(--serif); font-style: italic; color: rgba(250,244,232,0.7); margin: 0; font-size: 15px;">Print this. Tape it to the wall.</p>
+      <div class="grid">
+        <div>
+          <h4>Voice in three words</h4>
+          <p>Direct, warm, honest.</p>
+        </div>
+        <div>
+          <h4>The test</h4>
+          <p>Read it out loud. Would you actually say that to a friend?</p>
+        </div>
+        <div>
+          <h4>Default subject</h4>
+          <p>We. Break to "I" only when it matters.</p>
+        </div>
+        <div>
+          <h4>Default verdict</h4>
+          <p>Specific. With evidence. With trade-offs named.</p>
+        </div>
+        <div>
+          <h4>Never</h4>
+          <p>Exclamation points. Adjective stacks. Hype words. "In conclusion."</p>
+        </div>
+        <div>
+          <h4>Always</h4>
+          <p>One specific detail over four vague ones. One number over ten adjectives.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
