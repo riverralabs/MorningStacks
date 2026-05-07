@@ -1,0 +1,13 @@
+# Cloudflare Pages — bindings and runtime config.
+# Pages-specific config; secrets (BEEHIIV_*, etc.) are set in the dashboard.
+name = "morningstacks"
+compatibility_date = "2025-09-23"
+pages_build_output_dir = "./dist"
+
+[vars]
+NEWSLETTER_PROVIDER = "stub"
+SITE_URL = "https://morningstacks.com"
+
+# Sessions binding for Astro's Cloudflare adapter (KV-backed).
+# Bind a KV namespace named SESSION via the Pages dashboard:
+#   Settings → Functions → KV namespace bindings → Variable name: SESSION

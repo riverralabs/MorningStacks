@@ -1,0 +1,11 @@
+dist/
+.astro/
+node_modules/
+public/fonts/
+public/brand/
+src/assets/
+brand/
+*.svg
+*.woff2
+*.ico
+pnpm-lock.yaml
