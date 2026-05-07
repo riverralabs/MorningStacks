@@ -148,6 +148,96 @@
 .prose-ms hr {
   border: 0;
   border-top: 1px solid var(--color-ink-10);
-  margin: 2.5rem auto;
+  margin: 3rem auto;
   width: 4rem;
+}
+
+/* Tables — wrap in horizontal scroll on narrow viewports, keep type
+ * tight without sacrificing the article's serif/sans rhythm. */
+.prose-ms .table-wrap {
+  margin: 2rem -1rem;
+  padding: 0 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose-ms table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-ink-85);
+}
+
+.prose-ms .table-wrap > table {
+  min-width: 32rem;
+}
+
+.prose-ms thead th {
+  background: var(--color-cream-warm);
+  border-bottom: 1px solid var(--color-ink-15);
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  padding: 0.75rem 0.875rem;
+  white-space: nowrap;
+}
+
+.prose-ms tbody td,
+.prose-ms tbody th {
+  border-bottom: 1px solid var(--color-ink-06);
+  padding: 0.75rem 0.875rem;
+  vertical-align: top;
+}
+
+.prose-ms tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.prose-ms tbody tr:last-child td,
+.prose-ms tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+.prose-ms tbody tr:nth-child(even) {
+  background: rgba(28, 25, 22, 0.025);
+}
+
+.prose-ms tbody td strong,
+.prose-ms tbody th strong {
+  color: var(--color-ink);
+}
+
+.prose-ms tbody td:first-child,
+.prose-ms tbody th:first-child {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* MDX section break — soft horizontal rule between major sections */
+.prose-ms .section-break {
+  border: 0;
+  border-top: 1px solid var(--color-ink-10);
+  width: 100%;
+  margin: 3.5rem 0;
+}
+
+/* Tighten spacing inside lists so they read denser when each bullet
+ * is short, but breathe when bullets are paragraphs. */
+.prose-ms ul > li > p,
+.prose-ms ol > li > p {
+  margin: 0;
+}
+
+.prose-ms ul ul,
+.prose-ms ol ol,
+.prose-ms ul ol,
+.prose-ms ol ul {
+  margin-top: 0.5rem;
 }
