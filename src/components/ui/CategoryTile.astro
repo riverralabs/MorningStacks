@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type Props = {
+  category: CollectionEntry<'categories'>;
+  count?: number;
+};
+
+const { category, count } = Astro.props;
+const { data } = category;
+---
+
+<a
+  href={`/${data.slug}/`}
+  class="group flex flex-col justify-between rounded-[var(--radius-xl)] border border-[var(--color-ink-06)] bg-[var(--color-cream)] p-6 transition-transform duration-150 ease-out hover:-translate-y-[2px] hover:border-[var(--color-blue)]"
+>
+  <div>
+    <p class="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+      Section
+    </p>
+    <h3 class="mt-3 font-sans text-[24px] font-bold tracking-[-0.018em] text-[var(--color-ink)]">
+      {data.name}
+    </h3>
+    <p class="mt-2 font-serif text-[15px] leading-relaxed text-[var(--color-ink-70)]">
+      {data.description}
+    </p>
+  </div>
+  <p class="mt-6 font-sans text-[12px] text-[var(--color-ink-55)]">
+    {count !== undefined ? `${count} ${count === 1 ? 'piece' : 'pieces'}` : 'Explore →'}
+  </p>
+</a>

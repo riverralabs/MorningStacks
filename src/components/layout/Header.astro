@@ -1,0 +1,62 @@
+---
+import Wordmark from './Wordmark.astro';
+import { getCollection } from 'astro:content';
+
+const categories = (await getCollection('categories')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<header
+  class="border-b border-[var(--color-ink-10)] bg-[var(--color-cream)]"
+>
+  <div
+    class="container-grid flex items-center justify-between gap-6 py-4"
+  >
+    <Wordmark size="md" />
+
+    <nav
+      aria-label="Primary"
+      class="hidden md:flex items-center gap-7 font-sans text-[14px] font-medium text-[var(--color-ink-85)]"
+    >
+      {
+        categories.map((c) => (
+          <a
+            href={`/${c.data.slug}/`}
+            class="transition-opacity duration-150 hover:opacity-65"
+          >
+            {c.data.name}
+          </a>
+        ))
+      }
+      <a
+        href="/about/"
+        class="transition-opacity duration-150 hover:opacity-65"
+      >
+        About
+      </a>
+      <a
+        href="/methodology/"
+        class="transition-opacity duration-150 hover:opacity-65"
+      >
+        Methodology
+      </a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="/search/"
+        aria-label="Search"
+        class="rounded-md border border-[var(--color-ink-15)] bg-[var(--color-cream)] px-3 py-2 font-sans text-[12px] font-medium tracking-[0.04em] text-[var(--color-ink-70)] transition-colors duration-150 hover:border-[var(--color-blue)] hover:text-[var(--color-blue)]"
+      >
+        Search
+      </a>
+      <a
+        href="/#newsletter"
+        class="hidden sm:inline-flex items-center rounded-md bg-[var(--color-blue)] px-4 py-2 font-sans text-[13px] font-semibold tracking-[-0.005em] text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px]"
+      >
+        Subscribe
+      </a>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,78 @@
+import { defineCollection, reference, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+const articles = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
+  schema: ({ image }) =>
+    z.object({
+      type: z.enum(['article', 'review', 'roundup']).default('article'),
+      title: z.string().min(8).max(80),
+      description: z.string().min(80).max(220),
+      eyebrow: z.string(),
+      category: reference('categories'),
+      author: reference('authors'),
+      date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
+      hero: image().optional(),
+      heroAlt: z.string().optional(),
+      products: z.array(reference('products')).default([]),
+      rating: z.number().min(0).max(5).optional(),
+      faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+      related: z.array(reference('articles')).default([]),
+      featured: z.boolean().default(false),
+      seed: z.boolean().default(false),
+      draft: z.boolean().default(false),
+    }),
+});
+
+const products = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx,yaml,yml}', base: './src/content/products' }),
+  schema: z.object({
+    name: z.string(),
+    vendor: z.string(),
+    category: reference('categories'),
+    summary: z.string().min(30).max(200),
+    price: z.string(),
+    pricingModel: z.enum(['free', 'freemium', 'subscription', 'one-time']),
+    ourVerdict: z.string(),
+    pros: z.array(z.string()).min(1),
+    cons: z.array(z.string()).min(1),
+    rating: z.number().min(0).max(5),
+    affiliateUrl: z.string().url(),
+    websiteUrl: z.string().url().optional(),
+    lastTested: z.coerce.date(),
+  }),
+});
+
+const categories = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx,yaml,yml}', base: './src/content/categories' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      slug: z.string(),
+      description: z.string(),
+      hero: image().optional(),
+      order: z.number().default(0),
+    }),
+});
+
+const authors = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx,yaml,yml}', base: './src/content/authors' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      role: z.string().optional(),
+      bio: z.string(),
+      avatar: image().optional(),
+      links: z
+        .object({
+          twitter: z.string().url().optional(),
+          linkedin: z.string().url().optional(),
+          site: z.string().url().optional(),
+          email: z.string().email().optional(),
+        })
+        .default({}),
+    }),
+});
+
+export const collections = { articles, products, categories, authors };

@@ -1,0 +1,143 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ArticleCard from '~/components/ui/ArticleCard.astro';
+import CategoryTile from '~/components/ui/CategoryTile.astro';
+import NewsletterForm from '~/components/ui/NewsletterForm.astro';
+
+const all = await getCollection('articles', ({ data }) => !data.draft);
+const sorted = all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = sorted.find((a) => a.data.featured) ?? sorted[0];
+const restAfterFeatured = sorted.filter((a) => a.id !== featured?.id);
+const latestEditorial = restAfterFeatured.filter((a) => a.data.type !== 'review').slice(0, 3);
+const latestReviews = sorted.filter((a) => a.data.type === 'review').slice(0, 3);
+
+const featuredCategory = featured ? await getEntry(featured.data.category) : null;
+const featuredAuthor = featured ? await getEntry(featured.data.author) : null;
+const featuredHref = featured
+  ? `/${featuredCategory?.data.slug ?? 'productivity'}/${featured.id.replace(/\.mdx?$/, '').replace(/^[^/]+\//, '')}/`
+  : '#';
+
+const categories = (await getCollection('categories')).sort((a, b) => a.data.order - b.data.order);
+const counts = new Map<string, number>();
+for (const article of all) counts.set(article.data.category.id, (counts.get(article.data.category.id) ?? 0) + 1);
+---
+
+<BaseLayout>
+  {/* Today's stack — hero */}
+  <section class="border-b border-[var(--color-ink-10)] bg-[var(--color-cream)]">
+    <div class="container-grid grid grid-cols-1 gap-12 py-20 lg:grid-cols-[1.15fr_1fr] lg:items-center">
+      <div>
+        <p class="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+          Today's stack · {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+        </p>
+        <h1
+          class="mt-4 font-sans text-[56px] font-bold leading-[0.95] tracking-[-0.036em] text-[var(--color-ink)] sm:text-[88px] lg:text-[112px]"
+        >
+          Software<br />we'd renew<br />tomorrow<span class="text-[var(--color-blue)]">.</span>
+        </h1>
+        <p class="mt-7 max-w-[560px] font-serif text-[20px] italic leading-relaxed text-[var(--color-ink-70)]">
+          Independent reviews of SaaS, AI tools, and software that operators and founders actually pay for. Editorial first, commerce second. Tested in production, not in a demo.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href="#newsletter"
+            class="inline-flex items-center justify-center rounded-md bg-[var(--color-blue)] px-6 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 ease-out hover:-translate-y-[1px]"
+          >
+            Get the newsletter
+          </a>
+          <a
+            href="/methodology/"
+            class="inline-flex items-center justify-center rounded-md border border-[var(--color-ink)] px-6 py-3 font-sans text-[14px] font-semibold text-[var(--color-ink)] transition-colors duration-150 hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)]"
+          >
+            How we test
+          </a>
+        </div>
+      </div>
+
+      {
+        featured && featuredCategory && featuredAuthor && (
+          <a
+            href={featuredHref}
+            class="group block rounded-[var(--radius-xl)] border border-[var(--color-ink-06)] bg-[var(--color-cream-warm)] p-8 transition-transform duration-150 ease-out hover:-translate-y-[2px]"
+          >
+            <p class="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+              Featured · {featured.data.eyebrow}
+            </p>
+            <h2 class="mt-4 font-sans text-[28px] font-bold leading-[1.1] tracking-[-0.022em] text-[var(--color-ink)] group-hover:opacity-85 sm:text-[34px]">
+              {featured.data.title}
+            </h2>
+            <p class="mt-3 font-serif text-[16px] italic leading-relaxed text-[var(--color-ink-70)] line-clamp-3">
+              {featured.data.description}
+            </p>
+            <p class="mt-5 font-sans text-[12px] text-[var(--color-ink-55)]">
+              {featuredAuthor.data.name} · {featured.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </p>
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  {/* Latest reviews */}
+  {
+    latestReviews.length > 0 && (
+      <section class="container-grid py-20">
+        <div class="flex items-baseline justify-between">
+          <h2 class="font-sans text-[28px] font-bold tracking-[-0.022em] text-[var(--color-ink)]">
+            Latest reviews
+          </h2>
+          <a
+            href="/productivity/"
+            class="font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--color-blue)] hover:opacity-75"
+          >
+            All reviews →
+          </a>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-12 md:grid-cols-3">
+          {latestReviews.map((article) => (
+            <ArticleCard article={article} size="md" />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {/* Sections */}
+  <section class="border-y border-[var(--color-ink-10)] bg-[var(--color-cream)] py-20">
+    <div class="container-grid">
+      <h2 class="font-sans text-[28px] font-bold tracking-[-0.022em] text-[var(--color-ink)]">
+        Sections
+      </h2>
+      <p class="mt-3 max-w-[560px] font-serif italic text-[var(--color-ink-70)]">
+        Four beats we cover. Add a fifth when something deserves it.
+      </p>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {categories.map((c) => (
+          <CategoryTile category={c} count={counts.get(c.id) ?? 0} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Latest editorial */}
+  {
+    latestEditorial.length > 0 && (
+      <section class="container-grid py-20">
+        <h2 class="font-sans text-[28px] font-bold tracking-[-0.022em] text-[var(--color-ink)]">
+          From the editors
+        </h2>
+        <div class="mt-10 grid grid-cols-1 gap-12 md:grid-cols-3">
+          {latestEditorial.map((article) => (
+            <ArticleCard article={article} size="md" />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {/* Newsletter */}
+  <section class="container-grid pb-20">
+    <NewsletterForm variant="card" source="home" />
+  </section>
+</BaseLayout>

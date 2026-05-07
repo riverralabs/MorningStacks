@@ -1,0 +1,46 @@
+---
+import BaseHead from '~/components/seo/BaseHead.astro';
+import Header from '~/components/layout/Header.astro';
+import Footer from '~/components/layout/Footer.astro';
+
+type Props = {
+  title?: string;
+  description?: string;
+  ogSlug?: string;
+  ogImageUrl?: string;
+  canonicalPath?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  authorName?: string;
+  noindex?: boolean;
+  jsonLd?: object | object[] | null;
+};
+
+const { jsonLd = null, ...head } = Astro.props;
+const ldArray = !jsonLd ? [] : Array.isArray(jsonLd) ? jsonLd : [jsonLd];
+---
+
+<!doctype html>
+<html lang="en" class="bg-[var(--color-page)]">
+  <head>
+    <BaseHead {...head}>
+      {ldArray.map((entry) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(entry)} />
+      ))}
+    </BaseHead>
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-50 focus-visible:rounded-md focus-visible:bg-[var(--color-blue)] focus-visible:px-4 focus-visible:py-2 focus-visible:text-[var(--color-cream)]"
+    >
+      Skip to content
+    </a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

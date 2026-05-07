@@ -1,0 +1,196 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Disclosure from '~/components/ui/Disclosure.astro';
+import NewsletterForm from '~/components/ui/NewsletterForm.astro';
+import ArticleCard from '~/components/ui/ArticleCard.astro';
+import Stars from '~/components/ui/Stars.astro';
+import { articleSchema, reviewSchema, faqSchema, breadcrumbSchema } from '~/lib/schema';
+import { ogImage, SITE, canonical } from '~/lib/seo';
+
+type Props = {
+  entry: CollectionEntry<'articles'>;
+};
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const category = await getEntry(data.category);
+const author = await getEntry(data.author);
+if (!category || !author) {
+  throw new Error(`Missing category or author for article ${entry.id}`);
+}
+
+const slug = entry.id.replace(/\.mdx?$/, '').replace(/^[^/]+\//, '');
+const articleUrl = canonical(`/${category.data.slug}/${slug}/`);
+const heroPath = `${category.data.slug}/${slug}`;
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft && data.type !== 'review');
+const fallbackRelated = allArticles
+  .filter((a) => a.id !== entry.id && a.data.category.id === data.category.id)
+  .slice(0, 3);
+
+const relatedEntries = data.related.length
+  ? await Promise.all(data.related.map((ref) => getEntry(ref)))
+  : fallbackRelated;
+const related = relatedEntries.filter((r): r is CollectionEntry<'articles'> => Boolean(r));
+
+const isReview = data.type === 'review';
+const reviewedProduct = isReview && data.products[0] ? await getEntry(data.products[0]) : null;
+
+const ld: object[] = [
+  isReview && reviewedProduct
+    ? reviewSchema({
+        url: articleUrl,
+        title: data.title,
+        description: data.description,
+        datePublished: data.date,
+        dateModified: data.updated,
+        authorName: author.data.name,
+        image: ogImage(heroPath),
+        productName: reviewedProduct.data.name,
+        productCategory: category.data.name,
+        rating: data.rating ?? reviewedProduct.data.rating,
+      })
+    : articleSchema({
+        url: articleUrl,
+        title: data.title,
+        description: data.description,
+        datePublished: data.date,
+        dateModified: data.updated,
+        authorName: author.data.name,
+        image: ogImage(heroPath),
+        section: category.data.name,
+      }),
+  breadcrumbSchema([
+    { name: 'Home', url: SITE.url },
+    { name: category.data.name, url: `${SITE.url}/${category.data.slug}/` },
+    { name: data.title, url: articleUrl },
+  ]),
+];
+const faq = faqSchema(data.faq);
+if (faq) ld.push(faq);
+
+const datePub = data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  ogSlug={heroPath}
+  type="article"
+  publishedTime={data.date.toISOString()}
+  modifiedTime={data.updated?.toISOString()}
+  authorName={author.data.name}
+  jsonLd={ld}
+>
+  <article class="pb-16 pt-10">
+    <div class="container-article">
+      <nav aria-label="Breadcrumb" class="font-sans text-[12px] text-[var(--color-ink-55)]">
+        <a href="/" class="hover:opacity-75">Home</a>
+        <span aria-hidden="true"> · </span>
+        <a href={`/${category.data.slug}/`} class="hover:opacity-75">{category.data.name}</a>
+      </nav>
+
+      <header class="mt-8">
+        <p class="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+          {data.eyebrow}
+        </p>
+        <h1
+          class="mt-3 font-sans text-[42px] font-bold leading-[1.05] tracking-[-0.026em] text-[var(--color-ink)] sm:text-[52px]"
+        >
+          {data.title}
+        </h1>
+        <p class="mt-5 font-serif text-[20px] italic leading-relaxed text-[var(--color-ink-70)]">
+          {data.description}
+        </p>
+
+        <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-[12px] text-[var(--color-ink-55)]">
+          <span>By <span class="text-[var(--color-ink)]">{author.data.name}</span></span>
+          <span>·</span>
+          <time datetime={data.date.toISOString()}>{datePub}</time>
+          {
+            data.updated && (
+              <>
+                <span>·</span>
+                <span>Updated <time datetime={data.updated.toISOString()}>{dateUpd}</time></span>
+              </>
+            )
+          }
+          {
+            isReview && (data.rating ?? reviewedProduct?.data.rating) && (
+              <>
+                <span>·</span>
+                <Stars rating={data.rating ?? reviewedProduct!.data.rating} />
+              </>
+            )
+          }
+        </div>
+      </header>
+    </div>
+
+    {
+      data.hero && (
+        <figure class="mx-auto mt-10 max-w-[900px] px-6">
+          <Image
+            src={data.hero}
+            alt={data.heroAlt ?? data.title}
+            widths={[640, 960, 1280]}
+            sizes="(min-width: 960px) 900px, 100vw"
+            loading="eager"
+            class="w-full rounded-[var(--radius-xl)] object-cover"
+          />
+        </figure>
+      )
+    }
+
+    <div class="container-article mt-12">
+      {isReview && <Disclosure variant="banner" />}
+      <div class="prose-ms">
+        <slot />
+      </div>
+
+      {
+        data.faq.length > 0 && (
+          <section class="not-prose mt-16 border-t border-[var(--color-ink-10)] pt-10">
+            <h2 class="font-sans text-[24px] font-bold tracking-[-0.018em] text-[var(--color-ink)]">
+              Frequently asked
+            </h2>
+            <dl class="mt-6 space-y-6">
+              {data.faq.map((entry) => (
+                <div>
+                  <dt class="font-sans text-[16px] font-bold text-[var(--color-ink)]">{entry.q}</dt>
+                  <dd class="mt-2 font-serif text-[16px] leading-relaxed text-[var(--color-ink-85)]">
+                    {entry.a}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )
+      }
+    </div>
+
+    <div class="container-article mt-16">
+      <NewsletterForm variant="card" source={`article-${slug}`} />
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="container-grid mt-20">
+          <h2 class="font-sans text-[20px] font-bold uppercase tracking-[0.04em] text-[var(--color-ink-55)]">
+            Read next
+          </h2>
+          <div class="mt-6 grid grid-cols-1 gap-10 md:grid-cols-3">
+            {related.slice(0, 3).map((r) => (
+              <ArticleCard article={r} size="sm" />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
