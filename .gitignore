@@ -1,9 +1,7 @@
 # build
 dist/
 .astro/
-.wrangler/
 .vercel/
-.netlify/
 
 # deps
 node_modules/

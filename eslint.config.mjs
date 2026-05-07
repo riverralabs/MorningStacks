@@ -5,7 +5,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist/**', '.astro/**', 'node_modules/**', '.wrangler/**', 'pnpm-lock.yaml', '**/*.d.ts'],
+    ignores: ['dist/**', '.astro/**', '.vercel/**', 'node_modules/**', 'pnpm-lock.yaml', '**/*.d.ts'],
   },
   js.configs.recommended,
   ...astro.configs.recommended,

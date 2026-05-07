@@ -24,12 +24,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   }
 
   const env = {
-    NEWSLETTER_PROVIDER: import.meta.env.NEWSLETTER_PROVIDER,
-    BEEHIIV_API_KEY: import.meta.env.BEEHIIV_API_KEY,
-    BEEHIIV_PUBLICATION_ID: import.meta.env.BEEHIIV_PUBLICATION_ID,
-    CONVERTKIT_API_KEY: import.meta.env.CONVERTKIT_API_KEY,
-    CONVERTKIT_FORM_ID: import.meta.env.CONVERTKIT_FORM_ID,
-    BUTTONDOWN_API_KEY: import.meta.env.BUTTONDOWN_API_KEY,
+    NEWSLETTER_PROVIDER: process.env.NEWSLETTER_PROVIDER,
+    BEEHIIV_API_KEY: process.env.BEEHIIV_API_KEY,
+    BEEHIIV_PUBLICATION_ID: process.env.BEEHIIV_PUBLICATION_ID,
+    CONVERTKIT_API_KEY: process.env.CONVERTKIT_API_KEY,
+    CONVERTKIT_FORM_ID: process.env.CONVERTKIT_FORM_ID,
+    BUTTONDOWN_API_KEY: process.env.BUTTONDOWN_API_KEY,
   };
 
   const result = await subscribe({ email, source }, env);

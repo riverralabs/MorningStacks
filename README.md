@@ -2,7 +2,7 @@
 
 > The software stack for operators and founders. Editorial-first reviews of SaaS, AI tools, and software that operators and founders actually pay for.
 
-Built with **Astro 5 + MDX + Tailwind v4**. Deploys to **Cloudflare Pages**. Zero JS on article pages.
+Built with **Astro 5 + MDX + Tailwind v4**. Deploys to **Vercel**. Zero JS on article pages.
 
 ## Quick start
 
@@ -28,7 +28,7 @@ Requires Node 22+ and pnpm 10+.
 | `src/lib/seo.ts`, `src/lib/schema.ts` | SEO helpers + typed JSON-LD builders (`schema-dts`) |
 | `src/lib/newsletter.ts` | Provider-agnostic subscribe interface (stub / beehiiv / convertkit / buttondown) |
 | `src/lib/og.ts` + `src/pages/og/[...slug].png.ts` | Build-time OG image generation (Satori + Resvg) |
-| `src/pages/api/subscribe.ts` | Cloudflare Function — POSTs to whichever provider is configured |
+| `src/pages/api/subscribe.ts` | Vercel Serverless Function — POSTs to whichever provider is configured |
 | `src/pages/rss.xml.ts` | RSS feed |
 | `public/fonts/` | Self-hosted Lora + Space Grotesk woff2 (Latin subset) for the site |
 | `src/assets/fonts/` | TTF copies for Satori OG generation only |
@@ -69,18 +69,26 @@ The dynamic route `/[category]/[slug]` discovers all non-draft articles. Reviews
 
 The form posts to `/api/subscribe`, which calls `src/lib/newsletter.ts`. The current provider is selected via the `NEWSLETTER_PROVIDER` env var (`stub` | `beehiiv` | `convertkit` | `buttondown`). The stub logs and returns success — swap providers by setting the env var and the matching API key (see `.env.example`). The form contract and UI never change.
 
-## Deploy — Cloudflare Pages
+## Deploy — Vercel
 
 1. Push to GitHub.
-2. Cloudflare dashboard → Workers & Pages → Create → Connect to Git.
-3. Build command: `pnpm build`. Output directory: `dist`.
-4. Set environment variables:
+2. Vercel dashboard → Add New → Project → Import the repo.
+3. Framework preset: **Astro** (auto-detected). Build command and output dir auto-detected from `@astrojs/vercel`.
+4. Set environment variables (Project → Settings → Environment Variables):
    - `SITE_URL` — your production URL.
    - `NEWSLETTER_PROVIDER` — `stub` for now.
    - `BEEHIIV_API_KEY` / `BEEHIIV_PUBLICATION_ID` (or the matching ConvertKit / Buttondown vars) when ready.
-5. Settings → Functions → KV namespace bindings → bind a KV namespace called `SESSION` (required by `@astrojs/cloudflare`).
+5. Deploy. The first build runs `pnpm build` (which is `astro build && pagefind --site dist`) and Vercel routes everything via the adapter.
 
-The first deploy will run `astro build && pagefind --site dist`. The Cloudflare adapter handles the `/api/subscribe` Function.
+`@astrojs/vercel` outputs prerendered HTML to the static asset CDN and turns `/api/subscribe` (any route with `prerender = false`) into a Vercel Serverless Function. OG images are prerendered at build time, so they're served as cached static PNGs — no runtime cost.
+
+### Local preview
+
+```bash
+pnpm build && pnpm preview
+```
+
+`vercel dev` also works if you want the full Vercel runtime locally; it's not required for everyday development since `pnpm dev` runs the same Astro server.
 
 ## Lint, typecheck, build before every commit
 

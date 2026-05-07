@@ -2,14 +2,19 @@
 
 interface ImportMetaEnv {
   readonly SITE_URL: string;
-  readonly NEWSLETTER_PROVIDER: 'stub' | 'beehiiv' | 'convertkit' | 'buttondown';
-  readonly BEEHIIV_API_KEY?: string;
-  readonly BEEHIIV_PUBLICATION_ID?: string;
-  readonly CONVERTKIT_API_KEY?: string;
-  readonly CONVERTKIT_FORM_ID?: string;
-  readonly BUTTONDOWN_API_KEY?: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NEWSLETTER_PROVIDER?: 'stub' | 'beehiiv' | 'convertkit' | 'buttondown';
+    BEEHIIV_API_KEY?: string;
+    BEEHIIV_PUBLICATION_ID?: string;
+    CONVERTKIT_API_KEY?: string;
+    CONVERTKIT_FORM_ID?: string;
+    BUTTONDOWN_API_KEY?: string;
+  }
 }
