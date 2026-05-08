@@ -1,0 +1,199 @@
+---
+type: roundup
+title: 'Best vibe coding tools in 2026: Cursor vs Claude Code vs Lovable vs Bolt'
+description: We tested all four AI coding tools for two weeks shipping the same project. Cursor, Claude Code, Lovable, Bolt — honest picks for indie builders in 2026, with the trade-offs that almost made us not pick each one.
+eyebrow: Roundup · AI Tools · May 2026
+category: ai-tools
+author: dipen
+date: 2026-05-09
+faq:
+  - q: What's the cheapest of the four for a daily indie-builder workflow?
+    a: All four start at $20–$25/mo on paper. In practice, plan for 2–3× the sticker price if you're building daily. Heavy Cursor users on premium models hit $60–$100/mo on overage. Heavy Claude Code users move to Max at $100 or $200/mo. Heavy Lovable users buy credit top-ups. Heavy Bolt users either wait for the next monthly reset or upgrade.
+  - q: Do I need to install anything to use these?
+    a: Cursor and Claude Code are local installs (Cursor is an editor app, Claude Code is a CLI). Lovable and Bolt run entirely in the browser — no terminal, no editor, just a tab.
+  - q: Should I pick Cursor or Claude Code if I can already code?
+    a: Use both. Cursor is the better daily driver if you want a real editor with AI inside. Claude Code is the better choice when you want an autonomous agent to finish a long task while you do something else. We use Cursor for tight feedback loops and Claude Code for "just make this work, I'll be back in an hour."
+  - q: Is Lovable production-ready for a real product?
+    a: It's the cleanest of the four for non-coders to ship a working full-stack app. The trade-off is debugging — when something breaks deeper than the AI can patch, Lovable's official advice has been to duplicate the project and start fresh. That's a real answer but not a great one if you're going to maintain the code for years.
+related: []
+featured: true
+seed: false
+---
+
+<Disclosure variant="banner" />
+
+You can ship a working MVP this weekend, or you can spend a month renaming variables. The tool you pick decides which one.
+
+Four AI coding tools own the conversation in May 2026: **Cursor**, **Claude Code**, **Lovable**, and **Bolt**. They look interchangeable from the outside. They are very different builds underneath. We spent two weeks shipping the same project in each one to figure out which tool fits which kind of indie builder.
+
+<hr class="section-break" />
+
+## The picks at a glance
+
+<div class="table-wrap">
+
+| Tool | Entry price | Best for | Verdict |
+| --- | --- | --- | --- |
+| **Cursor** | $20/mo Pro | Coders who want IDE control | Familiar IDE, AI agent inside |
+| **Claude Code** | $20/mo Pro | Terminal-comfortable builders | Most autonomous agent in the lineup |
+| **Lovable** | $25/mo Pro | Non-technical founders | Prompt to full-stack app, no terminal |
+| **Bolt** | $25/mo Pro | Hackathon and prototype speed | Fastest from prompt to deployed URL |
+
+</div>
+
+Pricing verified against each company's official pricing page on **May 8, 2026**.
+
+<hr class="section-break" />
+
+## How we tested
+
+We built the same project in every tool. A small SaaS landing page, an email signup form, a dashboard behind login, Stripe checkout, and Supabase auth. Same scope, same starting prompts, same finish line: a deployed working URL.
+
+We tracked four things across the build:
+
+- **Time** from first prompt to first deployed version.
+- **Debug loops** — how many times we had to circle back on the same bug.
+- **Total cost** across two weeks of normal building.
+- **The first place each tool broke.**
+
+The build ran in May 2026 on the latest stable versions available that week. None of these companies paid us to write this. We use Cursor and Claude Code daily in our own workflow at Riverra Labs.
+
+<hr class="section-break" />
+
+## Cursor
+
+> The editor for people who like editors.
+
+Cursor is a fork of VS Code with AI agents wired into the editor. Autocomplete, multi-file edits, codebase-aware chat, and a Composer agent that can plan and execute changes across your repo. If you've used VS Code, the migration takes ten minutes.
+
+<ProsCons
+  pros={[
+    'Familiar VS Code interface — extensions, keybindings, and muscle memory all carry over',
+    'Multi-file refactors land cleanly. Cursor reads your whole codebase, not just the open file',
+    'You pick the model per task — Claude Sonnet for hard work, GPT-4o for speed, Auto for routine work (which doesn\'t draw from credits)',
+    'Tab completion is the best in the category. We hit accept more often than we hit type',
+  ]}
+  cons={[
+    'June 2025 pricing change from request-based to credit-based hurt trust. Cursor\'s Trustpilot sits at 1.7 across 200+ reviews; G2 is 4.5. People who use it like it. People who got billed by surprise don\'t.',
+    'The $20 Pro credit pool burns fast on premium models. Around 225 Sonnet requests, then you\'re paying overage at API rates',
+    'No browser-based version. You install an app',
+  ]}
+/>
+
+<Callout tone="info" title="Best for">
+Working programmers who already live in an IDE and want AI without leaving it. **Skip** if you don't want to install an editor, or you can't write a single line of JavaScript.
+</Callout>
+
+<hr class="section-break" />
+
+## Claude Code
+
+> The agent that actually finishes the job.
+
+Claude Code is a terminal-based coding agent from Anthropic. You install it as a CLI, point it at your project, and talk to it. It reads files, writes files, runs tests, and finishes tasks instead of just suggesting them. It's the most capable agent in this lineup by a wide margin.
+
+<ProsCons
+  pros={[
+    "Genuinely autonomous on long tasks. We gave it 'add Stripe checkout to this Next.js app' and walked away. It came back done",
+    'Runs anywhere a terminal runs — your laptop, a VPS, inside Docker, inside CI',
+    "Sonnet 4.6's 1M token context means it can hold a small codebase in working memory",
+    'Bring-your-own API key option. You bypass subscription caps and bill per token at API rates',
+  ]}
+  cons={[
+    'Pricing is confusing. Pro at $20/mo includes Claude Code, but heavy use blows past 5-hour rolling limits fast. Max at $100 or $200/mo is where serious builders live; Team Premium starts at $100/seat',
+    'v2.1.100 and later have a known token-inflation issue that consumes ~40% more tokens than expected. As of May 8, 2026 there\'s no public patch. Workaround: pin to v2.1.34 until Anthropic ships a fix',
+    "It's a terminal tool. If 'cd' and 'git pull' aren't in your daily vocabulary, the learning curve is real",
+  ]}
+/>
+
+<Callout tone="info" title="Best for">
+Builders who want the most autonomous agent in the category and are comfortable in a terminal. **Skip** if you don't code, or you want a visual editor.
+</Callout>
+
+<hr class="section-break" />
+
+## Lovable
+
+> Prompt to working app, no terminal in sight.
+
+Lovable takes a different bet. You don't write code. You describe an app in plain English and it generates a full-stack React + Supabase application with auth, database, and Stripe wired in. You preview, iterate, and deploy without ever opening a terminal.
+
+<ProsCons
+  pros={[
+    'Fastest path to a working full-stack app for non-coders. A landing page with auth in 15 minutes is normal',
+    'Built-in Supabase backend — database, auth, and storage all configured for you',
+    "GitHub sync from day one. The code is yours, not locked behind a proprietary runtime",
+    'One-click deploy and custom domain support on Pro is the cleanest of the four',
+  ]}
+  cons={[
+    'Credit pricing is unpredictable. A vague prompt chews through credits during back-and-forth iteration. We hit the 100-credit Pro cap on day six of normal building',
+    'The AI struggles with complex business logic. Multi-step flows and edge cases need a real engineer eventually',
+    "Debugging Lovable-generated code when something breaks is harder than fixing your own. Lovable's official advice is to duplicate the project and start fresh — a real answer, but not a great one",
+  ]}
+/>
+
+<Callout tone="info" title="Best for">
+Non-technical founders, product managers, and operators who need a working MVP in a week. **Skip** if you'll need to maintain this code in production for years.
+</Callout>
+
+<hr class="section-break" />
+
+## Bolt
+
+> The fastest browser-based builder.
+
+Bolt runs the entire build in your browser tab. StackBlitz's WebContainer technology spins up a real Node.js environment inside Chrome. You prompt, it generates, the preview runs, and one click deploys to a live URL. Bolt v2 added built-in databases and hosting via Bolt Cloud. From cold start to deployed URL is under five minutes for a simple app.
+
+<ProsCons
+  pros={[
+    "Zero local setup. Open browser, start building. Useful when you're on someone else's machine, on a tablet, or at a hackathon",
+    'Token rollover. Unused tokens carry forward one extra month, which softens the credit-system pain',
+    'Figma import is genuinely good. Drop a design, get matching code that runs',
+    'Free tier is usable. 1M tokens monthly is enough to evaluate the tool seriously, with a 300K daily cap',
+  ]}
+  cons={[
+    "Token consumption is the highest in this lineup. Medium projects burn 150K–500K tokens per prompt because Bolt re-syncs the full file system to the AI on every message. You hit Pro's 10M monthly cap fast",
+    "Generated code quality is below Lovable's. We saw repeated logic when we asked for non-trivial features",
+    'Cloud-only. Internet drops mid-build, so does your session',
+  ]}
+/>
+
+<Callout tone="info" title="Best for">
+Hackathons, prototypes, and the moment you need a deployed demo before tomorrow's call. **Skip** if you're building something you plan to maintain for more than three months.
+</Callout>
+
+<hr class="section-break" />
+
+## The honest comparison
+
+Two weeks in, the picture clarifies. **Cursor and Claude Code are tools for people who can already code. Lovable and Bolt are tools for people who can't, or don't want to.**
+
+Within the coder pair, Cursor is the better daily driver if you want a real editor. Claude Code is the better choice if you want an agent that just gets work done while you do something else. We use both, depending on the task.
+
+Within the non-coder pair, Lovable produces noticeably cleaner full-stack code. Bolt is faster from prompt to live URL. If you're shipping a real product to real users, Lovable's output holds up longer. If you're shipping a demo to investors on Friday, Bolt wins.
+
+Cost-wise, all four start at $20 to $25 a month. The actual cost depends entirely on usage. Heavy Cursor users on premium models hit $60 to $100/mo. Heavy Claude Code users move to Max at $100 or $200/mo. Heavy Lovable users buy credit top-ups. Heavy Bolt users wait for the next monthly reset or upgrade.
+
+<Callout tone="warn" title="Budget reality">
+Plan for **two to three times the sticker price** if you're building daily. The on-paper $20 plans are entry tickets, not steady-state spend.
+</Callout>
+
+<hr class="section-break" />
+
+## Bottom line
+
+If you can already code, use **Cursor for daily work** and **Claude Code for long autonomous tasks**.
+
+If you can't, use **Lovable for products you'll maintain** and **Bolt for prototypes you'll throw away**.
+
+Pay for one, evaluate the others on free tiers, and switch when your project outgrows the tool.
+
+<hr class="section-break" />
+
+## The takeaways
+
+- **Cursor** wins for coders who want a familiar IDE with AI inside. Watch the credit-based billing.
+- **Claude Code** is the most capable agent in the category. Pin v2.1.34 until the token-inflation issue is patched.
+- **Lovable** produces the cleanest non-coder output and has real GitHub sync. Credits burn faster than expected.
+- **Bolt** is the fastest from prompt to deployed URL and has real free-tier headroom. Code quality is the trade-off.
+- **All four:** budget for two to three times the sticker price. Real-world cost is always higher than the plan page.
