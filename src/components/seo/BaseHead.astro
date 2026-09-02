@@ -1,10 +1,11 @@
 ---
 import '~/styles/tokens.css';
-import { SITE, buildTitle, buildDescription, canonical, ogImage } from '~/lib/seo';
+import { SITE, buildTitle, buildDescription, socialTitle, canonical, ogImage } from '~/lib/seo';
 import { organizationSchema, websiteSchema } from '~/lib/schema';
 
 type Props = {
   title?: string;
+  ogTitle?: string;
   description?: string;
   ogSlug?: string;
   ogImageUrl?: string;
@@ -18,6 +19,7 @@ type Props = {
 
 const {
   title,
+  ogTitle,
   description,
   ogSlug,
   ogImageUrl,
@@ -30,6 +32,7 @@ const {
 } = Astro.props;
 
 const finalTitle = buildTitle(title);
+const finalOgTitle = socialTitle(ogTitle, title);
 const finalDescription = buildDescription(description);
 const finalCanonical = canonical(canonicalPath ?? Astro.url.pathname);
 const finalOgImage = ogImageUrl ?? ogImage(ogSlug);
@@ -58,7 +61,7 @@ const siteJsonLd = JSON.stringify(websiteSchema());
 <link rel="preload" as="font" type="font/woff2" href="/fonts/space-grotesk-latin.woff2" crossorigin />
 
 <meta property="og:type" content={type} />
-<meta property="og:title" content={finalTitle} />
+<meta property="og:title" content={finalOgTitle} />
 <meta property="og:description" content={finalDescription} />
 <meta property="og:url" content={finalCanonical} />
 <meta property="og:image" content={finalOgImage} />
@@ -73,7 +76,7 @@ const siteJsonLd = JSON.stringify(websiteSchema());
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content={SITE.twitter} />
-<meta name="twitter:title" content={finalTitle} />
+<meta name="twitter:title" content={finalOgTitle} />
 <meta name="twitter:description" content={finalDescription} />
 <meta name="twitter:image" content={finalOgImage} />
 
