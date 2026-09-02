@@ -134,8 +134,14 @@ export default config({
         description: fields.text({
           label: 'Description',
           multiline: true,
-          description: '80 to 220 characters. Meta description and OG description.',
+          description: '80 to 220 characters. Meta description only.',
           validation: { length: { min: 80, max: 220 } },
+        }),
+        answer: fields.text({
+          label: 'Opening answer (40-80 words)',
+          multiline: true,
+          description:
+            'The first paragraph under the H1. Jane writes this. Do not invent a first-person test. Leave empty on the template.',
         }),
         eyebrow: fields.text({ label: 'Eyebrow' }),
         category: fields.relationship({
@@ -159,7 +165,7 @@ export default config({
         og: fields.image({
           label: 'OG image (1200 x 630)',
           description:
-            'Kinjal fills this slot after Jane\'s draft. Leave empty for the typographic placeholder. File must be 1200 by 630. Do not upload invented artwork.',
+            'Kinjal fills this 1200 by 630 slot after Jane\'s draft. Cream field, Lora wordmark, Lora title, ink-blue rule. No logos. No prices.',
           directory: 'src/assets/og/{slug}',
           publicPath: '../../assets/og/{slug}/',
         }),

@@ -10,6 +10,17 @@ const articles = defineCollection({
       type: z.enum(['article', 'review', 'roundup']).default('article'),
       title: z.string().min(8).max(80),
       description: z.string().min(80).max(220),
+      answer: z
+        .string()
+        .optional()
+        .refine(
+          (value) => {
+            if (!value) return true;
+            const words = value.trim().split(/\s+/).filter(Boolean).length;
+            return words >= 40 && words <= 80;
+          },
+          { message: 'Opening answer must be 40 to 80 words' },
+        ),
       eyebrow: z.string(),
       category: reference('categories'),
       author: reference('authors'),

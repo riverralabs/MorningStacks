@@ -61,9 +61,9 @@
   --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
 
-  --text-eyebrow: 0.6875rem;
+  --text-eyebrow: 0.8125rem;
   --text-eyebrow--line-height: 1.2;
-  --text-eyebrow--letter-spacing: 0.16em;
+  --text-eyebrow--letter-spacing: 0.14em;
 
   --text-meta: 0.75rem;
   --text-meta--line-height: 1.4;
@@ -87,9 +87,9 @@
   --text-h1--line-height: 1.05;
   --text-h1--letter-spacing: -0.029em;
 
-  --text-display: 5rem;
-  --text-display--line-height: 0.95;
-  --text-display--letter-spacing: -0.036em;
+  --text-hero: 3.5rem;
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.036em;
 }
 
 /* Base resets and global styles */
@@ -187,8 +187,8 @@
 @utility text-eyebrow {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-blue);
 }
