@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import Stars from './Stars.astro';
+import { withAffiliateVia } from '~/lib/affiliate';
 
 type Props = {
   product: string;
@@ -12,6 +13,7 @@ if (!entry) {
   throw new Error(`ProductCard: missing product "${product}"`);
 }
 const p = entry.data;
+const href = withAffiliateVia(p.affiliateUrl);
 const cleanHost = (() => {
   try {
     return new URL(p.affiliateUrl).hostname.replace(/^www\./, '');
@@ -37,7 +39,7 @@ const cleanHost = (() => {
       </p>
 
       <div class="mt-5 flex items-center gap-4">
-        <Stars rating={p.rating} />
+        {p.rating > 0 && <Stars rating={p.rating} />}
         <span class="font-sans text-[12px] text-[var(--color-ink-55)]">
           {p.price}
         </span>
@@ -76,10 +78,10 @@ const cleanHost = (() => {
       </div>
       <div>
         <a
-          href={p.affiliateUrl}
+          href={href}
           rel="sponsored noopener"
           target="_blank"
-          class="inline-flex w-full items-center justify-center rounded-md bg-[var(--color-blue)] px-5 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px]"
+          class="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--color-blue)] px-5 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
         >
           Try {p.name} →
         </a>

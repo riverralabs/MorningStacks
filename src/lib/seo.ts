@@ -11,8 +11,8 @@ export const SITE = {
 } as const;
 
 export function buildTitle(pageTitle?: string): string {
-  if (!pageTitle) return `${SITE.name} — ${SITE.tagline}`;
-  const composed = `${pageTitle} — ${SITE.name}`;
+  if (!pageTitle) return `${SITE.name} · ${SITE.tagline}`;
+  const composed = `${pageTitle} · ${SITE.name}`;
   return composed.length <= 60 ? composed : pageTitle;
 }
 

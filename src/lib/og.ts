@@ -29,6 +29,7 @@ type OgInput = {
   eyebrow?: string;
   description?: string;
   badge?: string;
+  slot?: boolean;
 };
 
 export async function renderOg(input: OgInput): Promise<ArrayBuffer> {
@@ -89,12 +90,12 @@ export async function renderOg(input: OgInput): Promise<ArrayBuffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontFamily: 'Space Grotesk',
-                    fontWeight: 700,
-                    fontSize: '76px',
+                    fontFamily: input.slot ? 'Lora' : 'Space Grotesk',
+                    fontWeight: input.slot ? 500 : 700,
+                    fontSize: input.slot ? '56px' : '76px',
                     color: INK,
                     lineHeight: 1.05,
-                    letterSpacing: '-2.5px',
+                    letterSpacing: input.slot ? '-1px' : '-2.5px',
                     marginTop: '20px',
                     display: 'flex',
                   },
@@ -160,7 +161,7 @@ export async function renderOg(input: OgInput): Promise<ArrayBuffer> {
                     color: INK_70,
                     display: 'flex',
                   },
-                  children: input.badge ?? 'Independent reviews',
+                  children: input.badge ?? (input.slot ? '1200 x 630' : 'Independent reviews'),
                 },
               },
             ],

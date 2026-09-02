@@ -5,6 +5,7 @@ import Callout from '~/components/ui/Callout.astro';
 import Stars from '~/components/ui/Stars.astro';
 import ProsCons from '~/components/ui/ProsCons.astro';
 import Verdict from '~/components/ui/Verdict.astro';
+import ComparisonTable from '~/components/ui/ComparisonTable.astro';
 
 export const mdxComponents = {
   PullQuote,
@@ -14,4 +15,5 @@ export const mdxComponents = {
   Stars,
   ProsCons,
   Verdict,
+  ComparisonTable,
 };

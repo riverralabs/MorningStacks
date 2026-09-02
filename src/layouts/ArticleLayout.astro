@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getEntry, getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
@@ -9,6 +9,7 @@ import ArticleCard from '~/components/ui/ArticleCard.astro';
 import Stars from '~/components/ui/Stars.astro';
 import { articleSchema, reviewSchema, faqSchema, breadcrumbSchema } from '~/lib/schema';
 import { ogImage, SITE, canonical } from '~/lib/seo';
+import { articleSlug, articleVisibility, isPublished } from '~/lib/publish';
 
 type Props = {
   entry: CollectionEntry<'articles'>;
@@ -23,11 +24,13 @@ if (!category || !author) {
   throw new Error(`Missing category or author for article ${entry.id}`);
 }
 
-const slug = entry.id.replace(/\.mdx?$/, '').replace(/^[^/]+\//, '');
+const slug = articleSlug(entry.id);
 const articleUrl = canonical(`/${category.data.slug}/${slug}/`);
 const heroPath = `${category.data.slug}/${slug}`;
+const visibility = articleVisibility(data);
+const noindex = visibility !== 'published';
 
-const allArticles = await getCollection('articles', ({ data }) => !data.draft && data.type !== 'review');
+const allArticles = await getCollection('articles', ({ data: item }) => isPublished(item) && item.type !== 'review');
 const fallbackRelated = allArticles
   .filter((a) => a.id !== entry.id && a.data.category.id === data.category.id)
   .slice(0, 3);
@@ -35,10 +38,17 @@ const fallbackRelated = allArticles
 const relatedEntries = data.related.length
   ? await Promise.all(data.related.map((ref) => getEntry(ref)))
   : fallbackRelated;
-const related = relatedEntries.filter((r): r is CollectionEntry<'articles'> => Boolean(r));
+const related = relatedEntries.filter((r): r is CollectionEntry<'articles'> => Boolean(r) && isPublished(r.data));
 
 const isReview = data.type === 'review';
 const reviewedProduct = isReview && data.products[0] ? await getEntry(data.products[0]) : null;
+
+const customOg = data.og
+  ? await getImage({ src: data.og, width: 1200, height: 630, format: 'png' })
+  : null;
+const ogUrl = customOg?.src
+  ? new URL(customOg.src, SITE.url).toString()
+  : ogImage(heroPath);
 
 const ld: object[] = [
   isReview && reviewedProduct
@@ -49,7 +59,7 @@ const ld: object[] = [
         datePublished: data.date,
         dateModified: data.updated,
         authorName: author.data.name,
-        image: ogImage(heroPath),
+        image: ogUrl,
         productName: reviewedProduct.data.name,
         productCategory: category.data.name,
         rating: data.rating ?? reviewedProduct.data.rating,
@@ -61,7 +71,7 @@ const ld: object[] = [
         datePublished: data.date,
         dateModified: data.updated,
         authorName: author.data.name,
-        image: ogImage(heroPath),
+        image: ogUrl,
         section: category.data.name,
       }),
   breadcrumbSchema([
@@ -81,18 +91,22 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
   title={data.title}
   description={data.description}
   ogSlug={heroPath}
+  ogImageUrl={ogUrl}
   type="article"
   publishedTime={data.date.toISOString()}
   modifiedTime={data.updated?.toISOString()}
   authorName={author.data.name}
   jsonLd={ld}
+  noindex={noindex}
 >
   <article class="pb-16 pt-10">
     <div class="container-article">
       <nav aria-label="Breadcrumb" class="font-sans text-[12px] text-[var(--color-ink-55)]">
-        <a href="/" class="hover:opacity-75">Home</a>
+        <a href="/" class="inline-flex min-h-11 items-center hover:opacity-75 focus-visible:opacity-100">Home</a>
         <span aria-hidden="true"> · </span>
-        <a href={`/${category.data.slug}/`} class="hover:opacity-75">{category.data.name}</a>
+        <a href={`/${category.data.slug}/`} class="inline-flex min-h-11 items-center hover:opacity-75">
+          {category.data.name}
+        </a>
       </nav>
 
       <header class="mt-8">
@@ -100,7 +114,7 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
           {data.eyebrow}
         </p>
         <h1
-          class="mt-3 font-sans text-[42px] font-bold leading-[1.05] tracking-[-0.026em] text-[var(--color-ink)] sm:text-[52px]"
+          class="mt-3 font-serif text-[42px] font-medium leading-[1.05] tracking-[-0.026em] text-[var(--color-ink)] sm:text-[52px]"
         >
           {data.title}
         </h1>
@@ -156,15 +170,15 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
       {
         data.faq.length > 0 && (
           <section class="not-prose mt-16 border-t border-[var(--color-ink-10)] pt-10">
-            <h2 class="font-sans text-[24px] font-bold tracking-[-0.018em] text-[var(--color-ink)]">
+            <h2 class="font-sans text-[28px] font-bold tracking-[-0.018em] text-[var(--color-ink)]">
               Frequently asked
             </h2>
             <dl class="mt-6 space-y-6">
-              {data.faq.map((entry) => (
+              {data.faq.map((faqEntry) => (
                 <div>
-                  <dt class="font-sans text-[16px] font-bold text-[var(--color-ink)]">{entry.q}</dt>
-                  <dd class="mt-2 font-serif text-[16px] leading-relaxed text-[var(--color-ink-85)]">
-                    {entry.a}
+                  <dt class="font-sans text-[16px] font-bold text-[var(--color-ink)]">{faqEntry.q}</dt>
+                  <dd class="mt-2 font-serif text-[17px] leading-[1.7] text-[var(--color-ink-85)]">
+                    {faqEntry.a}
                   </dd>
                 </div>
               ))}

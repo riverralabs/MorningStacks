@@ -14,7 +14,7 @@ cons:
   - Pricing climbs fast as you add seats and integrations
   - Customization is intentionally limited — fine if you trust the defaults, frustrating if you don't
 rating: 4.7
-affiliateUrl: https://linear.app/?ref=morningstacks
+affiliateUrl: https://linear.app/?via=morningstacks
 websiteUrl: https://linear.app
 lastTested: 2026-04-22
 ---

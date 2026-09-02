@@ -2,9 +2,13 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import react from '@astrojs/react';
+import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
+import { sitemapExcludeFragments } from './src/lib/sitemap-excludes';
 
 const SITE = process.env.SITE_URL ?? 'https://morningstacks.com';
+const exclude = sitemapExcludeFragments();
 
 export default defineConfig({
   site: SITE,
@@ -15,9 +19,11 @@ export default defineConfig({
     isr: false,
   }),
   integrations: [
+    react(),
     mdx(),
+    keystatic(),
     sitemap({
-      filter: (page) => !page.includes('/api/') && !page.includes('/og/'),
+      filter: (page) => !exclude.some((fragment) => page.includes(fragment)),
     }),
   ],
   image: {

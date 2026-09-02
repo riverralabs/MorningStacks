@@ -25,7 +25,7 @@ const year = new Date().getFullYear();
         </p>
         <a
           href={`mailto:${SITE.email}`}
-          class="font-sans text-[14px] text-[var(--color-cream)] underline-offset-4 hover:underline"
+          class="inline-flex min-h-11 items-center font-sans text-[14px] text-[var(--color-cream)] underline-offset-4 hover:underline"
         >
           {SITE.email}
         </a>
@@ -39,13 +39,13 @@ const year = new Date().getFullYear();
           {
             categories.map((c) => (
               <li>
-                <a href={`/${c.data.slug}/`} class="hover:opacity-80">
+                <a href={`/${c.data.slug}/`} class="inline-flex min-h-11 items-center hover:opacity-80">
                   {c.data.name}
                 </a>
               </li>
             ))
           }
-          <li><a href="/newsletter/" class="hover:opacity-80">Newsletter</a></li>
+          <li><a href="/newsletter/" class="inline-flex min-h-11 items-center hover:opacity-80">Newsletter</a></li>
         </ul>
       </div>
 
@@ -54,11 +54,11 @@ const year = new Date().getFullYear();
           About
         </p>
         <ul class="mt-4 space-y-2 font-sans text-[14px]">
-          <li><a href="/about/" class="hover:opacity-80">Who we are</a></li>
-          <li><a href="/methodology/" class="hover:opacity-80">How we test</a></li>
-          <li><a href="/disclosure/" class="hover:opacity-80">Affiliate disclosure</a></li>
-          <li><a href="/contact/" class="hover:opacity-80">Pitch us</a></li>
-          <li><a href="/rss.xml" class="hover:opacity-80">RSS</a></li>
+          <li><a href="/about/" class="inline-flex min-h-11 items-center hover:opacity-80">Who we are</a></li>
+          <li><a href="/methodology/" class="inline-flex min-h-11 items-center hover:opacity-80">How we test</a></li>
+          <li><a href="/disclosure/" class="inline-flex min-h-11 items-center hover:opacity-80">Affiliate disclosure</a></li>
+          <li><a href="/contact/" class="inline-flex min-h-11 items-center hover:opacity-80">Pitch us</a></li>
+          <li><a href="/rss.xml" class="inline-flex min-h-11 items-center hover:opacity-80">RSS</a></li>
         </ul>
       </div>
     </div>

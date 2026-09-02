@@ -3,10 +3,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import ArticleCard from '~/components/ui/ArticleCard.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
+import { isPublished } from '~/lib/publish';
 
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const articles = await getCollection('articles', ({ data }) => isPublished(data));
   return categories.map((category) => {
     const inCat = articles.filter((a) => a.data.category.id === category.id);
     return {
@@ -21,7 +22,7 @@ const sorted = articles.sort((a, b) => b.data.date.valueOf() - a.data.date.value
 ---
 
 <BaseLayout
-  title={`${category.data.name} — software for operators and founders`}
+  title={`${category.data.name} · software for operators and founders`}
   description={category.data.description}
   ogSlug={`category-${category.data.slug}`}
 >
@@ -45,7 +46,7 @@ const sorted = articles.sort((a, b) => b.data.date.valueOf() - a.data.date.value
     {
       sorted.length === 0 ? (
         <p class="font-serif italic text-[var(--color-ink-70)]">
-          Nothing here yet — we test thoroughly. Subscribe below to know when the first piece lands.
+          Nothing here yet. We test thoroughly. Subscribe below to know when the first piece lands.
         </p>
       ) : (
         <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">

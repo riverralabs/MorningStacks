@@ -1,6 +1,8 @@
 import { defineCollection, reference, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const visibility = z.enum(['draft', 'unlisted', 'published']).default('draft');
+
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
   schema: ({ image }) =>
@@ -12,16 +14,21 @@ const articles = defineCollection({
       category: reference('categories'),
       author: reference('authors'),
       date: z.coerce.date(),
-      updated: z.coerce.date().optional(),
+      updated: z.coerce.date().nullish(),
       hero: image().optional(),
       heroAlt: z.string().optional(),
+      og: image().optional(),
+      ogAlt: z.string().optional(),
       products: z.array(reference('products')).default([]),
-      rating: z.number().min(0).max(5).optional(),
+      rating: z.number().min(0).max(5).nullish(),
       faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
       related: z.array(reference('articles')).default([]),
       featured: z.boolean().default(false),
       seed: z.boolean().default(false),
+      template: z.boolean().default(false),
+      status: visibility,
       draft: z.boolean().default(false),
+      unlisted: z.boolean().default(false),
     }),
 });
 
@@ -41,6 +48,7 @@ const products = defineCollection({
     affiliateUrl: z.string().url(),
     websiteUrl: z.string().url().optional(),
     lastTested: z.coerce.date(),
+    placeholder: z.boolean().default(false),
   }),
 });
 

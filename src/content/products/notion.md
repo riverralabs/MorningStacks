@@ -14,7 +14,7 @@ cons:
   - Performance still wobbles on large workspaces (10k+ pages)
   - Templates encourage over-engineering — most teams build elaborate systems they don't actually use
 rating: 4.3
-affiliateUrl: https://www.notion.so/?ref=morningstacks
+affiliateUrl: https://www.notion.so/?via=morningstacks
 websiteUrl: https://www.notion.so
 lastTested: 2026-04-15
 ---

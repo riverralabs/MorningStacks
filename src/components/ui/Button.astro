@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 
 const base =
-  'inline-flex items-center justify-center font-sans font-semibold tracking-[-0.005em] transition-transform duration-150 ease-out hover:-translate-y-[1px] focus-visible:-translate-y-[1px]';
+  'inline-flex min-h-11 items-center justify-center font-sans font-semibold tracking-[-0.005em] transition-transform duration-150 ease-out hover:-translate-y-[1px] focus-visible:-translate-y-[1px] motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0';
 
 const variants: Record<Variant, string> = {
   primary:

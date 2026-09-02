@@ -32,6 +32,7 @@
   --color-page: #f2eee5;
   --color-ink: #1c1916;
   --color-blue: #1e3a5f;
+  --color-ink-blue: #1e3a5f;
   --color-good: #3a7d5c;
   --color-bad: #a84e2e;
   --color-warn: #b8862e;
@@ -154,7 +155,21 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+
+    html {
+      scroll-behavior: auto;
+    }
+
+    *:hover,
+    *:focus-visible {
+      transform: none !important;
+    }
   }
+}
+
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 @utility container-article {
