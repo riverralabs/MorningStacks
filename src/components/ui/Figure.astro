@@ -8,18 +8,23 @@ type Props = {
   caption?: string;
 };
 
-const { src, alt, caption = alt } = Astro.props;
+const { src, alt, caption } = Astro.props;
+const showCaption = Boolean(caption && caption.trim() !== alt.trim());
 ---
 
-<figure class="not-prose my-10">
+<figure class="not-prose ms-figure my-8">
   <Image
     src={src}
     alt={alt}
-    widths={[720, 960, 1200, 1600]}
-    sizes="(min-width: 720px) 720px, 100vw"
+    widths={[720, 960, 1200]}
+    sizes="(min-width: 720px) 672px, 100vw"
     class="h-auto w-full"
   />
-  <figcaption class="mt-3 font-sans text-[12px] leading-snug text-[var(--color-ink-55)]">
-    {caption}
-  </figcaption>
+  {
+    showCaption && (
+      <figcaption class="mt-3 font-sans text-[12px] leading-snug text-[var(--color-ink-55)]">
+        {caption}
+      </figcaption>
+    )
+  }
 </figure>
