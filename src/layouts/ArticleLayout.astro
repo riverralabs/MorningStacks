@@ -130,6 +130,13 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
             )
           }
         </p>
+        {
+          data.answer && (
+            <p class="mt-6 font-serif text-[17px] leading-[1.7] text-[var(--color-ink)]">
+              {data.answer}
+            </p>
+          )
+        }
       </header>
     </div>
 
