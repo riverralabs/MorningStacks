@@ -108,7 +108,7 @@ export default config({
         title: fields.slug({
           name: {
             label: 'Title',
-            validation: { length: { min: 8, max: 80 } },
+            validation: { length: { min: 8, max: 120 } },
           },
         }),
         status: fields.select({
@@ -170,6 +170,12 @@ export default config({
           publicPath: '../../assets/og/{slug}/',
         }),
         ogAlt: fields.text({ label: 'OG alt text' }),
+        ogTitle: fields.text({
+          label: 'OG title line',
+          description:
+            '1200 by 630 cream slot. Lora wordmark 28, Lora title, horizontal ink-blue rule. No logos, no prices, no dates as decoration. First ship: OpenAI may cut GPT in Cursor 12 Nov.',
+          validation: { length: { max: 80 } },
+        }),
         products: fields.multiRelationship({
           label: 'Products',
           collection: 'products',

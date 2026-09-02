@@ -47,7 +47,7 @@ export async function getStaticPaths() {
     const slug = articleSlug(a.id);
     entries.push({
       params: { slug: `${cat?.data.slug ?? 'productivity'}/${slug}` },
-      props: { title: a.data.title },
+      props: { title: a.data.ogTitle ?? a.data.title },
     });
   }
 

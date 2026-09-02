@@ -8,7 +8,7 @@ const articles = defineCollection({
   schema: ({ image }) =>
     z.object({
       type: z.enum(['article', 'review', 'roundup']).default('article'),
-      title: z.string().min(8).max(80),
+      title: z.string().min(8).max(120),
       description: z.string().min(80).max(220),
       answer: z
         .string()
@@ -30,6 +30,7 @@ const articles = defineCollection({
       heroAlt: z.string().optional(),
       og: image().optional(),
       ogAlt: z.string().optional(),
+      ogTitle: z.string().max(80).optional(),
       products: z.array(reference('products')).default([]),
       rating: z.number().min(0).max(5).nullish(),
       faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),

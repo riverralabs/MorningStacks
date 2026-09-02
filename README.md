@@ -50,7 +50,7 @@ Visibility:
 
 `seed: true` is a hold flag for leftover placeholder articles. Seed entries stay off the live domain even if someone flips visibility. Do not delete them without clearing that flag on purpose.
 
-The Jane comparison skeleton is `src/content/articles/systeme-io-vs-clickfunnels.mdx` (`template: true`, `status: draft`). It is not an article. Do not invent first-person tests. Kinjal fills the 1200×630 OG slot after the verified draft lands.
+The first-ship Jane skeleton is `src/content/articles/openai-cursor-cutoff-november-2026.mdx` (`template: true`, `status: draft`, `seed: true`). It is not live. OG title line is OpenAI may cut GPT in Cursor 12 Nov. Do not invent first-person tests. Kinjal fills the 1200×630 OG slot after the verified draft lands.
 
 ```mdx
 ---
