@@ -3,7 +3,6 @@ import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
 import { articleHref, isPublished } from '~/lib/publish';
-import { authorByline } from '~/lib/byline';
 
 const published = await getCollection('articles', ({ data }) => isPublished(data));
 const sorted = published.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -11,11 +10,9 @@ const sorted = published.sort((a, b) => b.data.date.valueOf() - a.data.date.valu
 const rows = await Promise.all(
   sorted.map(async (article) => {
     const category = await getEntry(article.data.category);
-    const author = await getEntry(article.data.author);
     return {
       article,
       href: articleHref(category?.data.slug ?? 'productivity', article.id),
-      byline: author ? authorByline(author.data) : '',
     };
   }),
 );
@@ -46,7 +43,7 @@ const rows = await Promise.all(
         </p>
       ) : (
         <ul>
-          {rows.map(({ article, href, byline }) => (
+          {rows.map(({ article, href }) => (
             <li class="border-t border-[var(--color-ink-10)]">
               <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
                 <p class="text-eyebrow">{article.data.eyebrow}</p>
@@ -54,7 +51,6 @@ const rows = await Promise.all(
                   {article.data.title}
                 </h2>
                 <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
-                  {byline}{' '}
                   {article.data.date.toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',

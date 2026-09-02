@@ -3,7 +3,6 @@ import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
 import { articleHref, isPublished } from '~/lib/publish';
-import { authorByline } from '~/lib/byline';
 
 const all = await getCollection('articles', ({ data }) => isPublished(data));
 const sorted = all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -11,7 +10,6 @@ const featured = sorted.find((a) => a.data.featured) ?? sorted[0];
 const rest = sorted.filter((a) => a.id !== featured?.id);
 
 const featuredCategory = featured ? await getEntry(featured.data.category) : null;
-const featuredAuthor = featured ? await getEntry(featured.data.author) : null;
 const featuredHref = featured
   ? articleHref(featuredCategory?.data.slug ?? 'productivity', featured.id)
   : '#';
@@ -21,11 +19,9 @@ const categories = (await getCollection('categories')).sort((a, b) => a.data.ord
 const restRows = await Promise.all(
   rest.map(async (article) => {
     const category = await getEntry(article.data.category);
-    const author = await getEntry(article.data.author);
     return {
       article,
       href: articleHref(category?.data.slug ?? 'productivity', article.id),
-      byline: author ? authorByline(author.data) : '',
     };
   }),
 );
@@ -53,7 +49,7 @@ const restRows = await Promise.all(
   </section>
 
   {
-    featured && featuredCategory && featuredAuthor ? (
+    featured && featuredCategory ? (
       <section class="container-grid py-16">
         <a href={featuredHref} class="group block max-w-[720px]">
           <p class="text-eyebrow">Featured · {featured.data.eyebrow}</p>
@@ -64,7 +60,7 @@ const restRows = await Promise.all(
             {featured.data.answer ?? featured.data.description}
           </p>
           <p class="mt-5 font-sans text-[12px] text-[var(--color-ink-55)]">
-            {authorByline(featuredAuthor.data)} {featured.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {featured.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         </a>
       </section>
@@ -84,7 +80,7 @@ const restRows = await Promise.all(
           From the stack
         </h2>
         <ul class="mt-6">
-          {restRows.map(({ article, href, byline }) => (
+          {restRows.map(({ article, href }) => (
             <li class="border-t border-[var(--color-ink-10)]">
               <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
                 <p class="text-eyebrow">{article.data.eyebrow}</p>
@@ -92,7 +88,6 @@ const restRows = await Promise.all(
                   {article.data.title}
                 </h3>
                 <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
-                  {byline}{' '}
                   {article.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               </a>

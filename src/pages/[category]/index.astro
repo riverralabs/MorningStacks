@@ -1,9 +1,8 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
 import { articleHref, isPublished } from '~/lib/publish';
-import { authorByline } from '~/lib/byline';
 
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
@@ -20,16 +19,10 @@ export async function getStaticPaths() {
 const { category, articles } = Astro.props;
 const sorted = articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const rows = await Promise.all(
-  sorted.map(async (article) => {
-    const author = await getEntry(article.data.author);
-    return {
-      article,
-      href: articleHref(category.data.slug, article.id),
-      byline: author ? authorByline(author.data) : '',
-    };
-  }),
-);
+const rows = sorted.map((article) => ({
+  article,
+  href: articleHref(category.data.slug, article.id),
+}));
 ---
 
 <BaseLayout
@@ -61,7 +54,7 @@ const rows = await Promise.all(
         </p>
       ) : (
         <ul>
-          {rows.map(({ article, href, byline }) => (
+          {rows.map(({ article, href }) => (
             <li class="border-t border-[var(--color-ink-10)]">
               <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
                 <p class="text-eyebrow">{article.data.eyebrow}</p>
@@ -69,7 +62,6 @@ const rows = await Promise.all(
                   {article.data.title}
                 </h2>
                 <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
-                  {byline}{' '}
                   {article.data.date.toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
