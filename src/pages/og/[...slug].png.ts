@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
   entries.push({
     params: { slug: 'slot' },
-    props: { title: 'Systeme.io vs ClickFunnels' },
+    props: { title: 'OpenAI may cut GPT in Cursor 12 Nov' },
   });
 
   const staticPages: { slug: string; title: string }[] = [
