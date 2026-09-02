@@ -1,0 +1,55 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import { SITE } from '~/lib/seo';
+---
+
+<PageLayout
+  title="Terms of Use"
+  description="Terms for reading and using MorningStacks. Draft for an affiliate publication. Not legal advice."
+  eyebrow="Legal"
+  ogSlug="terms"
+>
+  <p>
+    This is a working draft for an affiliate publication. It is not legal advice. Questions go to{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+
+  <h2>The site</h2>
+  <p>
+    MorningStacks is an editorial site about software. It is published by Riverra Labs LLP. By using the site you agree to these terms.
+  </p>
+
+  <h2>What the writing is</h2>
+  <p>
+    Reviews, comparisons, and other pieces are opinions at the time they are published. Software changes. Prices change. We update pieces when we catch an error. We do not promise that a tool will work for you, or that a price on a vendor site still matches what we recorded.
+  </p>
+
+  <h2>Affiliate links</h2>
+  <p>
+    Some links are affiliate links. If you buy after clicking, Riverra Labs LLP may earn a commission. Your price does not change because you used our link. Details are on the <a href="/disclosure/">affiliate disclosure</a>.
+  </p>
+
+  <h2>Your use</h2>
+  <p>
+    You may read, share links, and quote short passages with attribution. You may not scrape the site to republish our reviews as your own, or imply that we endorse a product we have not reviewed.
+  </p>
+
+  <h2>No professional advice</h2>
+  <p>
+    Nothing on MorningStacks is legal, tax, investment, or professional advice. It is journalism about software.
+  </p>
+
+  <h2>Limitation</h2>
+  <p>
+    The site is provided as is. Riverra Labs LLP is not liable for decisions you make after reading a review, or for downtime, or for a vendor changing a product after we wrote about it.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  </p>
+
+  <p class="mt-12 font-sans text-[13px] text-[var(--color-ink-55)]">
+    Last updated September 2026. Draft. Not legal advice.
+  </p>
+</PageLayout>

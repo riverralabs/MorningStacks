@@ -1,12 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import ArticleCard from '~/components/ui/ArticleCard.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
+import { articleHref, isPublished } from '~/lib/publish';
+import { authorByline } from '~/lib/byline';
 
 export async function getStaticPaths() {
   const categories = await getCollection('categories');
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const articles = await getCollection('articles', ({ data }) => isPublished(data));
   return categories.map((category) => {
     const inCat = articles.filter((a) => a.data.category.id === category.id);
     return {
@@ -18,20 +19,31 @@ export async function getStaticPaths() {
 
 const { category, articles } = Astro.props;
 const sorted = articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const rows = await Promise.all(
+  sorted.map(async (article) => {
+    const author = await getEntry(article.data.author);
+    return {
+      article,
+      href: articleHref(category.data.slug, article.id),
+      byline: author ? authorByline(author.data) : '',
+    };
+  }),
+);
 ---
 
 <BaseLayout
-  title={`${category.data.name} — software for operators and founders`}
+  title={`${category.data.name} · software for operators and founders`}
   description={category.data.description}
   ogSlug={`category-${category.data.slug}`}
 >
   <header class="border-b border-[var(--color-ink-10)] bg-[var(--color-cream)]">
     <div class="container-grid py-16">
-      <p class="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+      <p class="text-eyebrow">
         Section
       </p>
       <h1
-        class="mt-3 font-sans text-[52px] font-bold leading-[1.05] tracking-[-0.029em] text-[var(--color-ink)] sm:text-[72px]"
+        class="mt-3 font-sans text-[56px] font-bold leading-[0.95] tracking-[-0.036em] text-[var(--color-ink)]"
       >
         {category.data.name}<span class="text-[var(--color-blue)]">.</span>
       </h1>
@@ -43,16 +55,31 @@ const sorted = articles.sort((a, b) => b.data.date.valueOf() - a.data.date.value
 
   <section class="container-grid py-16">
     {
-      sorted.length === 0 ? (
+      rows.length === 0 ? (
         <p class="font-serif italic text-[var(--color-ink-70)]">
-          Nothing here yet — we test thoroughly. Subscribe below to know when the first piece lands.
+          Nothing published in this section yet. Subscribe below to know when the first piece lands.
         </p>
       ) : (
-        <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-          {sorted.map((article) => (
-            <ArticleCard article={article} size="md" />
+        <ul>
+          {rows.map(({ article, href, byline }) => (
+            <li class="border-t border-[var(--color-ink-10)]">
+              <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
+                <p class="text-eyebrow">{article.data.eyebrow}</p>
+                <h2 class="font-serif text-[22px] font-medium leading-[1.2] tracking-[-0.018em] text-[var(--color-ink)]">
+                  {article.data.title}
+                </h2>
+                <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
+                  {byline}{' '}
+                  {article.data.date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </p>
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       )
     }
   </section>

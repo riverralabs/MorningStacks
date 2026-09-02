@@ -1,0 +1,197 @@
+---
+type: article
+title: OpenAI is cutting Cursor on 12 Nov 2026. What a solo operator should do this week.
+description: OpenAI posted on 28 Aug 2026 that it will wind down OpenAI models in Cursor, with a proposed shutoff of 12 Nov 2026. What that means for solo operators, and what to do this week.
+answer: On 28 August 2026, OpenAI published that it had notified SpaceX it will wind down the contract that provides OpenAI models to Cursor, with a proposed shutoff of 12 November 2026. OpenAI says that is the maximum notice its contract allows after Cursor's change of control. As of 2 September 2026, Cursor still sells Hobby, Pro at $20/month, Pro+ at $60, Ultra at $200, and Teams at $40/user/month. Treat the date as proposed until Cursor publishes its own timeline.
+eyebrow: News analysis
+category: ai-tools
+author: dipen
+date: 2026-09-02
+og: ../../assets/og/openai-cursor-cutoff-november-2026/og.png
+ogAlt: OpenAI may cut GPT in Cursor 12 Nov
+ogTitle: OpenAI may cut GPT in Cursor 12 Nov
+products: []
+faq:
+  - q: What did OpenAI actually announce, and when is the proposed shutoff?
+    a: On 28 August 2026 OpenAI notified SpaceX it intends to wind down the contract providing OpenAI models to Cursor, with a proposed shutoff of 12 November 2026. OpenAI says that is the maximum notice in the contract. Treat the date as proposed until Cursor publishes its own timeline.
+  - q: Why does OpenAI say it is cancelling after the SpaceX acquisition?
+    a: OpenAI's stated reason is terms-of-service confidence, not a product review of Cursor. It says it cannot be confident SpaceX will use OpenAI technology within OpenAI's terms of service, and it is using a change-of-control clause.
+  - q: Does this cancel Cursor the product, or only OpenAI models inside Cursor?
+    a: Only the OpenAI models inside Cursor, as far as OpenAI's post goes. It is not a notice that Cursor the IDE shuts down.
+  - q: What does Cursor still sell on its pricing page today?
+    a: As of 2 September 2026, Cursor still sells Hobby, Pro at $20/month, Pro+ at $60, Ultra at $200, and Teams at $40/user/month. Taxes are exclusive, per the FAQ on Cursor's pricing page.
+sources:
+  - title: Our decision on Cursor following its acquisition by SpaceX
+    url: https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/
+    checked: 2026-09-02
+  - title: Cursor is now a part of SpaceX
+    url: https://cursor.com/blog/joining-spacex
+    checked: 2026-09-02
+  - title: Cursor pricing
+    url: https://cursor.com/pricing
+    checked: 2026-09-02
+  - title: Claude Fable 5.1 - Out Now
+    url: https://forum.cursor.com/t/claude-fable-5-1-out-now/170246
+    checked: 2026-09-02
+  - title: Claude Fable 5.1 and Mythos 5.1
+    url: https://www.anthropic.com/claude-fable-and-mythos-5-1
+    checked: 2026-09-02
+related: []
+featured: true
+seed: false
+template: false
+status: published
+draft: false
+---
+
+This is a product-risk story, not a product-death story. Cursor still sells an editor. Anthropic still sells Claude. The question for a solo operator is whether GPT in the picker is load-bearing for how you ship.
+
+We are writing this as MorningStacks, for operators who pay their own bills. Dipen has not confirmed any first-person test of the picker, of Auto mode, or of a repo migration. Those lines stay out.
+
+## What did OpenAI actually announce, and when is the proposed shutoff?
+
+OpenAI's own post, dated 28 August 2026, is the source of record: [Our decision on Cursor following its acquisition by SpaceX](https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/). WebFetch timed out on that URL this pass. Curl returned HTTP 200 on 2 September 2026. The quotes below come from that curl text.
+
+The first paragraph carries the whole operational fact:
+
+> Today, we notified SpaceX that we intend to wind down our contract providing OpenAI models to Cursor, with a proposed shutoff date of November 12, 2026. To maximize the time that developers can retain access to our models through Cursor, we are giving the maximum notice provided by our contract.
+
+Three details sit inside that quote.
+
+1. The notice went to SpaceX, not to a public Cursor blog we could fetch.
+2. The date is a **proposed** shutoff. OpenAI wrote it that way.
+3. OpenAI frames the window as the maximum notice in the contract.
+
+From 28 August to 12 November is about ten weeks and a few days. That is enough time to dual-home a repo. It is not enough time if you wait for a press cycle to resolve the corporate fight.
+
+Later in the same post, OpenAI says an upcoming model named Astra will not be provided to Cursor, that it will support developers in the transition, and that the custom agreement allows cancellation after a change of control. It also writes that it is holding cancellation to the latest date it can while not providing future models to Cursor.
+
+That is OpenAI's position, and we are quoting it as OpenAI's position.
+
+A Cursor.com official response to the 28 August post was not fetched. Cursor's blog does have [Cursor is now a part of SpaceX](https://cursor.com/blog/joining-spacex) (14 August 2026), which is the acquisition announcement, not an answer to OpenAI. We did not invent a SpaceX reply or a legal letter. If Cursor publishes a reply after this draft, add that URL in an update.
+
+## Why does OpenAI say it is cancelling after the SpaceX acquisition?
+
+OpenAI's stated reason is terms-of-service confidence, not a product review of Cursor.
+
+From the same 28 August 2026 post:
+
+> We are making this choice because we cannot be confident that SpaceX will use our technology within our terms of service, based on our experience with Elon Musk's companies violating contracts.
+
+The post then cites OpenAI's history with Twitter after Musk acquired it, and an admission under oath, as OpenAI describes it, that xAI, now also part of SpaceX, had violated OpenAI's terms.
+
+We are not litigating that history here. For a solo operator, the useful part is narrower: OpenAI is treating Cursor as a SpaceX-controlled partner, and it is using a change-of-control clause. The fight is corporate. Your repo is not a party to it, but your model picker is.
+
+Do not treat social recaps as the announcement. Do not treat Reuters as a source for this piece; that page returned 401 in research. The OpenAI URL above is enough.
+
+## Does this cancel Cursor the product, or only OpenAI models inside Cursor?
+
+Only the OpenAI models inside Cursor, as far as OpenAI's post goes. The post is about winding down "our contract providing OpenAI models to Cursor." It is not a notice that Cursor the IDE shuts down.
+
+That still matters if your daily path is GPT-5.6 Sol, Terra, or Luna in Agent. It matters less if you already live on Claude, Composer, or Grok.
+
+OpenAI did not name which GPT IDs go dark first. What we could not confirm on 2 September 2026:
+
+- Exact GPT model IDs that go dark versus stay.
+- Whether Composer remains fully usable with no OpenAI models.
+- Whether Grok access on Cursor pricing is independent of this contract.
+- Whether existing Cursor Pro usage pools still include OpenAI after 12 November.
+- Whether Auto mode already avoids OpenAI models. Dipen has not confirmed what Auto does in his picker.
+
+Cursor staff did confirm something adjacent on 1 September 2026. In [Claude Fable 5.1 - Out Now](https://forum.cursor.com/t/claude-fable-5-1-out-now/170246), Colin (Cursor staff) wrote that Fable 5.1 is in the product, that it scored 73.4% on CursorBench 3.2 at max effort, and that Privacy Mode users must approve Fable 5.1 data retention in the Dashboard. A community question on 2 September 2026 asked whether Fable is chosen in Auto or only manually. It was unanswered at fetch. Do not assume Auto will rescue you.
+
+Anthropic's launch post for [Claude Fable 5.1 and Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1) (fetched 2 September 2026) lists CursorBench 3.2.0 scores: Fable 5.1 at 73.4%, Fable 5 at 70.5%, Opus 5 at 70.0%, GPT-5.6 Sol at 67.2%. Those are vendor bench numbers. They are not a MorningStacks bake-off.
+
+Mythos 5.1, in the same post, is the same weights with looser cyber and life-science safeguards, limited to vetted US programs. It is not a solo-operator default.
+
+## What does Cursor still sell on its pricing page today?
+
+[Cursor pricing](https://cursor.com/pricing), fetched 2 September 2026 (WebFetch live). Taxes are exclusive, per the FAQ.
+
+| Plan | Price (USD) | Period | What the page still claims |
+| --- | --- | --- | --- |
+| Hobby | $0 | n/a | Limited Agent requests, access to Composer, no credit card |
+| Pro | $20 | month | Extended Agent limits, frontier models, Grok Bot, MCP, skills, hooks, cloud agents |
+| Pro+ | $60 | month | 3x Pro Agent limits, higher Grok Bot usage |
+| Ultra | $200 | month | 20x Pro Agent limits, priority access to new features |
+| Teams Standard | $40 | user / month | Team billing, team-wide privacy mode, SSO |
+| Teams Premium | not listed as a separate dollar on the rendered cards | user / month | 5x Standard Agent limits; same team admin features |
+| Enterprise | Custom | custom | Pooled usage, invoice billing, SCIM, audit logs |
+
+Live JSON-LD on 2 September 2026 listed Hobby 0, Pro 20, Pro+ 60, Ultra 200, Teams 40, currency USD. The Individual cards still say "Access to frontier models." The page does not mention the 12 November date. On-demand usage above the included amount is billed in arrears. A yearly toggle fragment showed `$18` in noscript HTML during research. **Do not treat $18 as a confirmed annual Pro price.** Teams Premium is on the live page as a Standard / Premium toggle, and we did not get a separate list dollar for Premium. Do not invent one.
+
+Cursor's FAQ says subscriptions are sold only on cursor.com and that resellers are unauthorized. There is no public cash affiliate program on the pages we fetched. MorningStacks is not placing a live Cursor `?via=` link.
+
+Fable 5.1 inside Cursor is billed from the third-party Other Models pool. Cursor docs, re-fetched 2 September 2026 at [Claude Fable 5.1](https://cursor.com/docs/models/claude-fable-5-1): $10 input / $12.50 cache write / $0.25 cache read / $50 output per million tokens. Guardrail trips auto-route to Opus, per those docs. Privacy Mode and Enterprise need admin opt-in. Fable 5.1 is on by default for individual accounts with Privacy Mode off.
+
+Privacy Mode, per the pricing FAQ: when enabled, Cursor says code is not used for training by Cursor or its model providers. That is separate from Anthropic's Fable retention terms.
+
+## What should a solo operator do before 12 November 2026?
+
+Do not wait for the press cycle to finish. OpenAI has already named a date. Cursor has not answered that post in anything we fetched. Act on the proposed date.
+
+### 1. Inventory what you actually use
+
+Open Cursor. Note which models you selected this week, not which models exist in marketing. Write down:
+
+- Default Agent model
+- Whether Auto is on
+- Whether Privacy Mode is on
+- Any project rules that name GPT models
+- MCP servers that assume an OpenAI tool path
+
+We have not sat in Dipen's picker. We cannot tell you whether GPT-5.6 Sol still appears there today. If a rule file hard-codes a GPT name, fork that first.
+
+### 2. Prove a non-OpenAI path on the same repo
+
+Keep the repo where it is. Install Claude Code beside Cursor using Anthropic's official overview: native install `curl -fsSL https://claude.ai/install.sh | bash`, or the VS Code extension that also offers "Install for Cursor." Docs: [Claude Code overview](https://code.claude.com/docs/en/overview), fetched 2 September 2026. Desktop requires a paid Claude subscription. Web is [claude.ai/code](https://claude.ai/code).
+
+Claude Code is included in Anthropic paid plans and shares that plan's usage pool, per [Anthropic pricing](https://www.anthropic.com/pricing) (2 September 2026). Pro is shown as $17, with monthly and annual billing available. The card did not clearly label $17 as monthly versus annual, so re-fetch it in a logged-out US session. Max starts from $100 and is billed monthly, at 5x or 20x Pro. Free does not include Claude Code in the comparison table we fetched.
+
+You do not need to pick a winner this week. You need one path that still ships if GPT leaves the Cursor picker.
+
+### 3. Turn on Fable 5.1 only if you accept the retention step
+
+If Privacy Mode is on, approve Fable 5.1 in the Cursor Dashboard before you need it. Colin's 1 September 2026 staff post is explicit on that. Cursor docs say the opt-in is team-wide for Teams.
+
+Do not default every prompt to max effort. Cursor's 73.4% headline is a max-effort number, per Cursor staff, and token rates are the Fable rates above. Independent tester Simon Willison, 1 September 2026, logged one SVG prompt at about $0.10 on low/medium, $0.13 on high, $1.83 on xhigh, and $3.30 on max. That is not a coding benchmark. It is a warning about effort knobs. Details belong in the effort how-to, not here.
+
+If you would rather stay on Opus 5, that is valid. Anthropic's API list on 2 September 2026 prices Opus 5 at $5 input / $25 output per million tokens, versus Fable 5.1 at $10 / $50.
+
+### 4. Decide what you will still pay Cursor for
+
+If the editor, Composer, Grok, cloud agents, and MCP are the product you buy, Pro at $20/month can still make sense after OpenAI models leave. If you bought Cursor because GPT was in the picker, you are shopping a different tool than the page is selling.
+
+Do not buy Ultra at $200/month this week as a hedge against the cutoff. Extra Agent multiples do not create OpenAI access after a contract ends.
+
+### 5. Export what you can, this week
+
+We did not find an official Cursor chat-export guide in this research pass. That is an open gap. Practical steps that do not require one:
+
+1. Screenshot the model picker, Privacy Mode, and any Fable opt-in.
+2. Copy project rules and skills into git.
+3. Copy MCP config into the repo or a secrets-safe note.
+4. Keep a `CLAUDE.md` next to Cursor rules so Claude Code is not starting from zero.
+5. Calendar 1 November 2026 as a dry-run day, two weeks before OpenAI's proposed shutoff.
+
+A dry run means shipping a small change in Cursor without an OpenAI model, then shipping one in Claude Code, on the same repo.
+
+## What did we not find?
+
+Honesty is the point of this piece.
+
+- **No Cursor.com official blog answering OpenAI.** The 14 August acquisition post is not that answer.
+- **No SpaceX statement** fetched.
+- **No list of GPT model IDs** that go dark.
+- **No confirmation** that Composer 2.5 stays fully usable with zero OpenAI models.
+- **No confirmation** of remaining GPT names in Dipen's picker.
+- **No staff answer** on whether Auto already picks Fable.
+- **Reuters** was 401. Not cited.
+- **Cursor yearly Pro at $18** is unverified noscript. Not used as a price.
+- **Teams Premium list dollar** not shown in the converted pricing HTML. Not invented.
+
+Treg is unavailable. Ranks are unknown. We are not inventing search volume for "openai cursor spacex models cutoff" or the secondaries.
+
+The corporate fight will produce more posts. Your job this week is boring: dual-home the repo, know which model you actually call, and stop treating OpenAI-in-Cursor as a forever utility.
+
+If you want the checklist with install commands, that is the companion how-to in this week's set. If you want Fable 5.1 as a model, that is the explainer. This article is only the deadline and the scope of the announcement.

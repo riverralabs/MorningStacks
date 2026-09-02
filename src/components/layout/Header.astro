@@ -5,14 +5,16 @@ import { getCollection } from 'astro:content';
 const categories = (await getCollection('categories')).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+const navItems = [
+  ...categories.map((c) => ({ href: `/${c.data.slug}/`, label: c.data.name })),
+  { href: '/archive/', label: 'Archive' },
+  { href: '/about/', label: 'About' },
+];
 ---
 
-<header
-  class="border-b border-[var(--color-ink-10)] bg-[var(--color-cream)]"
->
-  <div
-    class="container-grid flex items-center justify-between gap-6 py-4"
-  >
+<header class="border-b border-[var(--color-ink-10)] bg-[var(--color-cream)]">
+  <div class="container-grid flex items-center justify-between gap-6 py-4">
     <Wordmark size="md" />
 
     <nav
@@ -20,43 +22,60 @@ const categories = (await getCollection('categories')).sort(
       class="hidden md:flex items-center gap-7 font-sans text-[14px] font-medium text-[var(--color-ink-85)]"
     >
       {
-        categories.map((c) => (
+        navItems.map((item) => (
           <a
-            href={`/${c.data.slug}/`}
-            class="transition-opacity duration-150 hover:opacity-65"
+            href={item.href}
+            class="inline-flex min-h-11 items-center transition-opacity duration-150 hover:opacity-65"
           >
-            {c.data.name}
+            {item.label}
           </a>
         ))
       }
-      <a
-        href="/about/"
-        class="transition-opacity duration-150 hover:opacity-65"
-      >
-        About
-      </a>
-      <a
-        href="/methodology/"
-        class="transition-opacity duration-150 hover:opacity-65"
-      >
-        Methodology
-      </a>
     </nav>
 
     <div class="flex items-center gap-3">
       <a
         href="/search/"
         aria-label="Search"
-        class="rounded-md border border-[var(--color-ink-15)] bg-[var(--color-cream)] px-3 py-2 font-sans text-[12px] font-medium tracking-[0.04em] text-[var(--color-ink-70)] transition-colors duration-150 hover:border-[var(--color-blue)] hover:text-[var(--color-blue)]"
+        class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--color-ink-15)] bg-[var(--color-cream)] px-3 font-sans text-[12px] font-medium tracking-[0.04em] text-[var(--color-ink-70)] transition-colors duration-150 hover:border-[var(--color-blue)] hover:text-[var(--color-blue)]"
       >
         Search
       </a>
       <a
         href="/#newsletter"
-        class="hidden sm:inline-flex items-center rounded-md bg-[var(--color-blue)] px-4 py-2 font-sans text-[13px] font-semibold tracking-[-0.005em] text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px]"
+        class="hidden sm:inline-flex min-h-11 items-center rounded-md bg-[var(--color-blue)] px-4 font-sans text-[13px] font-semibold tracking-[-0.005em] text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
       >
         Subscribe
       </a>
+
+      <details class="relative md:hidden">
+        <summary
+          class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-md border border-[var(--color-ink-15)] font-sans text-[13px] font-medium text-[var(--color-ink)] [&::-webkit-details-marker]:hidden"
+        >
+          Menu
+        </summary>
+        <nav
+          aria-label="Mobile"
+          class="absolute right-0 z-20 mt-2 w-56 rounded-[var(--radius-lg)] border border-[var(--color-ink-10)] bg-[var(--color-cream)] p-2"
+        >
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class="flex min-h-11 items-center rounded-md px-3 font-sans text-[14px] font-medium text-[var(--color-ink-85)] hover:bg-[var(--color-cream-warm)]"
+              >
+                {item.label}
+              </a>
+            ))
+          }
+          <a
+            href="/#newsletter"
+            class="mt-1 flex min-h-11 items-center rounded-md bg-[var(--color-blue)] px-3 font-sans text-[14px] font-semibold text-[var(--color-cream)]"
+          >
+            Subscribe
+          </a>
+        </nav>
+      </details>
     </div>
   </div>
 </header>

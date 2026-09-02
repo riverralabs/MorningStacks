@@ -1,7 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /keystatic
+Disallow: /keystatic/
+Disallow: /api/
 
-# AI training crawlers — opt out by default; flip to Allow when ready
+# AI training crawlers. Opt out by default. Flip to Allow when ready.
 User-agent: GPTBot
 Disallow: /
 

@@ -1,61 +1,53 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { renderOg } from '~/lib/og';
-import { SITE } from '~/lib/seo';
+import { articleSlug, isBuildable } from '~/lib/publish';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const entries: { params: { slug: string }; props: { eyebrow?: string; title: string; description?: string; badge?: string } }[] = [];
+  const entries: { params: { slug: string }; props: { title: string } }[] = [];
 
-  // Default OG card
   entries.push({
     params: { slug: 'default' },
-    props: {
-      title: 'Software we’d renew tomorrow.',
-      description: SITE.tagline,
-      eyebrow: 'MorningStacks',
-    },
+    props: { title: "Software we'd renew tomorrow." },
   });
 
-  // Static pages
-  const staticPages: { slug: string; title: string; eyebrow: string; description: string }[] = [
-    { slug: 'about', eyebrow: 'About', title: 'About MorningStacks', description: 'Editorial first, commerce second.' },
-    { slug: 'methodology', eyebrow: 'Methodology', title: 'How we test', description: '30 days, real teams, real money.' },
-    { slug: 'disclosure', eyebrow: 'Disclosure', title: 'Affiliate disclosure', description: 'How affiliate links work — and what they don’t influence.' },
-    { slug: 'contact', eyebrow: 'Contact', title: 'Pitch us. Tip us. Correct us.', description: 'We read every email.' },
-    { slug: 'newsletter', eyebrow: 'Newsletter', title: 'Monday morning, in your inbox.', description: 'Five-minute read. Operator-grade.' },
-    { slug: 'search', eyebrow: 'Search', title: 'Search the archive', description: 'Find a tool, a roundup, an opinion.' },
+  entries.push({
+    params: { slug: 'slot' },
+    props: { title: 'OpenAI may cut GPT in Cursor 12 Nov' },
+  });
+
+  const staticPages: { slug: string; title: string }[] = [
+    { slug: 'about', title: 'About MorningStacks' },
+    { slug: 'methodology', title: 'How we test' },
+    { slug: 'disclosure', title: 'Affiliate disclosure' },
+    { slug: 'contact', title: 'Contact MorningStacks' },
+    { slug: 'newsletter', title: 'Monday morning, in your inbox.' },
+    { slug: 'search', title: 'Search the archive' },
+    { slug: 'privacy', title: 'Privacy Policy' },
+    { slug: 'terms', title: 'Terms of Use' },
+    { slug: 'archive', title: 'All writing' },
   ];
   for (const p of staticPages) {
-    entries.push({
-      params: { slug: p.slug },
-      props: { title: p.title, eyebrow: p.eyebrow, description: p.description },
-    });
+    entries.push({ params: { slug: p.slug }, props: { title: p.title } });
   }
 
-  // Categories
   const categories = await getCollection('categories');
   for (const c of categories) {
     entries.push({
       params: { slug: `category-${c.data.slug}` },
-      props: { eyebrow: 'Section', title: c.data.name, description: c.data.description },
+      props: { title: c.data.name },
     });
   }
 
-  // Articles
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const articles = await getCollection('articles', ({ data }) => isBuildable(data));
   for (const a of articles) {
     const cat = await getEntry(a.data.category);
-    const slug = a.id.replace(/\.mdx?$/, '').replace(/^[^/]+\//, '');
+    const slug = articleSlug(a.id);
     entries.push({
       params: { slug: `${cat?.data.slug ?? 'productivity'}/${slug}` },
-      props: {
-        eyebrow: a.data.eyebrow,
-        title: a.data.title,
-        description: a.data.description,
-        badge: a.data.type === 'review' ? 'Review' : a.data.type === 'roundup' ? 'Roundup' : 'Editorial',
-      },
+      props: { title: a.data.ogTitle ?? a.data.title },
     });
   }
 
@@ -63,7 +55,7 @@ export async function getStaticPaths() {
 }
 
 export const GET: APIRoute = async ({ props }) => {
-  const png = await renderOg(props as { title: string; eyebrow?: string; description?: string; badge?: string });
+  const png = await renderOg(props as { title: string });
   return new Response(png, {
     headers: {
       'content-type': 'image/png',

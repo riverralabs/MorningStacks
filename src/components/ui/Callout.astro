@@ -6,37 +6,13 @@ type Props = {
   title?: string;
 };
 
-const { tone = 'info', title } = Astro.props;
-
-const toneRing: Record<Tone, string> = {
-  info: 'border-[var(--color-blue)]',
-  good: 'border-[var(--color-good)]',
-  warn: 'border-[var(--color-warn)]',
-  bad: 'border-[var(--color-bad)]',
-};
-
-const toneLabelColor: Record<Tone, string> = {
-  info: 'text-[var(--color-blue)]',
-  good: 'text-[var(--color-good)]',
-  warn: 'text-[var(--color-warn)]',
-  bad: 'text-[var(--color-bad)]',
-};
+const { title } = Astro.props;
 ---
 
-<aside
-  class:list={[
-    'not-prose my-8 rounded-[var(--radius-lg)] border-l-[3px] bg-[var(--color-cream)] px-5 py-4',
-    toneRing[tone],
-  ]}
->
+<aside class="not-prose my-8 rounded-[var(--radius-lg)] border-l-[3px] border-[var(--color-blue)] bg-[var(--color-cream)] px-5 py-4">
   {
     title && (
-      <p
-        class:list={[
-          'mb-2 font-sans text-[11px] font-bold uppercase tracking-[0.16em]',
-          toneLabelColor[tone],
-        ]}
-      >
+      <p class="mb-2 font-sans text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--color-blue)]">
         {title}
       </p>
     )

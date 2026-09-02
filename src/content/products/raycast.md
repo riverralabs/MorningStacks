@@ -14,7 +14,7 @@ cons:
   - macOS only (Windows beta is improving but not yet there)
   - The "everything is a hotkey" mental model has a learning week, not a day
 rating: 4.8
-affiliateUrl: https://www.raycast.com/?ref=morningstacks
+affiliateUrl: https://www.raycast.com/?via=morningstacks
 websiteUrl: https://www.raycast.com
 lastTested: 2026-05-01
 ---

@@ -1,0 +1,54 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import { SITE } from '~/lib/seo';
+---
+
+<PageLayout
+  title="Privacy Policy"
+  description="How MorningStacks handles email, affiliate clicks, and the fact that we do not run analytics pixels today. Draft policy. Not legal advice."
+  eyebrow="Legal"
+  ogSlug="privacy"
+>
+  <p>
+    This is a working draft for an affiliate publication. It is not legal advice. Questions go to{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+
+  <h2>Who we are</h2>
+  <p>
+    MorningStacks is an independent publication. The publisher is Riverra Labs LLP. The contact address for this policy is {SITE.email}.
+  </p>
+
+  <h2>What we collect</h2>
+  <p>
+    If you email us, we receive the address you send from, the message, and any files you attach. We use that to reply, correct a piece, or consider a pitch. We do not sell that information.
+  </p>
+  <p>
+    If you use the newsletter block, it opens a message to {SITE.email}. There is no live email service connected to this site yet. When a provider is connected, this page will name it before any list is collected through the form.
+  </p>
+
+  <h2>What we do not collect today</h2>
+  <p>
+    We do not run analytics, advertising pixels, or a cookie banner. We do not set tracking cookies for third-party ads. If that changes, we will update this page before those tools run.
+  </p>
+
+  <h2>Affiliate links</h2>
+  <p>
+    Some links to vendor sites use the query <code>via=morningstacks</code>. If you click one, that vendor or its affiliate network may know you arrived from MorningStacks. What they collect after you leave this site is governed by their own policies. See the <a href="/disclosure/">affiliate disclosure</a>.
+  </p>
+
+  <h2>How long we keep email</h2>
+  <p>
+    We keep editorial email as long as it is needed to run the publication: corrections, pitches, and ongoing correspondence. You can ask us to delete a message you sent by writing to {SITE.email}.
+  </p>
+
+  <h2>Your requests</h2>
+  <p>
+    To ask what we hold about you, or to ask us to delete an email you sent, write to{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. We do not operate a phone line for these requests.
+  </p>
+
+  <p class="mt-12 font-sans text-[13px] text-[var(--color-ink-55)]">
+    Last updated September 2026. Draft. Not legal advice.
+  </p>
+</PageLayout>

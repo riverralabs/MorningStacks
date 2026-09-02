@@ -15,9 +15,14 @@ export function organizationSchema(): WithContext<Organization> {
     '@type': 'Organization',
     name: SITE.name,
     url: SITE.url,
+    email: SITE.email,
     logo: new URL('/brand/morningstacks_badge.svg', SITE.url).toString(),
     sameAs: [],
     description: SITE.description,
+    parentOrganization: {
+      '@type': 'Organization',
+      name: SITE.publisher,
+    },
   };
 }
 
@@ -58,7 +63,7 @@ export function articleSchema(input: {
     author: { '@type': 'Person', name: input.authorName },
     publisher: {
       '@type': 'Organization',
-      name: SITE.name,
+      name: SITE.publisher,
       logo: {
         '@type': 'ImageObject',
         url: new URL('/brand/morningstacks_badge.svg', SITE.url).toString(),
@@ -93,7 +98,7 @@ export function reviewSchema(input: {
     author: { '@type': 'Person', name: input.authorName },
     publisher: {
       '@type': 'Organization',
-      name: SITE.name,
+      name: SITE.publisher,
     },
     itemReviewed: {
       '@type': 'SoftwareApplication',

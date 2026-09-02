@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { articleHref } from '~/lib/publish';
 
 type Props = {
   article: CollectionEntry<'articles'>;
@@ -13,7 +14,7 @@ const { data } = article;
 
 const category = await getEntry(data.category);
 const author = await getEntry(data.author);
-const href = `/${category?.data.slug ?? 'productivity'}/${article.id.replace(/\.mdx?$/, '').replace(/^[^/]+\//, '')}/`;
+const href = articleHref(category?.data.slug ?? 'productivity', article.id);
 
 const titleClass = {
   sm: 'text-[18px] leading-[1.2] tracking-[-0.012em]',
@@ -37,11 +38,11 @@ const titleClass = {
       </a>
     )
   }
-  <p class="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-blue)]">
+  <p class="mt-4 text-eyebrow">
     {data.eyebrow}
   </p>
-  <h3 class:list={['mt-2 font-sans font-bold text-[var(--color-ink)]', titleClass]}>
-    <a href={href} class="transition-opacity hover:opacity-80">{data.title}</a>
+  <h3 class:list={['mt-2 font-serif font-medium text-[var(--color-ink)]', titleClass]}>
+    <a href={href} class="inline-flex min-h-11 items-center transition-opacity hover:opacity-80">{data.title}</a>
   </h3>
   <p class="mt-2 font-serif text-[15px] leading-relaxed text-[var(--color-ink-70)] line-clamp-3">
     {data.description}

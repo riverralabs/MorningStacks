@@ -1,52 +1,38 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
-import NewsletterForm from '~/components/ui/NewsletterForm.astro';
+import { SITE } from '~/lib/seo';
 ---
 
 <PageLayout
   title="About MorningStacks"
-  description="A small editorial team writing about software for operators and founders. Editorial first, commerce second. Tested in production, not in a demo."
+  description="MorningStacks is an independent publication about software that operators and founders actually pay for. Published by Riverra Labs LLP."
   eyebrow="About"
   ogSlug="about"
 >
   <p>
-    MorningStacks is an independent publication about the software stack — SaaS, AI tools, and infrastructure — that operators and founders actually pay for. We are not a venture-backed media company. We are not a content marketing engine for a parent company. We are a small group of operators, founders, and former engineers writing the publication we wish existed when we were buying our first ten tools.
+    MorningStacks is an independent publication about the software stack that operators and founders actually pay for. SaaS, AI tools, and infrastructure. Editorial first, commerce second.
+  </p>
+
+  <h2>Publisher</h2>
+  <p>
+    The publication is published by Riverra Labs LLP. The public contact for the site is{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
   </p>
 
   <h2>What we cover</h2>
-
   <p>
-    Four sections, deliberately narrow: <a href="/productivity/">Productivity</a>, <a href="/ai-tools/">AI Tools</a>, <a href="/marketing/">Marketing</a>, and <a href="/developer-tools/">Developer Tools</a>. We will add a fifth when something earns it. We will not add a fifth because traffic looks promising.
-  </p>
-
-  <h2>Who writes here</h2>
-
-  <p>
-    Every piece is bylined. Every byline links to a person. Every author has used the software they are writing about — see the <a href="/methodology/">methodology</a> page for what we mean by "used." When the answer is "less than thirty days," we say so in the piece.
+    Four sections: <a href="/productivity/">Productivity</a>, <a href="/ai-tools/">AI Tools</a>,{' '}
+    <a href="/marketing/">Marketing</a>, and <a href="/developer-tools/">Developer Tools</a>. The{' '}
+    <a href="/archive/">archive</a> lists every published piece.
   </p>
 
   <h2>How we make money</h2>
-
   <p>
-    Affiliate commissions on links to vendor sites. The commission rate has zero impact on our scoring or our coverage decisions. We do not sell sponsored posts. We do not let vendors review pieces before publication. We do not remove competitors from roundups in exchange for partnership deals. The full <a href="/disclosure/">disclosure</a> spells this out in legal language.
+    Affiliate commissions on some links to vendor sites. Commissions do not set the verdict or the coverage list. We do not sell sponsored posts. The <a href="/disclosure/">affiliate disclosure</a> is the full version.
   </p>
 
-  <h2>What we won't do</h2>
-
-  <ul>
-    <li>Publish content we wouldn't read ourselves.</li>
-    <li>Recommend a tool we haven't tested.</li>
-    <li>Hide behind "results may vary" qualifications when we have a real opinion.</li>
-    <li>Use AI to generate articles. (We use it as a tool, like spell-check; we don't use it as the writer.)</li>
-  </ul>
-
-  <h2>Get in touch</h2>
-
+  <h2>How we test</h2>
   <p>
-    Pitches, corrections, and tip-offs about products we should test: <a href="/contact/">contact us</a>. We read every email. We don't reply to all of them, but we read all of them.
+    The <a href="/methodology/">methodology</a> page is the public standard. If a piece does not meet it, <a href="/contact/">tell us</a>.
   </p>
 </PageLayout>
-
-<div class="container-article pb-16">
-  <NewsletterForm variant="card" source="about" />
-</div>
