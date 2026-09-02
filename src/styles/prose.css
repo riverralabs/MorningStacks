@@ -10,7 +10,13 @@
 }
 
 .prose-ms > * + * {
-  margin-top: 1.25em;
+  margin-top: 1.55em;
+}
+
+.prose-ms > p:first-of-type {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--color-ink);
 }
 
 .prose-ms h2 {
@@ -20,8 +26,8 @@
   letter-spacing: -0.022em;
   line-height: 1.15;
   color: var(--color-ink);
-  margin-top: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 3.25rem;
+  margin-bottom: 0.85rem;
   scroll-margin-top: 5rem;
 }
 
@@ -32,8 +38,8 @@
   letter-spacing: -0.014em;
   line-height: 1.25;
   color: var(--color-ink);
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
+  margin-top: 2.75rem;
+  margin-bottom: 0.75rem;
   scroll-margin-top: 5rem;
 }
 
@@ -74,32 +80,43 @@
 
 .prose-ms ul,
 .prose-ms ol {
-  padding-left: 1.5rem;
+  padding-left: 1.75rem;
   margin: 0;
 }
 
 .prose-ms ul > li,
 .prose-ms ol > li {
-  margin-top: 0.5rem;
-  padding-left: 0.25rem;
+  margin-top: 0.85rem;
+  padding-left: 0.4rem;
 }
 
 .prose-ms ul > li::marker {
-  color: var(--color-blue);
+  color: var(--color-ink-blue);
 }
 
 .prose-ms ol > li::marker {
-  color: var(--color-blue);
+  color: var(--color-ink-blue);
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .prose-ms blockquote {
-  border-left: 3px solid var(--color-blue);
-  padding: 0.25rem 0 0.25rem 1.25rem;
-  margin: 0;
+  border: 0;
+  border-left: 3px solid var(--color-ink-blue);
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  margin: 2rem 0;
   font-style: italic;
-  color: var(--color-ink-70);
+  color: var(--color-ink);
+  quotes: none;
+}
+
+.prose-ms blockquote::before,
+.prose-ms blockquote::after {
+  content: none;
+}
+
+.prose-ms blockquote p {
+  color: var(--color-ink);
 }
 
 .prose-ms code {

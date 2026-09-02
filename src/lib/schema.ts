@@ -48,7 +48,6 @@ export function articleSchema(input: {
   description: string;
   datePublished: Date;
   dateModified?: Date;
-  authorName: string;
   image: string;
   section?: string;
 }): WithContext<Article> {
@@ -60,7 +59,6 @@ export function articleSchema(input: {
     image: input.image,
     datePublished: input.datePublished.toISOString(),
     dateModified: (input.dateModified ?? input.datePublished).toISOString(),
-    author: { '@type': 'Person', name: input.authorName },
     publisher: {
       '@type': 'Organization',
       name: SITE.publisher,
@@ -80,7 +78,6 @@ export function reviewSchema(input: {
   description: string;
   datePublished: Date;
   dateModified?: Date;
-  authorName: string;
   image: string;
   productName: string;
   productCategory?: string;
@@ -95,7 +92,6 @@ export function reviewSchema(input: {
     image: input.image,
     datePublished: input.datePublished.toISOString(),
     dateModified: (input.dateModified ?? input.datePublished).toISOString(),
-    author: { '@type': 'Person', name: input.authorName },
     publisher: {
       '@type': 'Organization',
       name: SITE.publisher,

@@ -7,6 +7,8 @@ eyebrow: News analysis
 category: ai-tools
 author: dipen
 date: 2026-09-02
+hero: ../../assets/articles/openai-cursor-cutoff-november-2026/hero.png
+heroAlt: OpenAI may cut GPT in Cursor 12 Nov
 og: ../../assets/og/openai-cursor-cutoff-november-2026/og.png
 ogAlt: OpenAI may cut GPT in Cursor 12 Nov
 ogTitle: OpenAI may cut GPT in Cursor 12 Nov
@@ -44,9 +46,12 @@ status: published
 draft: false
 ---
 
+import pricingFigure from '../../assets/articles/openai-cursor-cutoff-november-2026/pricing.png';
+import checklistFigure from '../../assets/articles/openai-cursor-cutoff-november-2026/checklist.png';
+
 This is a product-risk story, not a product-death story. Cursor still sells an editor. Anthropic still sells Claude. The question for a solo operator is whether GPT in the picker is load-bearing for how you ship.
 
-We are writing this as MorningStacks, for operators who pay their own bills. Dipen has not confirmed any first-person test of the picker, of Auto mode, or of a repo migration. Those lines stay out.
+We are writing this as MorningStacks, for operators who pay their own bills. We have not confirmed any first-person test of the picker, of Auto mode, or of a repo migration. Those lines stay out.
 
 ## What did OpenAI actually announce, and when is the proposed shutoff?
 
@@ -96,7 +101,7 @@ OpenAI did not name which GPT IDs go dark first. What we could not confirm on 2 
 - Whether Composer remains fully usable with no OpenAI models.
 - Whether Grok access on Cursor pricing is independent of this contract.
 - Whether existing Cursor Pro usage pools still include OpenAI after 12 November.
-- Whether Auto mode already avoids OpenAI models. Dipen has not confirmed what Auto does in his picker.
+- Whether Auto mode already avoids OpenAI models. We have not confirmed what Auto does in the picker.
 
 Cursor staff did confirm something adjacent on 1 September 2026. In [Claude Fable 5.1 - Out Now](https://forum.cursor.com/t/claude-fable-5-1-out-now/170246), Colin (Cursor staff) wrote that Fable 5.1 is in the product, that it scored 73.4% on CursorBench 3.2 at max effort, and that Privacy Mode users must approve Fable 5.1 data retention in the Dashboard. A community question on 2 September 2026 asked whether Fable is chosen in Auto or only manually. It was unanswered at fetch. Do not assume Auto will rescue you.
 
@@ -108,6 +113,14 @@ Mythos 5.1, in the same post, is the same weights with looser cyber and life-sci
 
 [Cursor pricing](https://cursor.com/pricing), fetched 2 September 2026. Taxes are exclusive, per the FAQ.
 
+<Figure
+  src={pricingFigure}
+  alt="Cursor pricing as of 2 September 2026. Hobby 0, Pro 20 a month, Pro+ 60, Ultra 200."
+  caption="Cursor pricing as of 2 September 2026. Hobby $0, Pro $20 a month, Pro+ $60, Ultra $200."
+/>
+
+<div class="table-wrap">
+
 | Plan | Price (USD) | Period | What the page still claims |
 | --- | --- | --- | --- |
 | Hobby | $0 | n/a | Limited Agent requests, access to Composer, no credit card |
@@ -117,6 +130,8 @@ Mythos 5.1, in the same post, is the same weights with looser cyber and life-sci
 | Teams Standard | $40 | user / month | Team billing, team-wide privacy mode, SSO |
 | Teams Premium | not listed as a separate dollar on the rendered cards | user / month | 5x Standard Agent limits; same team admin features |
 | Enterprise | Custom | custom | Pooled usage, invoice billing, SCIM, audit logs |
+
+</div>
 
 The Individual cards still say "Access to frontier models." The page does not mention the 12 November date. On-demand usage above the included amount is billed in arrears. A yearly figure of $18 showed up in page source during research. Do not treat $18 as a confirmed annual Pro price. Teams Premium is on the live page as a Standard / Premium toggle, and we did not get a separate list dollar for Premium. Do not invent one.
 
@@ -130,6 +145,12 @@ Privacy Mode, per the pricing FAQ: when enabled, Cursor says code is not used fo
 
 Do not wait for the press cycle to finish. OpenAI has already named a date. Cursor has not answered that post in anything we fetched. Act on the proposed date.
 
+<Figure
+  src={checklistFigure}
+  alt="Five things to do before 12 Nov. Inventory the picker, dual-home the same repo, Fable only after opt-in, do not buy Ultra as a hedge, export rules this week."
+  caption="Five things to do before 12 Nov. Inventory the picker, dual-home the same repo, Fable only after opt-in, do not buy Ultra as a hedge, export rules this week."
+/>
+
 ### 1. Inventory what you actually use
 
 Open Cursor. Note which models you selected this week, not which models exist in marketing. Write down:
@@ -140,7 +161,7 @@ Open Cursor. Note which models you selected this week, not which models exist in
 - Any project rules that name GPT models
 - MCP servers that assume an OpenAI tool path
 
-We have not sat in Dipen's picker. We cannot tell you whether GPT-5.6 Sol still appears there today. If a rule file hard-codes a GPT name, fork that first.
+We have not sat in the picker for this piece. We cannot tell you whether GPT-5.6 Sol still appears there today. If a rule file hard-codes a GPT name, fork that first.
 
 ### 2. Prove a non-OpenAI path on the same repo
 
@@ -184,7 +205,7 @@ Honesty is the point of this piece.
 - **No SpaceX statement** fetched.
 - **No list of GPT model IDs** that go dark.
 - **No confirmation** that Composer 2.5 stays fully usable with zero OpenAI models.
-- **No confirmation** of remaining GPT names in Dipen's picker.
+- **No confirmation** of remaining GPT names in the picker.
 - **No staff answer** on whether Auto already picks Fable.
 - **Teams Premium list dollar** not shown in the converted pricing HTML. Not invented.
 

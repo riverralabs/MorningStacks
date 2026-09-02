@@ -13,7 +13,6 @@ type Props = {
   type?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
-  authorName?: string;
   noindex?: boolean;
 };
 
@@ -27,7 +26,6 @@ const {
   type = 'website',
   publishedTime,
   modifiedTime,
-  authorName,
   noindex = false,
 } = Astro.props;
 
@@ -72,7 +70,6 @@ const siteJsonLd = JSON.stringify(websiteSchema());
 
 {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
-{authorName && <meta property="article:author" content={authorName} />}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content={SITE.twitter} />

@@ -13,7 +13,6 @@ const { article, size = 'md' } = Astro.props;
 const { data } = article;
 
 const category = await getEntry(data.category);
-const author = await getEntry(data.author);
 const href = articleHref(category?.data.slug ?? 'productivity', article.id);
 
 const titleClass = {
@@ -48,6 +47,6 @@ const titleClass = {
     {data.description}
   </p>
   <p class="mt-3 font-sans text-[12px] text-[var(--color-ink-55)]">
-    {author?.data.name ?? ''} · {data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+    {data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
   </p>
 </article>
