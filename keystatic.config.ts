@@ -191,6 +191,18 @@ export default config({
             itemLabel: (props) => props.fields.q.value || 'Question',
           },
         ),
+        sources: fields.array(
+          fields.object({
+            title: fields.text({ label: 'Title', validation: { isRequired: true } }),
+            url: fields.url({ label: 'URL' }),
+            checked: fields.date({ label: 'Date checked', validation: { isRequired: true } }),
+          }),
+          {
+            label: 'Sources',
+            description: 'Dated sources under the article. Jane fills these. Do not invent URLs.',
+            itemLabel: (props) => props.fields.title.value || 'Source',
+          },
+        ),
         related: fields.multiRelationship({
           label: 'Related articles',
           collection: 'articles',

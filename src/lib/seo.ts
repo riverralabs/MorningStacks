@@ -8,6 +8,7 @@ export const SITE = {
   defaultOgImage: '/og/default.png',
   defaultLocale: 'en_US',
   email: 'hello@morningstacks.com',
+  publisher: 'Riverra Labs LLP',
 } as const;
 
 export function buildTitle(pageTitle?: string): string {

@@ -22,9 +22,12 @@ export async function getStaticPaths() {
     { slug: 'about', title: 'About MorningStacks' },
     { slug: 'methodology', title: 'How we test' },
     { slug: 'disclosure', title: 'Affiliate disclosure' },
-    { slug: 'contact', title: 'Pitch us. Tip us. Correct us.' },
+    { slug: 'contact', title: 'Contact MorningStacks' },
     { slug: 'newsletter', title: 'Monday morning, in your inbox.' },
     { slug: 'search', title: 'Search the archive' },
+    { slug: 'privacy', title: 'Privacy Policy' },
+    { slug: 'terms', title: 'Terms of Use' },
+    { slug: 'archive', title: 'All writing' },
   ];
   for (const p of staticPages) {
     entries.push({ params: { slug: p.slug }, props: { title: p.title } });

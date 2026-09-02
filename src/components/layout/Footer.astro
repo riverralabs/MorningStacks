@@ -16,12 +16,12 @@ const year = new Date().getFullYear();
           MorningStacks<span class="text-[var(--color-blue)]">.</span>
         </div>
         <p
-          class="mt-4 max-w-md font-serif italic text-[16px] leading-relaxed text-[rgba(250,244,232,0.7)]"
+          class="mt-4 max-w-md font-serif italic text-[16px] leading-relaxed text-[rgba(250,244,232,0.85)]"
         >
-          {SITE.tagline} Independent reviews. Tested by operators. No fluff.
+          {SITE.tagline} Independent reviews. Published by Riverra Labs LLP.
         </p>
-        <p class="mt-6 font-sans text-[12px] uppercase tracking-[0.16em] text-[rgba(250,244,232,0.45)]">
-          Editorial inquiries
+        <p class="mt-6 font-sans text-[13px] uppercase tracking-[0.14em] text-[rgba(250,244,232,0.7)]">
+          Contact
         </p>
         <a
           href={`mailto:${SITE.email}`}
@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <p class="font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-[rgba(250,244,232,0.45)]">
+        <p class="font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-[rgba(250,244,232,0.7)]">
           Sections
         </p>
         <ul class="mt-4 space-y-2 font-sans text-[14px]">
@@ -45,19 +45,22 @@ const year = new Date().getFullYear();
               </li>
             ))
           }
+          <li><a href="/archive/" class="inline-flex min-h-11 items-center hover:opacity-80">Archive</a></li>
           <li><a href="/newsletter/" class="inline-flex min-h-11 items-center hover:opacity-80">Newsletter</a></li>
         </ul>
       </div>
 
       <div>
-        <p class="font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-[rgba(250,244,232,0.45)]">
+        <p class="font-sans text-[13px] font-medium uppercase tracking-[0.14em] text-[rgba(250,244,232,0.7)]">
           About
         </p>
         <ul class="mt-4 space-y-2 font-sans text-[14px]">
-          <li><a href="/about/" class="inline-flex min-h-11 items-center hover:opacity-80">Who we are</a></li>
+          <li><a href="/about/" class="inline-flex min-h-11 items-center hover:opacity-80">About</a></li>
           <li><a href="/methodology/" class="inline-flex min-h-11 items-center hover:opacity-80">How we test</a></li>
+          <li><a href="/contact/" class="inline-flex min-h-11 items-center hover:opacity-80">Contact</a></li>
           <li><a href="/disclosure/" class="inline-flex min-h-11 items-center hover:opacity-80">Affiliate disclosure</a></li>
-          <li><a href="/contact/" class="inline-flex min-h-11 items-center hover:opacity-80">Pitch us</a></li>
+          <li><a href="/privacy/" class="inline-flex min-h-11 items-center hover:opacity-80">Privacy</a></li>
+          <li><a href="/terms/" class="inline-flex min-h-11 items-center hover:opacity-80">Terms</a></li>
           <li><a href="/rss.xml" class="inline-flex min-h-11 items-center hover:opacity-80">RSS</a></li>
         </ul>
       </div>
@@ -66,11 +69,11 @@ const year = new Date().getFullYear();
     <hr class="my-12 border-0 border-t border-[rgba(250,244,232,0.15)]" />
 
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-sans text-[12px] text-[rgba(250,244,232,0.5)]">
-        © {year} {SITE.name}. All editorial independent.
+      <p class="font-sans text-[13px] text-[rgba(250,244,232,0.85)]">
+        © {year} Riverra Labs LLP. MorningStacks is the publication.
       </p>
-      <p class="font-sans text-[12px] text-[rgba(250,244,232,0.5)]">
-        Some links are affiliates. <a href="/disclosure/" class="underline underline-offset-4 hover:opacity-80">Read the disclosure</a>.
+      <p class="font-sans text-[13px] text-[rgba(250,244,232,0.85)]">
+        Some links are affiliates. <a href="/disclosure/" class="underline underline-offset-4 hover:underline">Read the disclosure</a>.
       </p>
     </div>
   </div>

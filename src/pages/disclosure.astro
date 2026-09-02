@@ -1,64 +1,58 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
+import { SITE } from '~/lib/seo';
 ---
 
 <PageLayout
   title="Affiliate disclosure"
-  description="MorningStacks earns commissions on some links to vendor sites. This page explains exactly how that works and what it does and does not influence."
+  description="MorningStacks may earn a commission on some links to vendor sites. This page explains how that works. Draft. Not legal advice."
   eyebrow="Disclosure"
   ogSlug="disclosure"
 >
   <p>
-    <strong>In one sentence:</strong> we earn commissions on some links from this site to products we review. Those commissions never influence the score, the verdict, or what we choose to cover.
-  </p>
-
-  <h2>Plain language version</h2>
-
-  <p>
-    MorningStacks is a participant in affiliate programs operated by some of the products we review. When you click a link to a vendor's site from a page on MorningStacks, that vendor may know that you arrived from us. If you then buy or sign up for a paid plan, we may receive a commission. That commission is paid by the vendor, not by you — your price is the same whether you arrive through our link, type the URL directly, or find the vendor through a Google search.
+    <strong>In one sentence:</strong> we may earn a commission if you buy after clicking some links on this site. That commission does not change the verdict, the score, or what we choose to cover.
   </p>
 
   <p>
-    Not every link on this site is an affiliate link. Reviews and roundups will typically use affiliate links to the products they cover. Editorial articles, methodology pages, news, and our own internal pages do not.
+    This is a working draft for an affiliate publication. It is not legal advice. Questions go to{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
   </p>
 
-  <h2>What affiliate links don't influence</h2>
+  <h2>Plain language</h2>
+  <p>
+    MorningStacks is published by Riverra Labs LLP. Some links from this site to vendor sites include the query <code>via=morningstacks</code>. If you then buy or start a paid plan, the vendor or its affiliate network may pay Riverra Labs LLP a commission. You do not pay more because you used our link.
+  </p>
+  <p>
+    Not every link is an affiliate link. Reviews and roundups will typically use affiliate links for the products they cover. Legal pages, this disclosure, methodology, and our own site pages do not.
+  </p>
 
+  <h2>What affiliate links do not influence</h2>
   <ul>
     <li>
-      <strong>What we cover.</strong> We review the products we think are worth reviewing. Vendors cannot pay to be reviewed, included in a roundup, or featured in the newsletter.
+      <strong>What we cover.</strong> Vendors cannot pay to be reviewed, included in a roundup, or featured in the newsletter.
     </li>
     <li>
-      <strong>Our scores.</strong> Ratings are determined before any affiliate relationship is set up. The same product would receive the same score from us whether we earned $0 or $300 per signup.
-    </li>
-    <li>
-      <strong>What we say.</strong> Vendors do not review our reviews before publication. The only exception is a fact-check excerpt for spec-heavy passages; even then, the vendor does not see our analysis or score.
+      <strong>What we say.</strong> Vendors do not review our pieces before publication. We may share a fact-check excerpt for a spec. They do not see the verdict first.
     </li>
   </ul>
 
-  <h2>Compliance</h2>
-
+  <h2>How we mark links</h2>
   <p>
-    This disclosure is provided in accordance with the U.S. Federal Trade Commission's "Guides Concerning the Use of Endorsements and Testimonials in Advertising" (16 CFR Part 255). Reviews on MorningStacks include an inline disclosure at the top of the page, in addition to this site-wide page. Affiliate links are also marked in the page source with <code>rel="sponsored"</code> per Google's recommendations.
+    This disclosure is meant to follow the U.S. Federal Trade Commission's Guides Concerning the Use of Endorsements and Testimonials in Advertising (16 CFR Part 255). Reviews include an inline note at the top of the page, in addition to this site-wide page. Affiliate links are marked in the page source with <code>rel="sponsored"</code>.
   </p>
 
-  <h2>Specific programs we participate in</h2>
-
+  <h2>Programs</h2>
   <p>
-    The list of vendor affiliate programs we participate in changes over time. As of the most recent revision of this page, these include direct affiliate relationships with most of the SaaS vendors covered on the site, as well as participation in third-party affiliate networks (Impact, PartnerStack, Reflektion).
+    The list of vendor programs changes. We do not publish an application status or a roster of pending deals. For a dated list of current relationships, email{' '}
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
   </p>
 
+  <h2>Problems</h2>
   <p>
-    A canonical, dated list of every vendor relationship is available on request — email <a href="mailto:hello@morningstacks.com">hello@morningstacks.com</a>.
+    If you spot an undisclosed affiliate link, write to <a href="/contact/">contact</a> or {SITE.email}. We will correct it on the page.
   </p>
 
-  <h2>Questions or concerns</h2>
-
-  <p>
-    If you spot an undisclosed affiliate link, a relationship we should be disclosing, or anything that looks like it's compromising editorial independence, please <a href="/contact/">tell us</a>. We take this seriously and will correct it publicly.
-  </p>
-
-  <p class="mt-12 text-sm">
-    <em>Last updated: May 2026.</em>
+  <p class="mt-12 font-sans text-[13px] text-[var(--color-ink-55)]">
+    Last updated September 2026. Draft. Not legal advice.
   </p>
 </PageLayout>

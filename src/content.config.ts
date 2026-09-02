@@ -33,6 +33,15 @@ const articles = defineCollection({
       products: z.array(reference('products')).default([]),
       rating: z.number().min(0).max(5).nullish(),
       faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+      sources: z
+        .array(
+          z.object({
+            title: z.string(),
+            url: z.string().url().optional(),
+            checked: z.coerce.date(),
+          }),
+        )
+        .default([]),
       related: z.array(reference('articles')).default([]),
       featured: z.boolean().default(false),
       seed: z.boolean().default(false),

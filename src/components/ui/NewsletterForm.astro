@@ -10,10 +10,12 @@ const {
   variant = 'card',
   source = 'site',
   heading = 'Get the stack, every Monday morning.',
-  blurb = 'One short email. The tools we tested last week, what stood up, what fell apart. No fluff.',
+  blurb = 'No live email service is connected yet. This opens a message to hello@morningstacks.com.',
 } = Astro.props;
 
 const isCard = variant === 'card';
+const liveProvider = Boolean(process.env.NEWSLETTER_PROVIDER && process.env.NEWSLETTER_PROVIDER !== 'stub');
+const emailId = `email-${source}`;
 ---
 
 <section
@@ -29,7 +31,7 @@ const isCard = variant === 'card';
     <p
       class:list={[
         'font-sans text-[13px] font-medium uppercase tracking-[0.14em]',
-        isCard ? 'text-[rgba(250,244,232,0.55)]' : 'text-[var(--color-blue)]',
+        isCard ? 'text-[rgba(250,244,232,0.7)]' : 'text-[var(--color-blue)]',
       ]}
     >
       The MorningStacks newsletter
@@ -51,42 +53,90 @@ const isCard = variant === 'card';
       {blurb}
     </p>
 
-    <form
-      action="/api/subscribe"
-      method="POST"
-      class="mt-6 flex flex-col gap-3 sm:flex-row"
-    >
-      <input type="hidden" name="source" value={source} />
-      <label class="sr-only" for={`email-${source}`}>Email address</label>
-      <input
-        id={`email-${source}`}
-        type="email"
-        name="email"
-        required
-        autocomplete="email"
-        placeholder="your@work.email"
-        class:list={[
-          'w-full min-h-11 flex-1 rounded-md border px-4 py-3 font-sans text-[14px] outline-none focus:ring-2 focus:ring-[var(--color-blue)] focus:ring-offset-2',
-          isCard
-            ? 'border-[rgba(250,244,232,0.2)] bg-[rgba(250,244,232,0.05)] text-[var(--color-cream)] placeholder:text-[rgba(250,244,232,0.4)] focus:ring-offset-[var(--color-ink)]'
-            : 'border-[var(--color-ink-15)] bg-[var(--color-cream)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-40)] focus:ring-offset-[var(--color-page)]',
-        ]}
-      />
-      <button
-        type="submit"
-        class="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--color-blue)] px-6 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 ease-out hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
-      >
-        Subscribe
-      </button>
-    </form>
-
-    <p
-      class:list={[
-        'mt-4 font-sans text-[11px] uppercase tracking-[0.12em]',
-        isCard ? 'text-[rgba(250,244,232,0.45)]' : 'text-[var(--color-ink-55)]',
-      ]}
-    >
-      Free · No spam · Unsubscribe anytime
-    </p>
+    {
+      liveProvider ? (
+        <form action="/api/subscribe" method="POST" class="mt-6 flex flex-col gap-3">
+          <input type="hidden" name="source" value={source} />
+          <label
+            for={emailId}
+            class:list={[
+              'font-sans text-[13px] font-medium',
+              isCard ? 'text-[var(--color-cream)]' : 'text-[var(--color-ink)]',
+            ]}
+          >
+            Email
+          </label>
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <input
+              id={emailId}
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="your@work.email"
+              class:list={[
+                'w-full min-h-11 flex-1 rounded-md border px-4 py-3 font-sans text-[14px] outline-none focus:ring-2 focus:ring-[var(--color-blue)] focus:ring-offset-2',
+                isCard
+                  ? 'border-[rgba(250,244,232,0.2)] bg-[rgba(250,244,232,0.05)] text-[var(--color-cream)] placeholder:text-[rgba(250,244,232,0.4)] focus:ring-offset-[var(--color-ink)]'
+                  : 'border-[var(--color-ink-15)] bg-[var(--color-cream)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-40)] focus:ring-offset-[var(--color-page)]',
+              ]}
+            />
+            <button
+              type="submit"
+              class="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--color-blue)] px-6 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 ease-out hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
+            >
+              Subscribe
+            </button>
+          </div>
+        </form>
+      ) : (
+        <form
+          action="mailto:hello@morningstacks.com?subject=MorningStacks%20newsletter"
+          method="post"
+          enctype="text/plain"
+          class="mt-6 flex flex-col gap-3"
+        >
+          <label
+            for={emailId}
+            class:list={[
+              'font-sans text-[13px] font-medium',
+              isCard ? 'text-[var(--color-cream)]' : 'text-[var(--color-ink)]',
+            ]}
+          >
+            Email
+          </label>
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <input
+              id={emailId}
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="your@work.email"
+              class:list={[
+                'w-full min-h-11 flex-1 rounded-md border px-4 py-3 font-sans text-[14px] outline-none focus:ring-2 focus:ring-[var(--color-blue)] focus:ring-offset-2',
+                isCard
+                  ? 'border-[rgba(250,244,232,0.2)] bg-[rgba(250,244,232,0.05)] text-[var(--color-cream)] placeholder:text-[rgba(250,244,232,0.4)] focus:ring-offset-[var(--color-ink)]'
+                  : 'border-[var(--color-ink-15)] bg-[var(--color-cream)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-40)] focus:ring-offset-[var(--color-page)]',
+              ]}
+            />
+            <button
+              type="submit"
+              class="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--color-blue)] px-6 py-3 font-sans text-[14px] font-semibold text-[var(--color-cream)] transition-transform duration-150 ease-out hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
+            >
+              Email to subscribe
+            </button>
+          </div>
+          <p
+            class:list={[
+              'font-sans text-[13px] leading-relaxed',
+              isCard ? 'text-[rgba(250,244,232,0.7)]' : 'text-[var(--color-ink-55)]',
+            ]}
+          >
+            Opens your mail app to hello@morningstacks.com. Not a live list. We will add you when the newsletter launches.
+          </p>
+        </form>
+      )
+    }
   </div>
 </section>

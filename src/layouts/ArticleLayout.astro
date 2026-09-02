@@ -10,6 +10,7 @@ import Stars from '~/components/ui/Stars.astro';
 import { articleSchema, reviewSchema, faqSchema, breadcrumbSchema } from '~/lib/schema';
 import { ogImage, SITE, canonical } from '~/lib/seo';
 import { articleSlug, articleVisibility, isPublished } from '~/lib/publish';
+import { authorByline } from '~/lib/byline';
 
 type Props = {
   entry: CollectionEntry<'articles'>;
@@ -131,7 +132,7 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
         }
 
         <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-[12px] text-[var(--color-ink-55)]">
-          <span>By <span class="text-[var(--color-ink)]">{author.data.name}</span></span>
+          <span class="text-[var(--color-ink)]">{authorByline(author.data)}</span>
           <span>·</span>
           <time datetime={data.date.toISOString()}>{datePub}</time>
           {
@@ -163,7 +164,7 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
             widths={[640, 960, 1280]}
             sizes="(min-width: 960px) 900px, 100vw"
             loading="eager"
-            class="w-full rounded-[var(--radius-xl)] object-cover"
+            class="aspect-[16/9] w-full rounded-[var(--radius-xl)] object-cover"
           />
         </figure>
       )
@@ -191,6 +192,33 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
                 </div>
               ))}
             </dl>
+          </section>
+        )
+      }
+
+      {
+        data.sources.length > 0 && (
+          <section class="not-prose mt-16 border-t border-[var(--color-ink-10)] pt-10">
+            <h2 class="font-sans text-[28px] font-bold tracking-[-0.018em] text-[var(--color-ink)]">
+              Sources
+            </h2>
+            <ul class="mt-6 space-y-3 font-serif text-[17px] leading-[1.7] text-[var(--color-ink-85)]">
+              {data.sources.map((source) => (
+                <li>
+                  {source.url ? (
+                    <a href={source.url} class="underline underline-offset-2">
+                      {source.title}
+                    </a>
+                  ) : (
+                    source.title
+                  )}
+                  <span class="font-sans text-[13px] text-[var(--color-ink-55)]">
+                    {' '}
+                    Checked {source.checked.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </section>
         )
       }

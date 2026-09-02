@@ -25,9 +25,12 @@ ${SITE.description}
 ## Site
 
 - Home: ${SITE.url}/
+- Archive: ${SITE.url}/archive/
 - About: ${SITE.url}/about/
 - Methodology: ${SITE.url}/methodology/
 - Affiliate disclosure: ${SITE.url}/disclosure/
+- Privacy: ${SITE.url}/privacy/
+- Terms: ${SITE.url}/terms/
 - Newsletter: ${SITE.url}/newsletter/
 - Contact: ${SITE.url}/contact/
 - RSS: ${SITE.url}/rss.xml
@@ -50,6 +53,8 @@ ${articleLines.length ? articleLines.join('\n') : 'None yet. Placeholder and see
 - Affiliate links use the query parameter \`via=morningstacks\`.
 - Editorial standard: tested in production or a 30-day structured trial. No invented first-person tests.
 - Canonical URLs use ${SITE.url}. Preview hosts are not the live domain.
+- Publisher: ${SITE.publisher}. Public contact: ${SITE.email}.
+- /keystatic is the git-backed admin. It is disallowed in robots.txt and must not be indexed.
 
 ## Optional
 

@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /keystatic
+Disallow: /keystatic/
 Disallow: /api/
 
 # AI training crawlers. Opt out by default. Flip to Allow when ready.

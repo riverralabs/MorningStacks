@@ -8,8 +8,8 @@ const categories = (await getCollection('categories')).sort(
 
 const navItems = [
   ...categories.map((c) => ({ href: `/${c.data.slug}/`, label: c.data.name })),
+  { href: '/archive/', label: 'Archive' },
   { href: '/about/', label: 'About' },
-  { href: '/methodology/', label: 'Methodology' },
 ];
 ---
 

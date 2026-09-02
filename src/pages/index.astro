@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
 import { articleHref, isPublished } from '~/lib/publish';
+import { authorByline } from '~/lib/byline';
 
 const all = await getCollection('articles', ({ data }) => isPublished(data));
 const sorted = all.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -24,7 +25,7 @@ const restRows = await Promise.all(
     return {
       article,
       href: articleHref(category?.data.slug ?? 'productivity', article.id),
-      authorName: author?.data.name ?? '',
+      byline: author ? authorByline(author.data) : '',
     };
   }),
 );
@@ -71,7 +72,7 @@ const restRows = await Promise.all(
             {featured.data.answer ?? featured.data.description}
           </p>
           <p class="mt-5 font-sans text-[12px] text-[var(--color-ink-55)]">
-            {featuredAuthor.data.name} · {featured.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {authorByline(featuredAuthor.data)} {featured.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         </a>
       </section>
@@ -91,7 +92,7 @@ const restRows = await Promise.all(
           From the stack
         </h2>
         <ul class="mt-6">
-          {restRows.map(({ article, href, authorName }) => (
+          {restRows.map(({ article, href, byline }) => (
             <li class="border-t border-[var(--color-ink-10)]">
               <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
                 <p class="text-eyebrow">{article.data.eyebrow}</p>
@@ -99,7 +100,8 @@ const restRows = await Promise.all(
                   {article.data.title}
                 </h3>
                 <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
-                  {authorName} · {article.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {byline}{' '}
+                  {article.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               </a>
             </li>
@@ -121,6 +123,12 @@ const restRows = await Promise.all(
             {c.data.name}
           </a>
         ))}
+        <a
+          href="/archive/"
+          class="inline-flex min-h-11 items-center font-sans text-[16px] font-medium text-[var(--color-ink)] hover:opacity-70"
+        >
+          Archive
+        </a>
       </nav>
     </div>
   </section>
