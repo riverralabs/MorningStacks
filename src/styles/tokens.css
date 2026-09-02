@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './prose.css';
 
 /* Brand fonts — self-hosted, subset Latin */
 @font-face {

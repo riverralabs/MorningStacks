@@ -19,28 +19,48 @@
   color: var(--color-ink);
 }
 
+.prose-ms > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.18em;
+  letter-spacing: -0.02em;
+}
+
 .prose-ms h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-weight: 500;
   font-size: 1.75rem;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   color: var(--color-ink);
-  margin-top: 3.25rem;
-  margin-bottom: 0.85rem;
+  margin-top: 4.75rem;
+  margin-bottom: 0.9rem;
   scroll-margin-top: 5rem;
+}
+
+.prose-ms > * + h2 {
+  margin-top: 4.75rem;
 }
 
 .prose-ms h3 {
   font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: -0.014em;
-  line-height: 1.25;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
   color: var(--color-ink);
-  margin-top: 2.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.65rem;
   scroll-margin-top: 5rem;
+}
+
+.prose-ms > * + h3 {
+  margin-top: 2.5rem;
+}
+
+.prose-ms h3.how-to-step {
+  padding-left: 1.7rem;
+  text-indent: -1.7rem;
 }
 
 .prose-ms h4 {
@@ -169,26 +189,22 @@
   width: 4rem;
 }
 
-/* Tables — wrap in horizontal scroll on narrow viewports, keep type
- * tight without sacrificing the article's serif/sans rhythm. */
+/* Tables sit in the 720 article column. Cells wrap; no forced min-width
+ * that creates a desktop horizontal scroll. */
 .prose-ms .table-wrap {
-  margin: 2rem -1rem;
-  padding: 0 1rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  margin: 2rem 0;
+  padding: 0;
+  overflow-x: visible;
 }
 
 .prose-ms table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 0.8125rem;
+  line-height: 1.4;
   color: var(--color-ink-85);
-}
-
-.prose-ms .table-wrap > table {
-  min-width: 32rem;
 }
 
 .prose-ms thead th {
@@ -196,24 +212,28 @@
   border-bottom: 1px solid var(--color-ink-15);
   text-align: left;
   font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--color-ink);
-  padding: 0.75rem 0.875rem;
-  white-space: nowrap;
+  padding: 0.55rem 0.6rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .prose-ms tbody td,
 .prose-ms tbody th {
   border-bottom: 1px solid var(--color-ink-06);
-  padding: 0.75rem 0.875rem;
+  padding: 0.55rem 0.6rem;
   vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .prose-ms tbody th {
   text-align: left;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-ink);
 }
 
@@ -233,8 +253,23 @@
 
 .prose-ms tbody td:first-child,
 .prose-ms tbody th:first-child {
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-ink);
+}
+
+.prose-ms table th:nth-child(1),
+.prose-ms table td:nth-child(1) {
+  width: 18%;
+}
+
+.prose-ms table th:nth-child(2),
+.prose-ms table td:nth-child(2) {
+  width: 16%;
+}
+
+.prose-ms table th:nth-child(3),
+.prose-ms table td:nth-child(3) {
+  width: 16%;
 }
 
 /* MDX section break — soft horizontal rule between major sections */
@@ -257,4 +292,32 @@
 .prose-ms ul ol,
 .prose-ms ol ul {
   margin-top: 0.5rem;
+}
+
+/* Editorial figures — same 720 column as type. Crop empty cream;
+ * keep Kinjal type at top left. */
+.ms-figure {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.ms-figure:not(:has(figcaption)) {
+  max-height: 390px;
+}
+
+.ms-figure--hero:not(:has(figcaption)) {
+  max-height: 450px;
+}
+
+.ms-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.ms-figure--hero img {
+  max-height: 450px;
 }
