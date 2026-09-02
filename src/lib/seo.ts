@@ -17,6 +17,13 @@ export function buildTitle(pageTitle?: string): string {
   return composed.length <= 60 ? composed : pageTitle;
 }
 
+/** og:title / twitter:title. Frontmatter ogTitle wins over the page H1. */
+export function socialTitle(ogTitle?: string, pageTitle?: string): string {
+  const trimmed = ogTitle?.trim();
+  if (trimmed) return trimmed;
+  return buildTitle(pageTitle);
+}
+
 export function buildDescription(pageDescription?: string): string {
   const desc = pageDescription ?? SITE.description;
   if (desc.length >= 150 && desc.length <= 160) return desc;
