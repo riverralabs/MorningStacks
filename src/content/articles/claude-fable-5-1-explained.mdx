@@ -1,0 +1,203 @@
+---
+type: article
+title: 'Claude Fable 5.1, explained: what changed, what it costs, and whether a solo operator should switch'
+description: >-
+  Fable 5.1 is Anthropic's generally available Mythos-class model, priced like
+  Fable 5 with cheaper cache reads. What changed, what it costs, and when a solo
+  operator should stay on Opus 5.
+answer: >-
+  Claude Fable 5.1 is Anthropic's generally available Mythos-class model,
+  launched with Mythos 5.1 on 1 September 2026. API rates match Fable 5 at $10 /
+  $50 per million tokens, with cache reads cut 75% to $0.25. Anthropic estimates
+  about 25% lower cost on typical workloads and up to about 45% on highly
+  agentic work versus Fable 5. Mythos 5.1 is the same weights with looser
+  safeguards for vetted US programs, not a solo default.
+eyebrow: Explainer
+category: ai-tools
+author: dipen
+date: 2026-09-10
+ogTitle: Claude Fable 5.1 explained for solo operators
+products: []
+faq:
+  - q: What is Claude Fable 5.1, and how is it different from Mythos 5.1?
+    a: They are the same model with different safeguards. Fable 5.1 is generally available, including AWS, Google Cloud, Microsoft Azure, and claude-fable-5-1 on the API. Mythos 5.1 is trusted access only, with looser safeguards for cybersecurity and life sciences, limited to a set of US organizations.
+  - q: What are the official API prices, and what did Anthropic change on cache reads?
+    a: Fable 5.1 matches Fable 5 at $10 input and $50 output per million tokens. Cache reads are now $0.25 per million tokens, 75% cheaper than the prior Fable 5 cache-read price of $1. Input and output did not change versus Fable 5.
+  - q: Which Claude consumer plan actually includes Claude Code?
+    a: Claude Code is included in all paid plans and shares 5-hour and weekly limits with chat. Free does not include it. Anthropic's Fable product page says Fable 5.1 is available to Pro, Max, Team, and Enterprise; the Team compare grid on pricing showed Fable as No for Team on 10 September 2026.
+  - q: Why do Privacy Mode Cursor users have to opt in?
+    a: Anthropic retained 30-day data on Fable-class traffic for misuse detection. Cursor Privacy Mode promises that code is not used for training by Cursor or model providers when enabled. Those two policies collide until you approve Fable 5.1's data retention policy in the Cursor Dashboard.
+  - q: When should you stay on Opus 5 or Sonnet 5 instead?
+    a: Stay on Sonnet 5 when the job is cheap, frequent, and already good enough. Stay on Opus 5 when Fable credits are scarce, the work is dual-use cyber or life-science adjacent, or the prompt is short and uncached so Fable's cache-read discount never shows up.
+sources:
+  - title: Introducing Claude Fable 5.1 and Claude Mythos 5.1
+    url: https://www.anthropic.com/claude-fable-and-mythos-5-1
+    checked: 2026-09-10
+  - title: Anthropic pricing
+    url: https://www.anthropic.com/pricing
+    checked: 2026-09-10
+  - title: Claude platform pricing
+    url: https://platform.claude.com/docs/en/about-claude/pricing
+    checked: 2026-09-10
+  - title: Claude Fable product page
+    url: https://www.anthropic.com/claude/fable
+    checked: 2026-09-10
+  - title: Enterprise Frontier Safeguards
+    url: https://www.anthropic.com/news/enterprise-frontier-safeguards
+    checked: 2026-09-10
+  - title: Claude Fable 5.1 - Out Now
+    url: https://forum.cursor.com/t/claude-fable-5-1-out-now/170246
+    checked: 2026-09-10
+  - title: Cursor docs for Claude Fable 5.1
+    url: https://cursor.com/docs/models/claude-fable-5-1
+    checked: 2026-09-10
+  - title: Cursor pricing
+    url: https://cursor.com/pricing
+    checked: 2026-09-10
+related:
+  - openai-cursor-cutoff-november-2026
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+This explainer is for a founder who ships product, not for a lab that needs Mythos. We quote Anthropic, Cursor, and public docs. MorningStacks has not confirmed that Fable replaced Opus in our stack. Protein and Venus anecdotes stay Anthropic claims.
+
+## What is Claude Fable 5.1, and how is it different from Mythos 5.1?
+
+Anthropic's launch post, [Introducing Claude Fable 5.1 and Claude Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1), fetched 10 September 2026, is blunt: they are the same model with different safeguards.
+
+- **Fable 5.1** is generally available, including AWS, Google Cloud, Microsoft Azure, and `claude-fable-5-1` on the API.
+- **Mythos 5.1** is trusted access only. Safeguards are looser for cybersecurity and life sciences. As of the post, it is limited to a set of US organizations, with two programs: Cyber Verification Program and Life Sciences Verification Program.
+
+If you are a US/Tier 1 solo operator building a SaaS, you want Fable. You do not want to wait on Mythos enrollment. Mythos is not a secret faster Fable. It is Fable with different tripwires.
+
+Anthropic says Fable 5.1 can now be used to discover software vulnerabilities, but not to develop exploits. Dual-use cyber work still redirects to Opus. Biology R&D queries still go to Opus on Fable. That is why Cursor docs mention guardrail trips auto-routing to Opus.
+
+Cursor staff enabled the model in the picker on 1 September 2026. Colin, posting as Cursor staff in [Claude Fable 5.1 - Out Now](https://forum.cursor.com/t/claude-fable-5-1-out-now/170246) (still live on 10 September 2026), said it is "the most capable model we've run on CursorBench 3.2, scoring 73.4% at max effort." Keep the "max effort" clause attached to that number. The Anthropic table lists 73.4% without stating effort in the header. Cursor staff supplied the effort.
+
+Selected scores from Anthropic's table (vendor numbers, not our tests):
+
+<ComparisonTable>
+
+| Bench | Fable 5.1 | Fable 5 | Opus 5 | GPT-5.6 Sol |
+| --- | --- | --- | --- | --- |
+| CursorBench 3.2.0 | 73.4% | 70.5% | 70.0% | 67.2% |
+| Terminal-Bench 4.0 | 55.8% (60.9% Mythos 5.1) | 42.0% | 52.3% | 37.3% |
+| Terminal-Bench-Science 0.1 | 52.6% | 24.7% | 29.0% | 22.4% |
+
+</ComparisonTable>
+
+[Cursor docs for Claude Fable 5.1](https://cursor.com/docs/models/claude-fable-5-1), fetched successfully on 10 September 2026, describe Privacy Mode opt-in, automatic Opus fallback on guardrail trips, a thinking variant, and a recommendation of high thinking for strongest results. Anthropic platform docs list a 1M context window and 128K max output for `claude-fable-5-1`, with adaptive thinking always on and default effort `high` on the Claude API. Knowledge cutoff is listed as June 2026.
+
+## What are the official API prices, and what did Anthropic change on cache reads?
+
+Live [Anthropic pricing](https://www.anthropic.com/pricing) and [platform pricing docs](https://platform.claude.com/docs/en/about-claude/pricing), both fetched 10 September 2026, and the launch post agree on Fable token rates:
+
+<ComparisonTable>
+
+| Token type | Fable 5.1 | Opus 5 | Sonnet 5 |
+| --- | --- | --- | --- |
+| Input / MTok | $10 | $5 | $2 |
+| Output / MTok | $50 | $25 | $10 |
+| Cache read / MTok | $0.25 | $0.50 | $0.20 |
+| 5m cache write / MTok | $12.50 | $6.25 | $2.50 |
+| 1h cache write / MTok | $20 | $10 | $4 |
+
+</ComparisonTable>
+
+Cache reads on Fable 5.1 are now 75% cheaper than the prior Fable 5 cache-read price of $1 / MTok, per Anthropic. Input and output did not change versus Fable 5. Platform docs note the Fable 5.1 cache-read multiplier is 0.025x base input, versus 0.1x on other Claude models.
+
+The 25% and ~45% savings are Anthropic estimates, measured at default effort over four weeks of August 2026 usage. Typical workload: Claude Enterprise, Claude Code, and API. Highly agentic: context-heavy, tool-heavy work where cache reads dominate. Those are vendor measurements. They are not a MorningStacks invoice.
+
+US-only inference is 1.1x on input and output (and on cache categories for Claude 4.6 and later) if you use it. Batch processing is advertised at 50% off ($5 / $25 per million for Fable 5.1). Prompt-cache prices on the consumer pricing page reflect a 5-minute TTL; the platform table also lists 1-hour cache writes.
+
+Fable is still twice Opus on raw input and output. The reason a team might still switch is cache-read math plus quality, not a cheaper sticker than Opus. If your job is short, uncached, and already fine on Opus 5, Fable is not automatically cheaper.
+
+One quiet bill detail from platform docs: models from Opus 4.7 onward, including Fable 5.1, use a newer tokenizer that produces roughly 30% more tokens for the same text than older models. Sticker rates alone understate that shift if you are comparing against pre-4.7 habits.
+
+## Which Claude consumer plan actually includes Claude Code?
+
+[Anthropic pricing](https://www.anthropic.com/pricing), 10 September 2026:
+
+<ComparisonTable>
+
+| Plan | Price as shown | Claude Code | Fable notes from table |
+| --- | --- | --- | --- |
+| Free | $0 | No | No |
+| Pro | $17/mo with annual ($200 billed up front); $20 if billed monthly | Included; shared usage pool | "Usage credits" for Fable |
+| Max 5x / 20x | From $100 per month | Included | 50% of weekly limits on Fable |
+| Team standard | $20/seat/mo billed annually, $25 monthly | Included | Pricing compare table showed Fable as No on Team; Fable product page says Team is included. See the Team Fable gap below. |
+| Team premium | $100 annual / $125 monthly per seat | Included; 5x standard seat | Same Team Fable flag |
+| Enterprise | $20/seat plus usage at API rates, annual | Included | Fable Yes on compare table |
+
+</ComparisonTable>
+
+FAQ quotes we rely on:
+
+- Claude Code is included in all paid plans and shares 5-hour and weekly limits with chat.
+- There is no fixed message count. Limits depend on length, model, and features.
+- Paid plans can turn on extra usage at standard API rates when you hit a cap.
+- Prices shown do not include tax.
+- Pro: annual is $17/mo equivalent ($200 up front); monthly is $20. That period label is now clear on the page as of this fetch.
+- Max FAQ text says Max options are billed monthly; the payment grid also lists monthly and annual for Max. Prefer the card ("From $100" per month) plus the FAQ monthly note until annual Max is unambiguous on your checkout screen.
+
+**Team Fable gap:** Anthropic's [Fable product page](https://www.anthropic.com/claude/fable) says Fable 5.1 is available to Pro, Max, Team, and Enterprise users. The Team and Enterprise models compare grid on pricing showed Fable as No for Team and Yes for Enterprise on our 10 September 2026 HTML parse. Do not treat "Team includes Fable" as settled until those two Anthropic surfaces agree in a logged-out check.
+
+Cursor is a separate bill. [Cursor pricing](https://cursor.com/pricing) on 10 September 2026: Hobby $0, Pro $20/month, Pro+ $60, Ultra $200, Teams $40/user/month. Fable in Cursor draws from the Other Models pool at the Fable token rates, per Cursor docs.
+
+No Anthropic content-site CPA was on the fetched pages. MorningStacks is not placing a live Anthropic `?via=` link.
+
+## Why do Privacy Mode Cursor users have to opt in?
+
+Anthropic retained 30-day data on Fable-class traffic for misuse detection. Cursor Privacy Mode promises that code is not used for training by Cursor or model providers when enabled (Cursor pricing FAQ, 10 September 2026). Those two policies collide until you opt in.
+
+Colin's staff post and Cursor docs agree: if Privacy Mode is enabled for your account, team, or organization, approve Fable 5.1's data retention policy in the [Cursor Dashboard](https://cursor.com/dashboard/) before the model runs. For Teams, approving the model policy applies to the entire Team. Enterprise availability is approved at the Organization level and still controlled with model access controls.
+
+If you never click that box, Fable 5.1 is not in your toolkit, max-effort benches notwithstanding. Do that on a calm day, not during an incident.
+
+## When should you stay on Opus 5 or Sonnet 5 instead?
+
+Anthropic's own Fable overview still nudges most workloads toward Opus 5 first, and Fable 5.1 when Opus at higher effort still falls short. That vendor framing matches a sober solo-operator default.
+
+Stay on **Sonnet 5** when the job is cheap, frequent, and already good enough: boilerplate, tests you will rewrite, summaries, small refactors. $2 / $10 per million tokens is a different budget than $10 / $50.
+
+Stay on **Opus 5** when:
+
+- You are already inside Opus weekly limits on a Claude paid plan and Fable credits are the scarce resource (Max table: 50% of weekly limits on Fable).
+- The work is dual-use cyber or life-science adjacent and you would rather talk to Opus than bounce off a Fable guardrail.
+- The prompt is short and uncached, so Fable's cache-read discount never shows up, while Opus is half the token price.
+
+Consider **Fable 5.1** when:
+
+- The task is long-horizon, tool-heavy, and likely to reread a large context.
+- You want the model Anthropic is putting at the top of CursorBench, and you will set effort on purpose.
+- You are replacing Fable 5, not replacing a $2 Sonnet habit.
+
+We are not saying Fable 5.1 replaced Opus for our production agents. MorningStacks has not confirmed that.
+
+Cognition's quote on Anthropic's post (vendor-hosted partner quote) says they are moving Opus 5 traffic in Devin to Fable 5.1. That is Cognition's claim, not ours. Browserbase's 82% figure on the same post is likewise a partner quote, not a first-party Browserbase page we re-fetched as primary.
+
+## What is Enterprise Frontier Safeguards, and does a solo operator care yet?
+
+[Enterprise Frontier Safeguards](https://www.anthropic.com/news/enterprise-frontier-safeguards), dated 1 September 2026, re-fetched 10 September 2026.
+
+EFS stores monitoring data in the customer's cloud, not Anthropic's. Anthropic charges no extra fee. Cloud storage is billed by the cloud vendor. Customer-owned storage, customer keys, and fully automated review are opt-in. None of that changes model behavior, API pricing, or rate limits. Rollout starts later in fall 2026. Eligible customers get zero data retention on Fable 5 and 5.1 until EFS is ready.
+
+A solo operator on Claude Pro does not need to design an S3 monitoring bucket this week. What you do need is the retention fact: Fable-class usage is not "type and forget" in the way a local compiler is. Privacy Mode in Cursor makes that explicit.
+
+EFS is aimed at banks, health, and other regulated buyers. If that is not you, read the 30-day retention sentence, opt in only if you accept it, and move on.
+
+EU watermarking applies to models released after 2 August 2026. Anthropic describes an invisible watermark and a detection API in private preview. It should not change how your code looks. It is a compliance detail, not a quality claim.
+
+## Practical default for this week
+
+1. If you already pay for Claude, confirm Fable 5.1 on the paid surfaces you use (claude.ai and Claude Code). Default effort is High in Claude Code and Medium on Claude.ai and Cowork, per Anthropic.
+2. If you already pay for Cursor, enable Fable 5.1 in the picker after the Privacy Mode opt-in. Do not assume Auto will pick it. A forum question on that point was unanswered as of the 2 September 2026 thread state we re-checked on 10 September 2026.
+3. Price a real task at High before you ever touch max. Max is a bill event. The effort how-to in this week's set covers Willison's SVG run ($3.30 at max for one prompt), attributed to Simon Willison, not to MorningStacks.
+4. Keep Opus 5 as the fallback when Fable guardrails fire or when the job is short.
+5. Ignore Mythos unless you are a vetted US cyber or life-science program. It is not a consumer upgrade path.
+
+Switch if the work is agentic and cached. Stay if the work is small. Do not switch because a bench table moved 3.4 points at max effort.
