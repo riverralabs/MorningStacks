@@ -1,0 +1,148 @@
+---
+type: article
+title: "Zapier vs Make vs n8n in 2026"
+description: "Verified 16 Sep 2026 entry prices and billing units for Zapier, Make, and n8n. Which automation stack fits a solo operator."
+answer: "Zapier bills per successful task (Pro from $19.99/mo annual for 750 tasks). Make bills in credits (Free 1,000/mo; Core $12/mo for 10k credits on the annual view). n8n Cloud bills per workflow execution (Starter €20/mo annual with 2.5K runs; Pro €50/mo annual with 10K runs) plus free self-host. Pick Zapier for catalog, Make for visual cost control, n8n for code or execution billing."
+eyebrow: Comparison
+category: productivity
+date: 2026-09-16
+og: ../../assets/og/zapier-vs-make-vs-n8n-2026/og.png
+ogAlt: "Zapier vs Make vs n8n in 2026"
+ogTitle: "zapier vs make vs n8n in 2026"
+products: []
+faq: []
+sources:
+  - title: Zapier Pricing
+    url: https://zapier.com/pricing
+    checked: 2026-09-16
+  - title: Make Pricing
+    url: https://www.make.com/en/pricing
+    checked: 2026-09-16
+  - title: n8n Plans and Pricing
+    url: https://n8n.io/pricing/
+    checked: 2026-09-16
+  - title: Make Credits help
+    url: https://help.make.com/credits
+    checked: 2026-09-16
+related:
+  - beehiiv-pricing-review
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+Zapier bills per successful **task** (Professional from **$19.99/mo** annual for 750 tasks). Make bills in **credits** (Free **1,000**/mo; Core **$12/mo** for **10k** credits on the annual view). n8n Cloud bills per **workflow execution** (Starter **€20/mo** annual with **2.5K** runs; Pro **€50/mo** annual with **10K** runs) and offers free self-host. Pick Zapier for catalog, Make for visual cost control, n8n for code or execution billing.
+
+Prices checked **16 Sep 2026** against official pages. Currency mix is real: Zapier and Make showed USD; n8n showed EUR. Search ranks and volumes are unknown (Treg unavailable).
+
+**Affiliate:** MorningStacks applied to the n8n partner program and is **not live yet**. Links below go to official n8n pricing and product pages only. No tracking params. No invented partner URLs.
+
+## How does each platform bill: task, credit, or execution?
+
+This is the whole fight. Same workflow can cost different amounts on each tool because the meter is different.
+
+**Zapier** counts a **task** when a step succeeds. Failed actions don't count. Triggers and several built-ins (Filter, Paths, Formatter, Delay, and friends) sit outside the task tally on the pricing docs we fetched. Multi-step Zaps eat tasks fast if every branch fires.
+
+**Make** counts **credits**. As of late August 2025, Make renamed the old "operations" unit to credits; help docs still treat most module actions as one credit each. Routers and error handlers are called out as free of credit cost on the pricing FAQ. AI modules can burn more than one credit depending on tokens and connection type ([Make Credits help](https://help.make.com/credits), updated around 15 Sep 2026).
+
+**n8n** counts a **workflow execution**: one full run from start to finish, no matter how many nodes sit inside. That is the pitch on [n8n pricing](https://n8n.io/pricing/): pay for the run, not every step.
+
+If your automation is a long chain with lots of cheap transforms, n8n's meter often looks kinder on paper. If you fire many tiny one-step syncs all day, Zapier's task model can still be fine at low volume.
+
+## What do entry paid plans cost in 2026 (verified)?
+
+### Snapshot (16 Sep 2026)
+
+| Platform | Billing unit | Free / entry | Verified entry paid | Mid example | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Zapier | Task | Free: 100 tasks/mo | Pro 750 tasks: **$19.99/mo** annual (**$29.99** monthly) | Pro 10,000 tasks: **$129.00/mo** annual | Annual ~33% off monthly. 9,000+ apps claimed on pricing page. |
+| Make | Credit | Free: 1,000 credits/mo | Core **$12/mo** @ 10k credits (annual-toggle card) | Pro **$21/mo** @ 10k; Teams **$38/mo** @ 10k | Monthly toggle in page JSON: Core **$16**, Pro **$28**, Teams **$51** at 10k. Slider raises price with volume. |
+| n8n Cloud | Execution | Trial (not unlimited free cloud) | Starter **€20/mo**, billed annually, **2.5K** executions | Pro **€50/mo**, billed annually, **10K** executions on the Pro card | Business **€667/mo** annual on the page. Community Edition self-hosts for $0 software. |
+| n8n Community | Self-host | $0 software | Your VPS / Docker / time | n/a | You own ops and upgrades. |
+
+### Zapier detail
+
+[Zapier Pricing](https://zapier.com/pricing) lists Free, Professional, Team, and Enterprise. Free is two-step Zaps and 100 tasks/mo. Professional adds multi-step Zaps, premium apps, and webhooks. Team starts at the 2,000-task rung (**$69/mo** annual / **$103.50** monthly on the table we saved) with shared Zaps and SAML SSO.
+
+There is a 14-day Professional trial with no card required, per that page. Agents and Chatbots are separate add-ons. Don't bake those into the core task table.
+
+### Make detail
+
+[Make Pricing](https://www.make.com/en/pricing) showed Free at **$0** with up to **1,000 credits/mo**, then Core / Pro / Teams priced off a credit slider. The plan cards defaulted to the annual view: **$12 / $21 / $38** per month for **10k credits**. Embedded `pricingJson` on the same page also lists monthly billing at **$16 / $28 / $51** for that same 10k rung.
+
+Free caps on the comparison table matter: 2 active scenarios, 15-minute minimum schedule interval, 5-minute max run time, 5 MB file size. Core includes unlimited active scenarios, 1-minute scheduling, and Make API access.
+
+WebFetch hit Cloudflare on one pass; curl HTML 200 on 16 Sep 2026 is the source for the dollar cards and JSON.
+
+### n8n detail
+
+[n8n Pricing](https://n8n.io/pricing/) Cloud cards (annual default):
+
+- **Starter:** **20€/mo**, billed annually, **2.5K** workflow executions with unlimited steps
+- **Pro:** **50€/mo**, billed annually, **10K** workflow executions with unlimited steps (card text)
+- **Business:** **667€/mo**, billed annually
+- **Enterprise:** custom
+- **Community Edition:** self-hosted on GitHub
+
+The "What's included" table also lists **2.5k / 25k / 50k** under saved-execution storage style columns. That is retention/history capacity, not the same thing as the Pro card's **10K** production execution quota. Pro can also scale toward a **50k** execution package (page copy mentions more AI credits on the 50k plan). Re-check the live slider before you buy.
+
+Monthly EUR toggle was not captured cleanly in this scrape. USD equivalent depends on your card and FX. Cite EUR as printed.
+
+## Which tool fits a non-technical solo operator?
+
+**Zapier** if you want the biggest connector list and the least time fighting the editor. Paths and filters are there, support is mature, and the Free tier is honest about being a trial for real multi-step work.
+
+**Make** if you're willing to learn a visual scenario canvas and you care about credit efficiency on branching flows. Routers without credit cost help. The Free 1,000 credits are enough to learn; production usually means Core.
+
+**n8n** if you're fine with a steeper editor, optional code nodes, and thinking in whole-run economics. Cloud Starter at €20 annual is the cheap on-ramp. Self-host if you're already comfortable with Docker.
+
+MorningStacks default for a non-technical founder shipping newsletter → CRM → Slack glue: start on **Make Free or Core**, or **Zapier Free → Pro 750**, unless you already live in Git and containers.
+
+## When does self-hosted n8n beat cloud Zapier or Make?
+
+When you have:
+
+1. Steady technical ops capacity (updates, backups, secrets, uptime).
+2. Workflows that would explode per-step or per-credit bills (fat ETL, AI agent loops with many nodes).
+3. Data residency or "keep it on our VPS" requirements.
+
+Community Edition is free software. Your cost is infrastructure and your time. Business/Enterprise features on self-host still involve n8n's license story; read their current docs before you assume every Cloud feature comes with Community.
+
+If you just want "form submit → Sheet → Slack" five times a day, self-hosting is usually overkill.
+
+## How should AI steps change the cost math?
+
+AI nodes change every vendor's meter.
+
+On **Zapier**, AI by Zapier and related steps can consume more than one task depending on model tier and tool calls. The rates live on Zapier's rates page and move. Budget a cushion above your "normal" task count.
+
+On **Make**, built-in AI provider usage can burn credits from tokens, not just a flat 1:1 operation. Bring-your-own-key paths still spend Make credits on the module run while you pay the model vendor separately ([credits help](https://help.make.com/credits)).
+
+On **n8n**, the execution meter still counts one run, but Cloud plans include monthly **AI credits** for Assistant-style features (Starter lists 2,300/mo on the pricing page; Pro lists up to 13,700 depending on plan size). Those credits refresh monthly and don't roll over, per FAQ copy.
+
+Rule of thumb we use: prototype AI steps early, watch one week's real usage, then pick the plan. Guessing AI burn from a marketing table is how people rage-quit month two.
+
+## What’s the default pick for a MorningStacks-style operator?
+
+**Default A (fastest ship):** Zapier Professional at the **750-task** annual rung (**$19.99/mo**). Buy time. Revisit in 60 days with the task usage chart open.
+
+**Default B (cost-aware visual):** Make **Core** at **10k credits** annual (**$12/mo** on the card we fetched). Move to Pro if you need priority execution and deeper log search.
+
+**Default C (builder / agent heavy):** n8n Cloud **Pro** (**€50/mo** annual, **10K** executions on the card) or Community self-host if you already run servers. Check [n8n.io/pricing](https://n8n.io/pricing/) for the live execution package before you commit.
+
+You can mix later (Zapier for brittle SaaS connectors, n8n for the heavy agent). Don't buy three paid stacks on day one.
+
+For other operator stack pricing notes on MorningStacks, see our [beehiiv pricing review](/ai-tools/beehiiv-pricing-review/).
+
+## Sources and gaps
+
+- [zapier.com/pricing](https://zapier.com/pricing) (16 Sep 2026)
+- [make.com/en/pricing](https://www.make.com/en/pricing) (16 Sep 2026) (curl; Cloudflare blocked one WebFetch pass)
+- [n8n.io/pricing](https://n8n.io/pricing/) (16 Sep 2026)
+- [help.make.com/credits](https://help.make.com/credits) (16 Sep 2026)
+
+**Gaps:** Make higher credit-tier dollars beyond the 10k reference cards; n8n monthly EUR toggle; exact USD charge for n8n on a US card; Zapier account-specific overage rates. Re-verify on publish day.
+
+**n8n partners:** MorningStacks applied. Not approved / not live. Use the official site until we have a real tracking link.

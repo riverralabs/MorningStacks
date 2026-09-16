@@ -152,7 +152,6 @@ export default config({
         author: fields.relationship({
           label: 'Author',
           collection: 'authors',
-          validation: { isRequired: true },
         }),
         date: fields.date({ label: 'Date', validation: { isRequired: true } }),
         updated: fields.date({ label: 'Updated' }),
