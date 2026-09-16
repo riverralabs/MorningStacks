@@ -27,4 +27,4 @@ jobs:
       - run: pnpm build
         env:
           NEWSLETTER_PROVIDER: stub
-          SITE_URL: https://morningstacks.com
+          SITE_URL: https://www.morningstacks.com

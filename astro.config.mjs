@@ -6,8 +6,9 @@ import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { sitemapExcludeFragments } from './src/lib/sitemap-excludes';
+import { resolveSiteUrl } from './src/lib/site-url';
 
-const SITE = process.env.SITE_URL ?? 'https://morningstacks.com';
+const SITE = resolveSiteUrl(process.env.SITE_URL);
 const exclude = sitemapExcludeFragments();
 
 export default defineConfig({

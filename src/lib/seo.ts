@@ -1,9 +1,11 @@
+import { resolveSiteUrl } from './site-url';
+
 export const SITE = {
   name: 'MorningStacks',
   tagline: 'The software stack for operators and founders.',
   description:
     'Editorial-first reviews of SaaS, AI tools, and software that operators and founders actually pay for. Independent, tested, no fluff.',
-  url: import.meta.env.SITE_URL ?? 'https://morningstacks.com',
+  url: resolveSiteUrl(import.meta.env.SITE ?? import.meta.env.SITE_URL),
   twitter: '@morningstacks',
   defaultOgImage: '/og/default.png',
   defaultLocale: 'en_US',

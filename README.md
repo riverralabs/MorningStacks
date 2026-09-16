@@ -93,13 +93,13 @@ The form posts to `/api/subscribe`, which calls `src/lib/newsletter.ts`. The cur
 2. Vercel dashboard → Add New → Project → Import the repo.
 3. Framework preset: **Astro** (auto-detected). Build command and output dir auto-detected from `@astrojs/vercel`.
 4. Set environment variables (Project → Settings → Environment Variables):
-   - `SITE_URL` — your production URL.
+   - `SITE_URL` — `https://www.morningstacks.com` (canonical production host). Apex `https://morningstacks.com` is rewritten to www at build time.
    - `NEWSLETTER_PROVIDER` — `stub` for now.
    - `BEEHIIV_API_KEY` / `BEEHIIV_PUBLICATION_ID` (or the matching ConvertKit / Buttondown vars) when ready.
    - Keystatic GitHub App vars when Jane should edit on a deployed preview: `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`.
 5. Deploy. The first build runs `pnpm build` (which is `astro build && pagefind --site .vercel/output/static`) and Vercel routes everything via the adapter.
 
-Do not attach morningstacks.com in Vercel as part of this increment. Canonical URLs may already point at that host; leave them.
+Canonical host is `https://www.morningstacks.com`. Apex requests 301 to www via `vercel.json`. Keep both hosts attached in Vercel so the redirect can fire.
 
 `@astrojs/vercel` outputs prerendered HTML to the static asset CDN and turns `/api/subscribe` and `/keystatic` (any route with `prerender = false`) into Vercel Serverless Functions. OG images are prerendered at build time, so they're served as cached static PNGs unless Kinjal uploads a 1200×630 file into the article OG slot.
 

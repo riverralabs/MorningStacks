@@ -1,7 +1,8 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
-  readonly SITE_URL: string;
+  readonly SITE?: string;
+  readonly SITE_URL?: string;
   readonly PUBLIC_KEYSTATIC_GITHUB_APP_SLUG?: string;
 }
 
@@ -11,6 +12,7 @@ interface ImportMeta {
 
 declare namespace NodeJS {
   interface ProcessEnv {
+    SITE_URL?: string;
     NEWSLETTER_PROVIDER?: 'stub' | 'beehiiv' | 'convertkit' | 'buttondown';
     KEYSTATIC_GITHUB_CLIENT_ID?: string;
     KEYSTATIC_GITHUB_CLIENT_SECRET?: string;
