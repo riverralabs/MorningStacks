@@ -1,0 +1,142 @@
+---
+type: article
+title: "How to get a new site indexed in Google Search Console"
+description: "Verify the property, submit a sitemap, then use URL Inspection to request indexing for your homepage and key URLs. Google does not promise timing or inclusion. Steps checked 16 Sep 2026."
+answer: "Add the site in Google Search Console, verify ownership, submit an XML sitemap, then request indexing via URL Inspection for the homepage and key URLs. Google says crawling can take days to weeks, and a request never guarantees inclusion. On www.morningstacks.com we run that checklist after each publish and watch the Pages report."
+eyebrow: How-to
+category: marketing
+date: 2026-09-16
+og: ../../assets/og/get-site-indexed-google-search-console/og.png
+ogAlt: "How to get a new site indexed in Google Search Console"
+ogTitle: "Get a new site indexed in Google Search Console"
+products: []
+faq: []
+sources:
+  - title: "Ask Google to recrawl your URLs"
+    url: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
+    checked: 2026-09-16
+  - title: "URL Inspection tool (Search Console Help)"
+    url: https://support.google.com/webmasters/answer/9012289
+    checked: 2026-09-16
+  - title: "Verify your site ownership"
+    url: https://support.google.com/webmasters/answer/9008080
+    checked: 2026-09-16
+  - title: "Build and submit a sitemap"
+    url: https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
+    checked: 2026-09-16
+  - title: "Learn about sitemaps"
+    url: https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
+    checked: 2026-09-16
+related:
+  - beehiiv-pricing-review
+  - openai-cursor-cutoff-november-2026
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+Prove you own the property in **Search Console**, give Google a clean map of URLs, then use **URL Inspection** to request a crawl for the pages that matter. Inclusion is never guaranteed.
+
+We're walking the same checklist MorningStacks uses for [www.morningstacks.com](https://www.morningstacks.com): live HTTPS pages, a sitemap, then Inspection on the homepage and each new URL. Docs checked **16 Sep 2026**. We are not publishing crawl counts, index rates, or time-to-index from our own property.
+
+## What do you need before you open Search Console?
+
+A public site Googlebot can fetch without a login wall.
+
+1. Ship on **HTTPS** with a valid certificate. Soft-launch drafts behind auth do not help here.
+2. Confirm the homepage returns **200** in an incognito window. Fix redirect loops first.
+3. Make sure important pages link from the homepage or nav. Google's sitemap overview still says internal linking is how crawlers usually find pages.
+4. Check `robots.txt` at the site root. Don't disallow `/` while you're begging for a crawl.
+5. Drop accidental `noindex` tags or headers on pages you want in Search.
+
+For MorningStacks, that means the live articles (for example [Beehiiv pricing review](/ai-tools/beehiiv-pricing-review/) and [OpenAI Cursor cutoff November 2026](/ai-tools/openai-cursor-cutoff-november-2026/)) resolve over HTTPS before anyone hits **Request indexing**.
+
+## How do you add and verify the property?
+
+Open [Google Search Console](https://search.google.com/search-console) and add the site.
+
+**URL-prefix** property (example: `https://www.morningstacks.com/`) covers that exact protocol + host + path prefix. **Domain** property (example: `morningstacks.com`) covers all protocols and subdomains after you verify via DNS.
+
+Google's ownership help lists common methods:
+
+| Method | Best when |
+| --- | --- |
+| HTML file upload | You can put a file at the property root and open it logged out |
+| HTML meta tag | You can edit the homepage `<head>` |
+| Google Analytics / Tag Manager | The snippet already sits on the homepage and you have the right account rights |
+| DNS TXT / CNAME | You need a Domain property, or URL-prefix auto-verify via DNS |
+
+Steps we use:
+
+1. Create the property that matches how you brand the site (we care about `https://www.morningstacks.com/`).
+2. Pick one verification method you can keep stable. Don't delete the token after the green check.
+3. Confirm the token is visible logged out (incognito), then click **Verify**.
+4. Add a backup method later if you can. Google suggests extras so one template change doesn't drop ownership.
+
+Verification only proves access. Pages still need to be discovered and crawled.
+
+## How do you submit a sitemap so Google can discover URLs?
+
+A sitemap lists the URLs you care about. Google's own overview says a new site with few external links is exactly when a sitemap helps. It still does **not** promise every listed URL will be crawled or indexed.
+
+1. Publish an XML sitemap at the site root when you can (example shape: `https://www.morningstacks.com/sitemap-index.xml` or your host's equivalent). Use absolute `https://` URLs.
+2. Keep each file under **50,000** URLs and **50MB** uncompressed, or split and use a sitemap index.
+3. In Search Console, open **Sitemaps**, paste the sitemap URL, submit.
+4. Optionally add a `Sitemap:` line in `robots.txt` pointing at the same file.
+5. Refresh the sitemap when you ship batches of new posts. Mark real content updates with accurate `lastmod` if you include it. Google ignores `priority` and `changefreq`.
+
+Submitting is a hint. Watch the Sitemaps report for fetch errors, then fix the file, don't spam resubmits.
+
+## How do you request indexing with URL Inspection?
+
+For a handful of URLs (homepage plus each new article), use URL Inspection. You need to be an **owner** or **full user**.
+
+Google's recrawl doc: crawling can take **a few days to a few weeks**. Requesting a crawl does **not** guarantee inclusion in results, instantly or at all. Re-requesting the same URL does not make Google crawl it faster. There is a daily quota.
+
+Numbered path:
+
+1. Paste the full URL into the Inspection bar (must be inside the open property).
+2. Read the indexed result. If Google has never seen it, you'll see language like **URL is unknown to Google**.
+3. Run **Test live URL** when you just fixed `noindex`, robots, or a 404. Live success still is not an indexing promise.
+4. Click **Request indexing** when the live check does not show a hard block. Google queues it after a quick check.
+5. Repeat for the homepage, then for each high-value new URL. For a ship day, that is the homepage plus each freshly promoted article, not every archive page.
+6. For large sets, lean on the sitemap instead of burning Inspection quota.
+
+Inspection help also notes indexing after a request often lands in about a day, and can take longer (including up to a week or two). Treat that as Google's range, not a MorningStacks SLA.
+
+## What should you watch after you request indexing?
+
+Stay in Search Console. Don't invent a private dashboard of "rank day 3."
+
+- **Pages** (indexing) report: why URLs are excluded (crawled not indexed, discovered not indexed, blocked by robots, redirected, soft 404, and the rest of Google's labels).
+- **URL Inspection** on a stuck URL: crawl allowed, page fetch, indexing allowed, Google-selected canonical.
+- **Sitemaps** report: last read time and any processing errors.
+- Manual Actions and Security Issues if anything looks cursed.
+
+"URL is on Google" in Inspection means the URL is eligible to appear. Google still says to search for the exact URL if you need a definitive presence check.
+
+## What mistakes slow a new site down?
+
+These show up in the docs more than once:
+
+- Verifying `example.com` while shipping only on `www`, or the reverse, and inspecting the wrong host
+- Blocking Googlebot in `robots.txt` while requesting indexing
+- Leaving `noindex` on the template you just shipped
+- Submitting relative URLs in the sitemap
+- Burning quota by hammering **Request indexing** on the same URL
+- Expecting a sitemap alone to replace internal links and useful pages
+
+Fix the fetch problem first. Then request again once.
+
+## What checklist do we run on a MorningStacks publish day?
+
+1. HTTPS 200 on homepage and each new URL
+2. Sitemap regenerated and submitted (or already auto-fetched)
+3. URL Inspection + Request indexing on homepage
+4. URL Inspection + Request indexing on each new article URL
+5. Spot-check robots and canonicals if Inspection complains
+6. Come back later via Pages / Inspection; don't invent a clock
+
+That's the whole job: verify, map, request, watch. Google keeps the timeline.

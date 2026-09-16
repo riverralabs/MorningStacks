@@ -1,0 +1,112 @@
+---
+type: article
+title: "OpenAI API pricing for solo builders"
+description: "Standard short-context rates for gpt-6-astra, gpt-5.6-sol, terra, luna, plus Batch, Flex, Fast, and gpt-5.3-codex. Live from OpenAI docs on 16 Sep 2026."
+answer: "OpenAI bills API usage per 1M tokens. Standard short context on 16 Sep 2026: gpt-6-astra $10/$50, gpt-5.6-sol $4/$20, gpt-5.6-terra $2/$12, gpt-5.6-luna $0.20/$1.20 (input/output). Batch and Flex list near half; Fast mode near 2x. gpt-5.3-codex is $1.75/$14. ChatGPT Plus is a separate seat. Re-check platform.openai.com/docs/pricing before you budget."
+eyebrow: Explainer
+category: ai-tools
+date: 2026-09-16
+og: ../../assets/og/openai-api-pricing-solo-builders/og.png
+ogAlt: "OpenAI API pricing for solo builders"
+ogTitle: "OpenAI API pricing for solo builders"
+products: []
+faq: []
+sources:
+  - title: "OpenAI API pricing (platform docs)"
+    url: https://platform.openai.com/docs/pricing
+    checked: 2026-09-16
+  - title: "OpenAI API pricing (developers mirror)"
+    url: https://developers.openai.com/api/docs/pricing
+    checked: 2026-09-16
+  - title: "openai.com/api/pricing (redirects to Business pricing)"
+    url: https://openai.com/api/pricing
+    checked: 2026-09-16
+related:
+  - openai-cursor-cutoff-november-2026
+  - claude-fable-5-1-explained
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+If you are wiring OpenAI into a side project, you pay **per 1M tokens**. The live table lives on [platform.openai.com/docs/pricing](https://platform.openai.com/docs/pricing) (same numbers on the developers.openai.com mirror). We fetched it **16 Sep 2026**. ChatGPT Plus is a separate seat product.
+
+**Fetch note:** `https://openai.com/api/pricing` redirected to ChatGPT **Business / Enterprise** seat pricing on this pass. Token rates below come from the platform docs page, not that marketing URL.
+
+A Plus seat does not include API credits. Pair this with our [OpenAI Cursor cutoff](/ai-tools/openai-cursor-cutoff-november-2026/) note if your editor path is the thing that might break, and with [Claude Fable 5.1 explained](/ai-tools/claude-fable-5-1-explained/) if you are comparing Anthropic token math.
+
+## What are the Standard short-context rates right now?
+
+Prices per **1M tokens**. Cached input and cache writes are billed when you use prompt caching.
+
+| Model | Input | Cached input | Cache writes | Output |
+| --- | --- | --- | --- | --- |
+| gpt-6-astra | **$10.00** | $1.00 | $12.50 | **$50.00** |
+| gpt-5.6-sol | **$4.00** | $0.40 | $5.00 | **$20.00** |
+| gpt-5.6-terra | **$2.00** | $0.20 | $2.50 | **$12.00** |
+| gpt-5.6-luna | **$0.20** | $0.02 | $0.25 | **$1.20** |
+
+**Long context** on the same page doubles those input/output stickers (astra $20 / $75, sol $8 / $30, terra $4 / $18, luna $0.40 / $1.80). We did not pull a separate prose definition of the short/long token cutoff into this draft. Read the live table headers before you assume which column your request hits.
+
+OpenAI also notes **GPT-5.6 Sol’s promotional pricing** is available at least through **21 November 2026**. The docs do not spell a second "non-promo" number next to the table on this fetch. Treat the $4 / $20 row as what the page showed today, and re-open the URL after that date.
+
+## How do Batch, Flex, and Fast mode change the bill?
+
+Same four models. Same short vs long columns. Different processing tiers on the pricing page:
+
+| Tier | What the 16 Sep 2026 table shows (short context, input / output) |
+| --- | --- |
+| **Standard** | astra $10/$50 · sol $4/$20 · terra $2/$12 · luna $0.20/$1.20 |
+| **Batch** | astra $5/$25 · sol $2/$10 · terra $1/$6 · luna $0.10/$0.60 |
+| **Flex** | Same dollar rows as Batch on this fetch |
+| **Fast mode** | astra $20/$100 · sol $8/$40 · terra $4/$24 · luna $0.40/$2.40 |
+
+Priority processing was renamed **Fast mode** on **30 July 2026**. Docs say you can send `service_tier: "priority"` or `service_tier: "fast"`. Fast mode is unavailable for GPT-6 Astra with EU data residency; use Standard there.
+
+Regional / data-residency endpoints add a **10%** uplift for eligible models released on or after **5 March 2026**.
+
+Solo rule of thumb we actually use: default **Standard**, use **Batch** when the job can wait in a queue, reach for **Fast** only when latency is the product. We are not publishing our own invoice averages.
+
+## What does Codex cost on the API?
+
+Also on the same pricing page under specialty rows:
+
+| Model | Tier (as labeled) | Input | Cached input | Output |
+| --- | --- | --- | --- | --- |
+| gpt-5.3-codex | Standard-class row | **$1.75** | $0.175 | **$14.00** |
+| gpt-5.3-codex | Fast mode row | **$3.50** | $0.35 | **$28.00** |
+
+`chat-latest` shows **$5** / **$0.50** cached / **$30** output per 1M on that specialty table. Fine-tuning is winding down for new users per the same page; existing fine-tunes keep inference until base models deprecate. Skip fine-tune math unless you already have a job running.
+
+## Which tool add-ons hit a solo bill?
+
+Tokens for built-in tools still bill at the model rate. Extra line items from the Tools table (16 Sep 2026):
+
+- **Web search:** $10.00 per 1k calls, plus search content tokens at model rates
+- **File search storage:** $0.10 per GB per day after 1 GB free
+- **File search tool calls:** $2.50 per 1k calls (Responses API note on the page)
+- **Containers** (Hosted Shell / Code Interpreter): 1 GB $0.03, 4 GB $0.12, 16 GB $0.48, 64 GB $1.92 per 20-minute session per container; eligible sessions can bill by the minute with a 5-minute minimum
+
+Image, realtime audio, Sora, and transcription tables exist on the same page. We left them out of the solo coding budget unless your product is multimodal. Re-open the docs if that is you.
+
+## How should a solo builder pick a default model?
+
+Commit to one default and one escape hatch.
+
+1. **gpt-5.6-luna** for cheap classification, routing, and high-volume glue ($0.20 / $1.20).
+2. **gpt-5.6-terra** for everyday app logic when luna is too thin ($2 / $12).
+3. **gpt-5.6-sol** when you need the stronger 5.6 tier and can live with $4 / $20 (watch the Nov 2026 promo note).
+4. **gpt-5.3-codex** when the workload is code-shaped and you want the Codex row ($1.75 / $14).
+5. **gpt-6-astra** when the task is rare and expensive on purpose ($10 / $50).
+
+Cap monthly spend in the OpenAI usage dashboard on day one. Log model + tier on each feature so the invoice is readable. Prompt-cache when the system prompt is stable; cached input is 10% of input on these rows.
+
+## What is still fuzzy after this fetch?
+
+- Exact token threshold that flips **short** vs **long** context columns (confirm on the live page / model docs before you budget a long-context feature).
+- Numeric delta for Sol "promotional" pricing vs a future non-promo list price (page states the promo window, not a second price column).
+- Your real cost per user action (depends on prompt size, tools, retries). Log a few real calls instead of guessing a "typical" chat cost.
+
+Re-fetch [platform.openai.com/docs/pricing](https://platform.openai.com/docs/pricing) the morning you set prices for customers. These numbers move.
