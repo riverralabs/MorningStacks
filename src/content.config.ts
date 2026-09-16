@@ -23,7 +23,7 @@ const articles = defineCollection({
         ),
       eyebrow: z.string(),
       category: reference('categories'),
-      author: reference('authors'),
+      author: reference('authors').optional(),
       date: z.coerce.date(),
       updated: z.coerce.date().nullish(),
       hero: image().optional(),
