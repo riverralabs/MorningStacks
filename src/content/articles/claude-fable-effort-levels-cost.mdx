@@ -1,0 +1,182 @@
+---
+type: article
+title: "Claude Fable effort levels: what High and Max actually cost"
+description: "Fable 5.1 always reasons across five effort levels. Default High for product work; reserve max for jobs you would otherwise abandon. Willison SVG costs attributed. Prices checked 16 Sep 2026."
+answer: "Fable 5.1 always reasons. Anthropic documents five effort levels: low, medium, high, xhigh, and max. Claude Code defaults to High; Claude.ai and Cowork default to Medium. Token rates are $10 / $50 per million input/output, with $0.25 cache reads. Simon Willison's 1 Sep 2026 SVG run cost about $0.10 at low/medium, $0.13 at high, $1.83 at xhigh, and $3.30 at max. That is his prompt, not a coding bench. Default High; treat max as a bill event."
+eyebrow: How-to
+category: ai-tools
+date: 2026-09-16
+og: ../../assets/og/claude-fable-effort-levels-cost/og.png
+ogAlt: "Claude Fable effort levels: what High and Max actually cost"
+ogTitle: "Claude Fable effort levels: what High and Max cost"
+products: []
+faq: []
+sources:
+  - title: Claude plans & pricing (Fable token rates)
+    url: https://claude.com/pricing
+    checked: 2026-09-16
+  - title: Anthropic pricing
+    url: https://www.anthropic.com/pricing
+    checked: 2026-09-16
+  - title: Introducing Claude Fable 5.1 and Claude Mythos 5.1
+    url: https://www.anthropic.com/claude-fable-and-mythos-5-1
+    checked: 2026-09-16
+  - title: "Simon Willison: Claude Fable 5.1 pelican (effort costs)"
+    url: https://simonwillison.net/2026/Sep/1/claude-fable-5-1/
+    checked: 2026-09-16
+  - title: Cursor Models & Pricing
+    url: https://cursor.com/docs/models-and-pricing
+    checked: 2026-09-16
+  - title: Cursor pricing
+    url: https://cursor.com/pricing
+    checked: 2026-09-16
+  - title: Claude Fable 5.1 in Cursor (staff forum)
+    url: https://forum.cursor.com/t/claude-fable-5-1-out-now/170246
+    checked: 2026-09-16
+related:
+  - claude-fable-5-1-explained
+  - openai-cursor-cutoff-november-2026
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+Fable 5.1 always reasons. Anthropic documents five effort levels: **low**, **medium**, **high**, **xhigh**, and **max**, with no off switch. Cursor's **73.4%** CursorBench 3.2 score is at **max effort** per Cursor staff. API rates are **$10** per million input and **$50** per million output, with **$0.25** cache reads (verified **16 Sep 2026**).
+
+Independent tester **Simon Willison** (1 Sep 2026) logged about **$0.10** at low/medium, **$0.13** at high, **$1.83** at xhigh, and **$3.30** at max for one SVG prompt. That is his run. It's not a MorningStacks invoice. It's not a coding score.
+
+Default to **High** for product work. Reserve **max** for jobs you would otherwise abandon.
+
+Product context: [Claude Fable 5.1 explained](/ai-tools/claude-fable-5-1-explained/).
+
+## What effort levels exist, and what is the default in Claude Code vs Claude.ai?
+
+Anthropic launch post, [Claude Fable 5.1 and Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1), plus the live Fable explainer sources:
+
+- Five levels: low, medium, high, xhigh, max
+- No option to turn reasoning off (Willison states the same from the API)
+- **Default High in Claude Code**
+- **Default Medium in Cowork and on Claude.ai**
+
+Anthropic also says Low or Medium can match or beat Fable 5 at lower cost on their vendor chart. Turning the knob up is more tokens, more wall-clock, more bill.
+
+Cursor docs recommend high thinking for strongest results. That lines up with Anthropic's Claude Code default. It does not line up with the **73.4%** headline, which is max.
+
+### How to set it (docs-based)
+
+1. In Claude Code, notice you are already on High if you did nothing. Change effort only on purpose.
+2. In claude.ai / Cowork, notice you are on Medium. Bump to High for a hard bug, not for a rewrite of a heading.
+3. In Cursor, select Fable 5.1 after Privacy Mode opt-in (Dashboard). Set thinking/effort to high unless the job is a last-ditch max.
+4. Log the level in the commit message or the chat title (`fable high`, `fable max`) so the invoice is readable.
+5. Never loop max. One max run that fails should drop to High with a tighter prompt, not to a second max.
+
+## Why is Cursor's headline score a max-effort number?
+
+Because that is how they ran it.
+
+Colin, Cursor staff, [forum post 1 September 2026](https://forum.cursor.com/t/claude-fable-5-1-out-now/170246): the model scored **73.4%** on CursorBench 3.2 **at max effort**.
+
+Anthropic's comparison table (vendor numbers):
+
+| Model | CursorBench 3.2.0 |
+| --- | --- |
+| Fable 5.1 | 73.4% |
+| Fable 5 | 70.5% |
+| Opus 5 | 70.0% |
+| GPT-5.6 Sol | 67.2% |
+
+The table header we rely on does not say "max." Cursor staff later said max. Scores at low, medium, or high were **not published** in that staff post. Don't interpolate 73.4% down to High. You don't know High's bench.
+
+Use 73.4% as the ceiling they advertised, not as what High will do on your auth bug.
+
+## What did one independent API run actually cost at each level?
+
+Simon Willison, [Claude Fable 5.1 made me a really nice animated pelican](https://simonwillison.net/2026/Sep/1/claude-fable-5-1/), posted 1 September 2026, re-checked **16 Sep 2026**.
+
+Prompt: "Generate an SVG of a pelican riding a bicycle." Author's note: not a software-engineering score. He also says the pelican benchmark's connection to other tasks has weakened. The value here is the **effort multiplier on one fixed prompt**.
+
+| Effort | Output tokens | Wall clock | Cost (Willison) | Notes from Willison |
+| --- | --- | --- | --- | --- |
+| low | 1,998 | 23.8s | 10.017 cents | No visible reasoning summary |
+| medium | 1,977 | 23s | 9.912 cents | Also no reasoning text; 21 tokens less than low |
+| high | 2,612 | 29.6s | 13.087 cents | Short planning summary |
+| xhigh | 36,767 | 7m 51s | **$1.83** | "Radically different" |
+| max | 65,927 | 13m 54s | **$3.30** | Best pelican he had seen from Anthropic models |
+
+Follow-up: he took the max pelican and asked default High to animate it. **6,121** input, **26,201** output = **$1.37**. That animate pass is also his, not ours.
+
+Read the table as a cliff. Low, medium, and high clustered around a dime and half a minute. Xhigh and max jumped more than tenfold in money and time.
+
+Your production bug will not cost $3.30. It might cost more, because code agents reread repos. It might cost less, because of cache reads at **$0.25** per million tokens. You cannot know from an SVG. You can know that **max is not "high plus a bit."**
+
+Token rates that turn those token counts into dollars (Anthropic / Claude pricing, **16 Sep 2026**):
+
+- Input **$10** / MTok
+- Output **$50** / MTok
+- Cache read **$0.25** / MTok
+- Cache write **$12.50** / MTok
+
+Cursor Other Models pool uses the same **$10 / $12.50 / $0.25 / $50** table for Fable 5.1 on [Cursor Models & Pricing](https://cursor.com/docs/models-and-pricing), **16 Sep 2026**.
+
+There's **no official per-effort multiplier** from Anthropic beyond the qualitative ~25% / ~45% cache-read savings story versus Fable 5 (vendor estimate at default effort; see the [Fable explainer](/ai-tools/claude-fable-5-1-explained/)).
+
+## When is Opus 5 cheaper for the same job?
+
+Opus 5 API list (same pricing page, **16 Sep 2026**): **$5** input / **$25** output / **$0.50** cache read / **$6.25** cache write per million tokens. Half of Fable on input and output. Cache reads on Opus are **higher** than Fable's **$0.25**.
+
+Opus is cheaper when:
+
+- The job is short and uncached, so Fable's cache-read discount never shows up
+- You would have to set Fable to xhigh or max to beat Opus, and Willison-shaped cliffs scare you (as they should)
+- You are already on a Claude paid plan whose Fable weekly slice is the scarce resource. Max table: Fable is **50%** of weekly limits. Pro Fable is only "usage credits," amount unspecified
+
+Fable can still be cheaper on long agentic jobs **if** cache reads dominate. That is Anthropic's ~45% claim versus Fable 5, not versus Opus 5. Don't mix those baselines.
+
+Sonnet 5 at **$2 / $10** remains the default for volume work. Effort knobs on Fable do not replace Sonnet for "rename this function."
+
+## How do Cursor's Other Models pool and Anthropic plan limits interact?
+
+Two bills can fire for the same brain.
+
+**Cursor.** [Pricing](https://cursor.com/pricing), **16 Sep 2026**: Hobby $0, Pro **$20/mo**, Pro+ **$60**, Ultra **$200**. Included usage, then on-demand in arrears. Fable 5.1 is Other Models usage at Fable token rates. Privacy Mode requires Dashboard opt-in. Guardrail trips auto-route to Opus, which is a different rate.
+
+**Claude paid plan.** Claude Code shares the chat pool. Extra usage at API rates when you enable credits. Max billed from **$100/mo**. Pro: **$20/mo** monthly or **$17/mo** annual (**$200** up front). No fixed message count.
+
+If you run Fable max in Cursor, you are spending Cursor on-demand (or chewing included usage) at $10/$50. If you run Fable max in Claude Code, you are spending the Claude pool, then API credits. Doing both on the same afternoon is how a solo operator double-pays for one bug.
+
+Pick a home for max runs. One home.
+
+Cutoff hedge context if GPT-in-Cursor matters on your calendar: [OpenAI Cursor cutoff](/ai-tools/openai-cursor-cutoff-november-2026/).
+
+## What should you log so next week's bill is explainable?
+
+1. Date, surface (Cursor vs Claude Code vs API), model `claude-fable-5-1`
+2. Effort level, in the title, not in your head
+3. Input / output / cache-read tokens if the UI shows them
+4. Whether a guardrail bounced you to Opus
+5. A one-line job description ("auth race," "SVG pelican," "migrate tests")
+6. A hard cap: if a single run crosses **$1** without a written reason, stop and split the task
+
+Willison logged tokens, seconds, and cents. Copy that habit. Do not copy his prompt into production and call it a bench.
+
+### Default policy we recommend (judgment, not a test)
+
+- **Low / medium:** throwaway questions, drafts you will rewrite, pelicans. Claude.ai already defaults Medium.
+- **High:** product work. Claude Code already defaults here. Cursor docs recommend high thinking.
+- **Xhigh:** rare. You can see the bill coming (Willison: $1.83, 7m51s, 36k output tokens on a toy prompt).
+- **Max:** only if you would otherwise walk away from the bug. Budget it like a contractor hour. CursorBench lives here. Your weekly SaaS chore does not.
+
+Don't write "max paid for itself on a production bug" until you have a real invoice that says so. MorningStacks has not published one.
+
+## Official links only
+
+No MorningStacks affiliate wrappers are live for Anthropic or Cursor. Use official URLs only.
+
+## Open gaps
+
+- No official per-effort multiplier from Anthropic.
+- CursorBench at low/medium/high: not published in the staff post.
+- Claude Max 20x exact monthly sticker: still From $100 + 5x/20x choice on the public card.
+- Ranks/volumes unknown. No MorningStacks Fable bill to quote.
