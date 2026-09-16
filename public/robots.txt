@@ -17,4 +17,4 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://morningstacks.com/sitemap-index.xml
+Sitemap: https://www.morningstacks.com/sitemap-index.xml
