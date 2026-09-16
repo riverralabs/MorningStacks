@@ -1,0 +1,156 @@
+---
+type: article
+title: "Resend vs SendGrid for transactional email"
+description: "Resend Free 3k emails/mo; Pro from $20/mo for 50k. SendGrid Email API trial 100/day for 60 days; Essentials from $19.95/mo. Operator stack pick. Prices checked 16 Sep 2026."
+answer: "Pick Resend when you want a modern API, React Email, and a clear Free tier (3,000 emails/mo, 100/day) with Pro from $20/mo for 50,000. Pick Twilio SendGrid when you need mature deliverability tooling, dedicated IPs on Pro (from $89.95/mo), or volume ladders up through Premier. Both send transactional mail. Different free runway and IP story. Prices verified 16 Sep 2026."
+eyebrow: Comparison
+category: developer-tools
+date: 2026-09-16
+og: ../../assets/og/resend-vs-sendgrid/og.png
+ogAlt: "Resend vs SendGrid for transactional email"
+ogTitle: "Resend vs SendGrid for transactional email"
+products: []
+faq: []
+sources:
+  - title: "Resend pricing"
+    url: https://resend.com/pricing
+    checked: 2026-09-16
+  - title: "Twilio SendGrid Email API pricing"
+    url: https://www.twilio.com/en-us/products/email-api/pricing
+    checked: 2026-09-16
+  - title: "Twilio SendGrid pricing PDF"
+    url: https://www.twilio.com/content/dam/twilio-com/global/en/pricing/all-pricing/twi121--sendgrid-pricing-pdf-st1.pdf
+    checked: 2026-09-16
+  - title: "Twilio SendGrid trial account plan (support)"
+    url: https://support.sendgrid.com/hc/en-us/articles/35270136965403-Twilio-SendGrid-Trial-Account-Plan
+    checked: 2026-09-16
+related:
+  - beehiiv-pricing-review
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+**Resend** and **Twilio SendGrid** both ship password resets, receipts, and product alerts out of your app. The operator fork is DX and free runway versus long-running deliverability tooling and volume ladders.
+
+Prices below come from [resend.com/pricing](https://resend.com/pricing), [Twilio SendGrid Email API pricing](https://www.twilio.com/en-us/products/email-api/pricing), the [Twilio SendGrid pricing PDF](https://www.twilio.com/content/dam/twilio-com/global/en/pricing/all-pricing/twi121--sendgrid-pricing-pdf-st1.pdf), and SendGrid's [trial support article](https://support.sendgrid.com/hc/en-us/articles/35270136965403-Twilio-SendGrid-Trial-Account-Plan), checked **16 Sep 2026**. Search ranks and volumes unknown. MorningStacks has not run a deliverability bake-off between the two.
+
+## What is Resend vs what is SendGrid for operators?
+
+**Resend** is an API-first transactional (and marketing) email product with official SDKs, SMTP relay, React Email, inbound, webhooks, and SOC 2 Type II called out on the pricing page. Free caps daily sends. Pro removes the daily cap and raises monthly volume.
+
+**Twilio SendGrid** is the older, high-volume Email API (plus a separate Marketing Campaigns product). Essentials and Pro price by monthly email volume. Pro includes a dedicated IP. Premier is sales-led. New accounts get a timed free trial; support docs describe a **60-day** trial at **100** emails/day starting March 2025 for new signups.
+
+Same job: get transactional mail out of your SaaS. Different default: thin modern API vs broad Twilio-era platform.
+
+## How much does Resend cost vs SendGrid in 2026?
+
+Verified **16 Sep 2026**:
+
+| Product | Plan | Price (verified) | Volume / notes |
+| --- | --- | --- | --- |
+| Resend | Free | **$0/mo** | **3,000**/mo; **100**/day; 3 domains; ticket support |
+| Resend | Pro | **$20/mo** | **50,000**/mo; overage **$0.90**/1,000; no daily cap |
+| Resend | Pro | **$35/mo** | **100,000**/mo; same overage |
+| Resend | Scale | **$90** → **$1,150**/mo | **100k** → **2.5M**/mo; overage **$0.90** → **$0.46**/1,000 |
+| Resend | Enterprise | Custom | Often **3M+**/mo on their enterprise page copy |
+| SendGrid | Free trial | **$0** for **60 days** | **100** emails/day (trial support article + pricing page) |
+| SendGrid | Essentials | from **$19.95/mo** | PDF: **50,000**/mo at **$19.95**; **100,000** at **$34.95** |
+| SendGrid | Pro | from **$89.95/mo** | PDF: **100k** at **$89.95**; **300k** **$249**; **700k** **$499**; **1.5M** **$799**; **2.5M** **$1,099**; **1** dedicated IP included |
+| SendGrid | Premier | Custom | Sales |
+
+Resend add-ons on the pricing page: domains pack **$20/mo** (Pro/Scale); dedicated IP **$30/mo** on Scale once you clear **3,000** emails/day; SSO **$150/mo** on Scale.
+
+SendGrid's pricing page: Essentials from **$19.95/mo**, Pro from **$89.95/mo**, Premier custom. Taxes and overages may apply. Event webhooks: Free trial **1**, Essentials **2**, Pro/Premier **5**.
+
+**Flag:** Twilio's FAQ still mentions a "free SMTP plan" at **100**/day in one answer, while the trial article and pricing hero stress a **60-day** trial. Treat permanent free after trial as **unverified**. Plan for Essentials if you need ongoing send after day 60.
+
+**Flag:** Marketing Campaigns is a separate Twilio bill. This post is Email API / transactional.
+
+## How do DX and templates compare?
+
+Resend pushes **React Email** and a REST + SMTP path on every plan card. If your app already renders React, that template story is short.
+
+SendGrid gives Dynamic Templates, SMTP, and a large client-library surface. Teammates jump from **1** on Free trial/Essentials to **1,000** on Pro/Premier per the feature table. Subuser management sits on Pro+.
+
+Neither page replaces your own SPF/DKIM/DMARC work. Both list domain authentication. Dedicated IPs: Resend as Scale add-on (**$30/mo**); SendGrid included starting Pro (pricing table).
+
+## What does a small SaaS first month look like?
+
+**Prototype alerts under 100/day.** Resend Free (**3,000**/mo with the daily cap) or SendGrid's trial both work. Watch Resend's daily ceiling on launch day.
+
+**Steady transactional at ~50k/mo.** Resend Pro **$20** vs SendGrid Essentials **$19.95** (PDF 50k tier). Similar sticker. Pick on API taste and support needs.
+
+**Need a dedicated IP early.** SendGrid Pro from **$89.95** includes one. Resend wants Scale + the **$30** add-on and the **3,000**/day threshold.
+
+**Marketing newsletters.** Wrong comparison. See our [beehiiv pricing review](/ai-tools/beehiiv-pricing-review/) for audience email. Keep transactional on Resend or SendGrid; don't mash product receipts into the newsletter ESP without a reason.
+
+## Which should a solo operator pick?
+
+**Lean Resend when:**
+
+- You want Free that continues past a trial clock (as published: **3,000**/mo).
+- React Email and a small surface area match how you ship.
+- **50k**/mo at **$20** is the honest Pro floor.
+
+**Lean SendGrid when:**
+
+- You already sit in Twilio, or you need Pro-tier dedicated IP and subusers without hunting add-ons.
+- Volume ladders past **100k** are clearer on the PDF ladder we fetched.
+- Your compliance questionnaire expects a long-running ESP brand name.
+
+Deliverability is reputation plus content plus list hygiene. A logo does not guarantee inbox. Warm slowly either way.
+
+## How should you decide in one afternoon?
+
+1. Count transactional sends last month (receipts, auth, dunning). Ignore newsletter volume.
+2. If under **3,000**/mo and **100**/day, try **Resend Free** first.
+3. If you need dedicated IP in the first quarter, open **SendGrid Pro** pricing.
+4. Confirm stickers on [resend.com/pricing](https://resend.com/pricing) and [Twilio Email API pricing](https://www.twilio.com/en-us/products/email-api/pricing).
+5. Authenticate the domain the same day. Don't send cold from a shared IP on day one of a big list import.
+
+
+## API, SMTP, and webhooks: what changes day to day?
+
+Both expose SMTP and HTTP APIs. Resend's pricing page lists RESTful API, SMTP relay, official SDKs, batch sending, open and link tracking, and webhooks on all plans. Free keeps **3** domains; Pro **10**; Scale **1,000**.
+
+SendGrid's feature table stresses SMTP and API across Free trial through Premier, with Interactive API Docs and client libraries. Webhook slots scale with plan (**1** → **2** → **5**). Searchable email activity history is **3** days on trial/Essentials and **7** on Pro/Premier (with purchase options for more).
+
+For a solo operator, the practical difference is how fast you go from "API key in `.env`" to a typed SDK call and a signed domain. Resend markets that short path. SendGrid markets the control plane you'll grow into (subusers, IP pools, SSO on higher tiers).
+
+Inbound parse exists on both stories (Resend inbound emails on the all-plans list; SendGrid Inbound Parse on the analytics table). If your product needs reply-to-ticket loops, read those docs before you pick on price alone.
+
+## Compliance and security checklist (stick to the pages)
+
+Resend lists SOC 2 Type II, GDPR, MFA, and API key permissions on the pricing highlights. SendGrid lists SOC 2 Type II, GDPR, TLS, 2FA, IP access management, and SSO on the privacy table (SSO marked on higher columns).
+
+Neither sticker replaces your own DPA review. If a customer security questionnaire names "dedicated IP" or "SSO," map that to SendGrid Pro/Premier or Resend Scale add-ons before you promise a date.
+
+EU data residency shows on SendGrid's privacy row. Confirm current region options in their docs when a contract needs it. Resend calls out multi-region on the all-plans list; treat region pinning as a docs check, not a slogan.
+
+## Side-by-side at common volumes
+
+Using Resend's published tiers and the Twilio SendGrid PDF ladder (**16 Sep 2026**):
+
+| Monthly transactional volume | Resend sticker | SendGrid Email API sticker (PDF / page) |
+| --- | --- | --- |
+| ≤3,000 (and ≤100/day) | Free **$0** | Trial **$0** for 60 days at 100/day; then plan for Essentials |
+| ~50,000 | Pro **$20** | Essentials **$19.95** |
+| ~100,000 | Pro **$35** or Scale **$90** | Essentials **$34.95** or Pro **$89.95** (IP included on Pro) |
+| ~500,000 | Scale **$350** (page example) | Between Pro rungs; confirm live calculator (PDF jumps 300k→700k) |
+| ~1,000,000 | Scale **$650** | Pro rung toward **$799** at 1.5M on PDF; confirm |
+
+Overage behavior differs. Resend publishes per-1,000 overage on Pro/Scale. SendGrid charges per-email overage rates on the PDF. Cap alerts in both dashboards before a Black Friday receipt storm.
+
+## Official links only
+
+No MorningStacks affiliate wrappers are live for Resend or SendGrid. Use official URLs only.
+
+## Open gaps
+
+- SendGrid permanent free vs **60-day** trial: Twilio FAQ and trial support article disagree in tone. We treat ongoing free as unverified.
+- Exact overage cents on every SendGrid Essentials/Pro rung: PDF gives per-extra-email rates; confirm in-dashboard before you forecast.
+- Resend Marketing Email contact tiers exist on the same pricing page; out of scope for this transactional pick.
+- Ranks/volumes unknown. No first-person inbox placement study.

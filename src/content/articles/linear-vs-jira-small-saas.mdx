@@ -1,0 +1,123 @@
+---
+type: article
+title: "Linear vs Jira for a small SaaS team"
+description: "Linear Free to 250 issues; Basic $10/user/mo billed yearly. Jira Free for 10 users; Standard $7.91/user/mo. Small SaaS tracker pick. Prices checked 16 Sep 2026."
+answer: "Pick Linear when a small SaaS team wants a fast issue tracker with Free up to 250 issues (2 teams) or Basic at $10/user/mo billed yearly. Pick Jira when you need Free for up to 10 users with deeper Atlassian adjacency, or Standard at $7.91/user/mo with bigger storage and admin surface. Same job: ship work in cycles. Different opinionation and seat math. Prices verified 16 Sep 2026."
+eyebrow: Comparison
+category: productivity
+date: 2026-09-16
+og: ../../assets/og/linear-vs-jira-small-saas/og.png
+ogAlt: "Linear vs Jira for a small SaaS team"
+ogTitle: "Linear vs Jira for a small SaaS team"
+products: []
+faq: []
+sources:
+  - title: "Linear pricing"
+    url: https://linear.app/pricing
+    checked: 2026-09-16
+  - title: "Jira Cloud pricing"
+    url: https://www.atlassian.com/software/jira/pricing
+    checked: 2026-09-16
+related:
+  - claude-fable-5-1-explained
+  - openai-cursor-cutoff-november-2026
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+**Linear** and **Jira Cloud** both track issues, projects, and cycles for a product team. For a small SaaS crew (say 3-15 people), the fork is opinionated speed versus Atlassian depth and how Free caps bite.
+
+Prices below come from [linear.app/pricing](https://linear.app/pricing) and [atlassian.com/software/jira/pricing](https://www.atlassian.com/software/jira/pricing), checked **16 Sep 2026**. Search ranks and volumes unknown. MorningStacks has not migrated a live backlog between the two for a timed diary.
+
+## What is Linear vs what is Jira for a small SaaS?
+
+**Linear** is a cloud issue tracker with projects, cycles, initiatives, triage, and a heavy keyboard culture. Free allows unlimited members but caps **teams** and **issues**. Paid plans are per seat. Business adds guests, private teams, Asks, and more AI-shaped features on the pricing grid.
+
+**Jira Cloud** is Atlassian's project tool with boards, backlogs, timelines, automation steps, and a long marketplace. Free covers **10** users. Standard and Premium are per user per month on the public cards. Enterprise is annual and sales-shaped. Confluence, Bitbucket, and Guard sit next door if you buy the wider suite.
+
+Same category. Linear starts narrower and faster. Jira starts broader and more configurable.
+
+## How much does Linear cost vs Jira in 2026?
+
+Verified **16 Sep 2026**:
+
+| Product | Plan | Price (verified) | Small-team notes |
+| --- | --- | --- | --- |
+| Linear | Free | **$0** | Unlimited members; **2** teams; **250** issues; 10 MB uploads |
+| Linear | Basic | **$10**/user/mo **billed yearly** | **5** teams; unlimited issues and uploads; admin roles |
+| Linear | Business | **$16**/user/mo **billed yearly** | Unlimited teams; private teams and guests; Asks; Insights; Triage Intelligence |
+| Linear | Enterprise | Custom (annual only) | SAML, SCIM, HIPAA path, audit log |
+| Jira | Free | **$0** | Up to **10** users; **2 GB** storage; community support; **150** automation steps/subscription/mo |
+| Jira | Standard | **$7.91**/user/mo | Up to **100,000** users/site; **250 GB** storage; **400** automation steps/user/mo; local business-hours support |
+| Jira | Premium | **$14.54**/user/mo | Unlimited storage; **99.9%** SLA; **750** automation steps/user/mo; 24/7 Premium support; cross-project planning |
+| Jira | Enterprise | Custom (annual) | **99.95%** SLA; up to **150** sites; Guard included per pricing table |
+
+**Rough seat math (illustrative, using advertised stickers):**
+
+| Team size | Linear Basic (yearly sticker × seats) | Jira Standard (card rate × seats) |
+| --- | --- | --- |
+| 5 | **$50**/mo equivalent prepaid yearly | **~$39.55**/mo |
+| 10 | **$100**/mo equivalent | **~$79.10**/mo (or stay on Jira Free if ≤10) |
+| 15 | **$150**/mo equivalent | **~$118.65**/mo |
+
+**Flag:** Linear's public page labels Basic/Business as **billed yearly**. Monthly toggle prices were **not** verified on the default fetch. Don't assume **$10**/**$16** on month-to-month without checking the live toggle.
+
+**Flag:** Atlassian tells you to use the on-page calculator. Graduated cloud tiers can change the effective per-user rate as seats grow. We cite the **$7.91** / **$14.54** stickers shown on the pricing page on **16 Sep 2026**.
+
+## How do workflows feel for a 5-10 person SaaS?
+
+**Linear** defaults to issues → projects → cycles. Triage and keyboard shortcuts keep standup noise low. The Free **250**-issue cap is the first wall for a busy product org. Hitting it means Basic, not "just archive harder" forever.
+
+**Jira** defaults to projects with board types (Scrum/Kanban), workflows you can bend, and automation. Free's **10**-user cap is the first wall. Storage at **2 GB** can sting if you attach a lot of design dumps. Standard's **250 GB** and user-scaled automation usually fix that for a growing SaaS.
+
+If your "small SaaS team" is mostly engineers who live in GitHub/GitLab PRs, Linear's issue sync and code-adjacent features on higher plans may feel closer to the desk. If PM, support, and eng all share one Atlassian login story with Confluence, Jira is the shorter political path.
+
+## What about AI, asks, and intake?
+
+Linear's pricing grid lists Agent platform / Linear Agent on Free, plus Triage Intelligence, Loops, and Code Intelligence on Business. Treat those names as plan gates on the live page; we didn't meter credit burn for coding sessions.
+
+Jira's pricing table ties Rovo credits to paid plans (Standard **25**/user/mo, Premium **70**, Enterprise **150** on the page we fetched). Automation step budgets differ by plan (Free **150**/subscription; Standard **400**/user; Premium **750**/user).
+
+Customer intake: Linear Asks (Business+) vs Jira forms and marketplace apps. For a tiny team, Slack + issues often wins before either intake product matters.
+
+AI coding tools are a separate bill. If that stack is in play, see [Claude Fable 5.1 explained](/ai-tools/claude-fable-5-1-explained/) and [OpenAI's Cursor cutoff note](/ai-tools/openai-cursor-cutoff-november-2026/).
+
+## Which tracker fits which small SaaS?
+
+**Lean Linear when:**
+
+- You want Free with unlimited members while issues stay under **250** and teams under **2**.
+- The team will pay Basic (**$10**/user/mo yearly) for speed and a tight UI.
+- You're fine without Confluence-shaped wiki adjacency on day one.
+
+**Lean Jira when:**
+
+- You're ≤**10** users and Free's board/backlog set is enough.
+- You already buy Atlassian, or leadership expects Jira on the security questionnaire.
+- You need Standard's storage, permissions depth, or a path to Premium roadmaps and SLA.
+
+**Awkward on Linear Free:** multi-team SaaS with design + eng + success each wanting a team space past **2**, or a backlog that will cross **250** issues in a quarter.
+
+**Awkward on Jira Free:** seat **11**, or heavy attachments chewing **2 GB**, or automation past **150** steps/mo for the whole site.
+
+## How should you decide in one afternoon?
+
+1. Count people who need a login this quarter. ≤10 → Jira Free is in play. Unlimited members on Linear Free still hits issue/team caps.
+2. Count open + done issues you refuse to delete. Past ~200 active history → budget Linear Basic.
+3. Open [linear.app/pricing](https://linear.app/pricing) and [Jira pricing](https://www.atlassian.com/software/jira/pricing). Run Atlassian's calculator for your seat count.
+4. Import a sample project both ways (both document import/export). Click through one sprint ritual.
+5. Pick the tool your team will update daily. An empty Premium Jira loses to a lived-in Linear Basic.
+
+## Official links only
+
+No MorningStacks affiliate wrappers are live for Linear or Jira. Use official URLs only.
+
+## Open gaps
+
+- Linear month-to-month seat prices: not verified on the default yearly view we fetched.
+- Jira effective rate at your exact seat count: use Atlassian's calculator; graduated tiers may differ from the headline **$7.91** / **$14.54**.
+- Marketplace app costs on Jira can exceed the seat bill; out of scope here.
+- Ranks/volumes unknown. No first-person migration diary.

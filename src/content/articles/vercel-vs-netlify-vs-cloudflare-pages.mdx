@@ -1,0 +1,139 @@
+---
+type: article
+title: "Vercel vs Netlify vs Cloudflare Pages"
+description: "Vercel Pro from $20/mo, Netlify Pro $20/mo on credits, Cloudflare Pages static free with Workers Paid from $5/mo for Functions. Astro/Next hosting pick. Prices checked 16 Sep 2026."
+answer: "For Astro or Next, pick Vercel when you want the Next-shaped deploy path and accept Pro at $20/mo plus usage. Pick Netlify when credit-based Free/Personal/Pro ($0/$9/$20) fits your ship cadence. Pick Cloudflare Pages when static bandwidth should stay free and you only pay Workers Paid ($5/mo floor) once Functions traffic grows. Same job class: Git-linked frontends. Different meters. Prices verified 16 Sep 2026."
+eyebrow: Comparison
+category: developer-tools
+date: 2026-09-16
+og: ../../assets/og/vercel-vs-netlify-vs-cloudflare-pages/og.png
+ogAlt: "Vercel vs Netlify vs Cloudflare Pages"
+ogTitle: "Vercel vs Netlify vs Cloudflare Pages"
+products: []
+faq: []
+sources:
+  - title: "Vercel pricing"
+    url: https://vercel.com/pricing
+    checked: 2026-09-16
+  - title: "Netlify pricing"
+    url: https://www.netlify.com/pricing/
+    checked: 2026-09-16
+  - title: "Cloudflare Workers pricing (Pages Functions)"
+    url: https://developers.cloudflare.com/workers/platform/pricing/
+    checked: 2026-09-16
+  - title: "Cloudflare Pages Functions pricing"
+    url: https://developers.cloudflare.com/pages/functions/pricing/
+    checked: 2026-09-16
+  - title: "Cloudflare Pages limits"
+    url: https://developers.cloudflare.com/pages/platform/limits/
+    checked: 2026-09-16
+  - title: "Cloudflare plans"
+    url: https://www.cloudflare.com/plans/
+    checked: 2026-09-16
+related:
+  - beehiiv-pricing-review
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+**Vercel**, **Netlify**, and **Cloudflare Pages** all take a Git repo (or CLI drop) and put an Astro or Next site on a global edge. The fork is how the bill meters: Vercel usage credits and seats, Netlify credit packs, Cloudflare free static plus Workers for Functions.
+
+Prices below come from [vercel.com/pricing](https://vercel.com/pricing), [netlify.com/pricing](https://www.netlify.com/pricing/), [Cloudflare Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/), [Pages Functions pricing](https://developers.cloudflare.com/pages/functions/pricing/), [Pages limits](https://developers.cloudflare.com/pages/platform/limits/), and [cloudflare.com/plans](https://www.cloudflare.com/plans/), checked **16 Sep 2026**. Search ranks and volumes unknown. MorningStacks has not timed a bake-off on identical Astro/Next apps across all three.
+
+## What is each host built for?
+
+**Vercel** is the commercial home of Next.js. Previews, ISR, Fluid compute, and the Pro dashboard are the product. Hobby is for personal, non-commercial use per their FAQ. Commercial work lands on Pro.
+
+**Netlify** is a framework-agnostic Git host with a credit wallet. Free, Personal, and Pro buy monthly credits. Deploys, bandwidth, compute, and web requests spend those credits. Agent runners and a Netlify Database show up on the pricing cards now.
+
+**Cloudflare Pages** sits on the Cloudflare network. Static asset requests are free and unlimited on Free and Paid. **Pages Functions** (anything that is not a static asset) count as Workers. Build concurrency and monthly build caps rise with the Cloudflare zone plan (Free / Pro / Business).
+
+Same category on a comparison page. Different default: Next-shaped platform, credit wallet, or free static + Workers meter.
+
+## How much do Vercel, Netlify, and Cloudflare Pages cost in 2026?
+
+Verified **16 Sep 2026**:
+
+| Product | Plan | Price (verified) | What an Astro/Next site usually notices |
+| --- | --- | --- | --- |
+| Vercel | Hobby | **$0/mo** | 1M edge requests, 100 GB Fast Data Transfer, 1M Function invocations; commercial use restricted per FAQ |
+| Vercel | Pro | **$20/mo** | + **$20/mo** per Developer seat; FAQ cites **$20** included usage credit; 10M edge requests then from **$2**/1M; 1 TB transfer then from **$0.15**/GB |
+| Vercel | Enterprise | Custom | SLA, SSO path, custom usage |
+| Netlify | Free | **$0** forever | **300** credits/mo; custom domains + SSL; deploy previews |
+| Netlify | Personal | **$9/mo** | **1,000** credits; priority email support |
+| Netlify | Pro | **$20/mo** | Unlimited members; **3,000** credits on the card we fetched; concurrent builds; 30-day analytics |
+| Netlify | Enterprise | Custom | 99.99% SLA, SSO/SCIM |
+| Cloudflare Pages | Free zone | **$0** | Static free unlimited; **500** builds/mo; 1 concurrent build; **20,000** files/site; Functions share Workers Free (**100k** requests/day) |
+| Cloudflare | Pro zone | **$20/mo** | Pages limits rise to **5,000** builds/mo, 5 concurrent, **100,000** files (per Pages limits docs) |
+| Cloudflare | Business zone | **$200/mo** annual or **$250/mo** monthly | **20,000** builds/mo, 20 concurrent |
+| Cloudflare | Workers Paid | **$5/mo** floor | Pages Functions: **10M** requests/mo then **$0.30**/million; **30M** CPU-ms then **$0.02**/million CPU-ms; static still free |
+
+Netlify credit spend from the pricing page: production deploys **15** credits each; compute **10** credits per GB-hour; bandwidth **20** per GB; web requests **2** per 10k. Auto-recharge packs: Personal **500** credits for **$5**; Pro **1,500** for **$10**.
+
+**Flag:** Netlify's Pro card mentions "Choose a Pro tier" for monthly credits beyond the base **3,000**. We cite the base sticker we fetched. Re-check the live calculator before you forecast.
+
+**Flag:** Cloudflare Pro **$20** lifts Pages *build* limits. Workers Paid **$5** is a separate account subscription for Function traffic past Free. You can need both.
+
+## How do Astro and Next fit on each platform?
+
+**Next on Vercel** is the path of least surprise: App Router, ISR meters, Image Optimization line items, and Fluid Active CPU (**from $0.128/hr** on Pro after Hobby's included hours) live on the same pricing grid.
+
+**Next on Netlify or Cloudflare** works through adapters and framework docs. You still ship. You own more of the "does SSR count as a Function / credit burn" homework.
+
+**Astro** is often mostly static HTML after build. That favors Cloudflare Pages (static free) and Netlify Free while you stay inside credits. SSR islands or server endpoints start the Function/credit meter on Cloudflare and Netlify, and Vercel Functions on Vercel.
+
+If your marketing site is Astro content collections with almost no server code, Cloudflare Pages Free is hard to beat on pure transfer cost. If your product is a Next SaaS with auth routes and ISR, Vercel Pro is usually the calmer ops choice for a solo founder who already thinks in Next.
+
+## What should you watch on the bill?
+
+**Vercel Pro:** seats + usage. One Developer seat is baked into the **$20** story many teams quote; extra Developers are **$20/mo** each on the pricing table. Fast Data Transfer and edge requests grow with traffic. Set spend management before a launch spike.
+
+**Netlify:** credits. A chatty production deploy loop can burn the Free **300** faster than bandwidth. Personal at **$9** is the quiet upgrade for a solo operator who ships daily.
+
+**Cloudflare Pages:** builds and Functions. Static readers are cheap. A Function on every document request will hit Workers Free's **100k**/day ceiling, then you decide on Workers Paid.
+
+Preview URLs matter for agency and client work. All three do deploy previews. Cloudflare can put Access in front of previews if you already live in that dashboard.
+
+## Which host fits which solo operator?
+
+**Lean Vercel when:**
+
+- Next is the product, not a side static brochure.
+- You want one vendor that documents ISR, images, and Fluid compute on the same page.
+- **$20/mo** Pro plus usage is fine once Hobby's commercial limit bites.
+
+**Lean Netlify when:**
+
+- You hop frameworks (Astro this quarter, something else later) and want a credit wallet.
+- Free or Personal covers early traffic and you like unlimited members on Pro without per-seat drama.
+- You already know how to read credit burn in the dashboard.
+
+**Lean Cloudflare Pages when:**
+
+- The site is mostly static and you care about unlimited static bandwidth.
+- You already pay Cloudflare for DNS/WAF, or you want Workers, R2, and KV next door.
+- You're willing to treat Functions as a Workers bill (**$5** floor when you leave Free).
+
+For audience tooling elsewhere in the stack, see our [beehiiv pricing review](/ai-tools/beehiiv-pricing-review/). Hosting and newsletter ESPs are different meters.
+
+## How should you decide in one afternoon?
+
+1. Write down static vs SSR. Pure Astro marketing → try **Cloudflare Pages** Free first.
+2. Next App Router product with server routes → open **Vercel** Pro pricing and model seats + transfer.
+3. Multi-framework shop or credit-shaped mental model → open **Netlify** Free/Personal and estimate credits from deploys + bandwidth.
+4. Confirm stickers yourself on [vercel.com/pricing](https://vercel.com/pricing), [netlify.com/pricing](https://www.netlify.com/pricing/), and [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/).
+5. Turn on spend alerts the same day you point production DNS.
+
+## Official links only
+
+No MorningStacks affiliate wrappers are live for Vercel, Netlify, or Cloudflare. Use official URLs only.
+
+## Open gaps
+
+- Netlify Pro credit tiers beyond the base **3,000** on the card we fetched: confirm on the live pricing UI.
+- Exact Vercel Pro "included credit" spend rules live in their Pro plan docs; we cite the FAQ's **$20** credit note, not a full meter map.
+- Cloudflare zone Pro vs Workers Paid are easy to conflate; both can appear on one invoice story.
+- Ranks/volumes unknown. No first-person multi-host load test.
