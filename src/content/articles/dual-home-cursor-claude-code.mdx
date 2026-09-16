@@ -1,0 +1,180 @@
+---
+type: article
+title: "How to dual-home Cursor and Claude Code"
+description: "OpenAI proposes shutting OpenAI models off inside Cursor on 12 Nov 2026. Keep Cursor for the editor and install Claude Code on the same repo with a Claude paid plan. Prices checked 16 Sep 2026."
+answer: "Dual-home means two coding tools on one git working tree: Cursor for the IDE, Claude Code for Anthropic's agent (terminal, Cursor/VS Code extension, desktop, or web). Claude Code ships on paid Claude plans (Pro $20/mo monthly or $17/mo annual). Cursor Pro stays $20/mo for the editor path. Install Claude Code beside Cursor now so a 12 Nov 2026 OpenAI-in-Cursor shutoff is not a shipping freeze."
+eyebrow: How-to
+category: ai-tools
+date: 2026-09-16
+og: ../../assets/og/dual-home-cursor-claude-code/og.png
+ogAlt: "How to dual-home Cursor and Claude Code"
+ogTitle: "How to dual-home Cursor and Claude Code"
+products: []
+faq: []
+sources:
+  - title: OpenAI decision on Cursor after SpaceX acquisition
+    url: https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/
+    checked: 2026-09-16
+  - title: Claude Code docs overview
+    url: https://code.claude.com/docs/en/overview
+    checked: 2026-09-16
+  - title: Claude plans & pricing
+    url: https://claude.com/pricing
+    checked: 2026-09-16
+  - title: Cursor pricing
+    url: https://cursor.com/pricing
+    checked: 2026-09-16
+  - title: Cursor Models & Pricing
+    url: https://cursor.com/docs/models-and-pricing
+    checked: 2026-09-16
+  - title: Claude Fable 5.1 in Cursor (staff forum)
+    url: https://forum.cursor.com/t/claude-fable-5-1-out-now/170246
+    checked: 2026-09-16
+related:
+  - openai-cursor-cutoff-november-2026
+  - claude-fable-5-1-explained
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+
+Don't wait for **12 November 2026**. OpenAI's 28 August 2026 post proposes shutting OpenAI models off inside Cursor on that date. Keep Cursor for the editor (Composer, Grok, Claude-in-Cursor). Install **Claude Code** on the same repo with a Claude paid plan so one vendor blip is not a shipping freeze.
+
+This is a deadline playbook. Official docs plus live pricing on **16 Sep 2026**. MorningStacks has not confirmed a dual install screenshot on our repos. Treat every install line as a docs checklist.
+
+Background on the cutoff: [OpenAI Cursor cutoff November 2026](/ai-tools/openai-cursor-cutoff-november-2026/).
+
+## What deadline is real, and what is still only OpenAI's proposal?
+
+OpenAI, 28 August 2026, [Our decision on Cursor following its acquisition by SpaceX](https://openai.com/index/our-decision-on-cursor-following-its-acquisition-by-spacex/):
+
+> Today, we notified SpaceX that we intend to wind down our contract providing OpenAI models to Cursor, with a proposed shutoff date of November 12, 2026.
+
+That date is OpenAI's **proposed** shutoff. We didn't fetch a matching Cursor.com migration guide on this pass. Plan as if 12 November is the day GPT in the picker may go dark. Re-read Cursor's site that morning.
+
+What dual-home is:
+
+- Two tools on one working tree
+- Cursor stays your IDE
+- Claude Code runs terminal, IDE extension, desktop, or web against the same files
+
+What dual-home is not:
+
+- Throwing away Cursor
+- Moving git remotes
+- Buying Ultra as insurance
+- Waiting for Astra (OpenAI said Astra will not be provided to Cursor)
+
+## How do you install Claude Code next to Cursor without moving the repo?
+
+Official overview: [Claude Code docs](https://code.claude.com/docs/en/overview), re-fetched **16 Sep 2026**. Surfaces: terminal, IDE extension (VS Code and Install for Cursor), desktop app, web at [claude.ai/code](https://claude.ai/code), plus JetBrains with a separate CLI.
+
+Most surfaces need a Claude subscription or Anthropic Console account. Desktop requires a paid subscription. Terminal CLI, VS Code, and JetBrains also support third-party providers, per that overview.
+
+### Numbered install (same folder Cursor already uses)
+
+1. Leave the git repo where it is. You are adding a tool, not relocating the product.
+2. Pick one surface for week one. Terminal is the reference path. Desktop works if you already live in the Claude app. Web works for long jobs you will check later.
+3. Native install on macOS, Linux, or WSL:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+4. Windows PowerShell: `irm https://claude.ai/install.ps1 | iex`. Use the CMD variant from the docs if you are not in PowerShell.
+5. Homebrew alternative: `brew install --cask claude-code`. Homebrew does not auto-update; `brew upgrade claude-code` is on you.
+6. `cd` into the project directory you already open in Cursor. Run `claude`. Log in when prompted.
+7. If you prefer editor chrome, install the Claude Code extension from the VS Code / Cursor extensions view, or use the docs' Install for Cursor control. Command Palette: "Claude Code", then Open in New Tab.
+8. Add a `CLAUDE.md` at the repo root. Put the same rules you already keep in Cursor (stack, test command, folders not to touch). Both tools can read project markdown.
+9. Point MCP at the same servers you already trust, one at a time. Don't clone ten servers on day one.
+
+**Unconfirmed:** we don't claim the Cursor "Install for Claude Code" path worked in a MorningStacks build. We do not have a dual-install screenshot or a time-to-first-PR.
+
+If install fails with a curl 403 or a syntax error near `<`, use Anthropic's troubleshooting linked from the overview. Skip random installers from social feeds.
+
+## Which Anthropic plan includes Claude Code, and what does Cursor Pro still include?
+
+Verified **16 Sep 2026** from [claude.com/pricing](https://claude.com/pricing) and [cursor.com/pricing](https://cursor.com/pricing):
+
+| You pay | Shown price | What you get for this how-to |
+| --- | --- | --- |
+| Claude Free | $0 | Chat; **no** Claude Code on the feature grid |
+| Claude Pro | **$20/mo** monthly; **$17/mo** annual (**$200** billed up front) | Claude Code + shared usage pool with chat |
+| Claude Max | From **$100/mo** | Choose **5x or 20x** Pro usage; Claude Code included |
+| Cursor Hobby | $0 | Limited Agent, Composer. Not a cutoff hedge |
+| Cursor Pro | **$20/mo** | Extended Agent; frontier models; MCP, skills, hooks; cloud agents; Grok Bot |
+| Cursor Pro+ / Ultra | **$60** / **$200** | More Agent multiples. They do not preserve OpenAI after a contract ends |
+
+Claude FAQ: Claude Code is on all paid plans and shares the plan's limits. Heavy sessions can move to Console API credits at standard API rates. No fixed message count. Rolling five-hour window plus weekly limits on paid plans.
+
+Cursor FAQ: every plan includes a set amount of model usage; on-demand continues after that, billed in arrears; prices exclude tax; buy only on cursor.com.
+
+**Max 20x flag:** the public card says From $100 with 5x or 20x choice. We didn't isolate a separate Max 20x sticker dollar. The **$200** on Claude's page is Pro annual billed up front, not a confirmed Max 20x price.
+
+You can run both subscriptions. The point of week one is proving Claude Code can finish a real task on the repo, not shaving the last $20.
+
+## How do you turn on Fable 5.1 if Privacy Mode is on?
+
+Cursor staff (Colin, 1 September 2026, [forum thread](https://forum.cursor.com/t/claude-fable-5-1-out-now/170246)):
+
+1. Open [Cursor Dashboard](https://cursor.com/dashboard/).
+2. If Privacy Mode is on for you, your team, or the org, approve Fable 5.1's data retention policy.
+3. Then select Fable 5.1 in the picker. Don't assume Auto will pick it. A community question on Auto (2 September 2026) was unanswered at the time of that thread.
+
+Cursor Models & Pricing (**16 Sep 2026**): Fable 5.1 bills from the **Other Models** pool at **$10 / $12.50 / $0.25 / $50** per million tokens (input / cache write / cache read / output). Guardrails can auto-route to Opus. More product context: [Claude Fable 5.1 explained](/ai-tools/claude-fable-5-1-explained/).
+
+In Claude Code, Anthropic defaults Fable 5.1 to High effort. On Claude.ai and Cowork, default is Medium (per our Fable explainer sources). You can change effort. You cannot turn reasoning off on Fable-class models.
+
+Do the Privacy Mode opt-in while GPT is still a backup.
+
+## How should you split work: Cursor Composer vs Claude Code vs Fable High?
+
+There's no official Cursor migration guide in what we fetched. The split below is operational judgment, labeled as such.
+
+**Cursor Composer / cheaper Cursor models.** Inline edits, UI nits, files you are staring at, Grok-friendly volume. Keep the habit. The editor is still what you pay $20 for.
+
+**Claude Code on the same repo.** Multi-file features, tests you want run in the terminal, git commit and PR flow, scheduled or web jobs. Official docs show patterns like `claude "write tests for the auth module, run them, and fix any failures"`. Use that class of work to prove the install.
+
+**Fable 5.1 at High, not max.** Hard bugs, long-horizon agents, jobs that reread a large context. Max effort is a bill event. Cursor's **73.4%** CursorBench score is **max effort** per Cursor staff. Simon Willison's 1 September 2026 SVG run hit **$3.30** at max (his run, not ours). Default High. Reserve max for work you would otherwise abandon. More on Fable pricing and Privacy Mode: [Claude Fable 5.1 explained](/ai-tools/claude-fable-5-1-explained/).
+
+**Opus 5.** Fallback when Fable guardrails fire, or when the prompt is short and uncached so Fable's cache-read discount never appears. Opus API list is **$5 / $25** per million tokens versus Fable **$10 / $50**.
+
+If GPT disappears from Cursor, name a default: Composer for small, Claude Code + Fable High for large, Opus when Fable refuses.
+
+**Open flag:** whether the Claude Code extension inside Cursor draws both Cursor Other Models usage and the Claude subscription pool. Treat them as separate meters until you watch Claude Settings > Usage and Cursor's dashboard on a real week. We have not confirmed double-count behavior.
+
+## What should you export or screenshot before 12 November?
+
+No official Cursor chat-export doc turned up in this pass. Work around it.
+
+1. Screenshot the model picker, Auto setting, Privacy Mode, and the Fable retention approval.
+2. Copy `.cursor` rules, skills, and hooks into git if they are not there already.
+3. Copy MCP config. Redact secrets. Store secrets in the manager you already use.
+4. Keep `CLAUDE.md` in lockstep with Cursor rules for one week so the two tools do not diverge.
+5. Export any chat threads you still treat as spec. Paste into markdown in the repo or into Claude projects. Manual is fine.
+6. Write a one-page "if GPT is gone" note: default model in Cursor, default model in Claude Code, who owns billing on each card.
+7. Dry-run on **1 November 2026**: complete one PR with Claude Code and one with Cursor on non-OpenAI models. If either path fails, you still have eleven days on OpenAI's clock.
+
+### One-week calendar
+
+1. **Today:** inventory models; install Claude Code; Privacy Mode opt-in for Fable.
+2. **This weekend:** `CLAUDE.md` + one real bug fix through Claude Code.
+3. **Next weekday:** confirm Claude usage in Settings > Usage so you see the shared pool.
+4. **1 Nov 2026:** dry-run day.
+5. **12 Nov 2026:** OpenAI's proposed shutoff. Re-read Cursor's site that morning.
+
+Cancel rules: Claude cancel is in Settings > Billing, at least 24 hours before renewal (Anthropic FAQ). Cursor: manage on cursor.com. We are not telling you to cancel either this week.
+
+## Official links only
+
+No MorningStacks affiliate wrappers are live for Cursor or Anthropic. Use official URLs only.
+
+## Open gaps
+
+- Cursor official migration guide: not found on this pass.
+- Composer behavior if OpenAI models leave the picker: unknown from public docs we fetched.
+- Cursor chat export: no official doc found.
+- Dual-home double-meter behavior: unconfirmed.
+- Ranks/volumes unknown. No first-person dual-home trial on MorningStacks repos.
