@@ -24,6 +24,10 @@ jobs:
 
       - run: pnpm typecheck
 
+      - run: pnpm test:content
+
+      - run: pnpm check:content
+
       - run: pnpm build
         env:
           NEWSLETTER_PROVIDER: stub
