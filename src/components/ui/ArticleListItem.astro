@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TypeBadge from './TypeBadge.astro';
+
+type Props = {
+  article: CollectionEntry<'articles'>;
+  href: string;
+  heading?: 'h2' | 'h3';
+};
+
+const { article, href, heading: Heading = 'h2' } = Astro.props;
+const { data } = article;
+---
+
+<li class="border-t border-[var(--color-ink-10)]">
+  <a href={href} class="flex min-h-11 flex-col gap-1 py-5">
+    <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <TypeBadge type={data.type} />
+      <span aria-hidden="true" class="text-[var(--color-ink-25)]">·</span>
+      <span class="text-eyebrow">{data.eyebrow}</span>
+    </p>
+    <Heading class="font-serif text-[22px] font-medium leading-[1.2] tracking-[-0.018em] text-[var(--color-ink)]">
+      {data.title}
+    </Heading>
+    <p class="font-sans text-[12px] text-[var(--color-ink-55)]">
+      {data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+    </p>
+  </a>
+</li>
