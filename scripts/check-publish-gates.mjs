@@ -40,14 +40,16 @@ function scalar(fm, key) {
 }
 
 function listItems(fm, key) {
-  const header = fm.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'));
+  const header = fm.match(new RegExp(`^${key}:[ \\t]*(\\S.*)?$`, 'm'));
   if (!header) return [];
-  if (header[1].trim() === '[]') return [];
+  const inline = (header[1] ?? '').trim();
+  if (inline === '[]') return [];
+  const items = [];
+  if (inline.startsWith('- ')) items.push(inline.slice(2).trim());
   const start = fm.indexOf(header[0]) + header[0].length;
   const rest = fm.slice(start).split(/\r?\n/);
-  const items = [];
   for (const line of rest) {
-    if (/^\s*-\s+/.test(line)) {
+    if (/^\s*-\s+\S/.test(line)) {
       items.push(line.replace(/^\s*-\s+/, '').trim());
       continue;
     }
