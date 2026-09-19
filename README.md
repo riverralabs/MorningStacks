@@ -1,6 +1,6 @@
 # MorningStacks
 
-> The software stack for operators and founders. Editorial-first reviews of SaaS, AI tools, and software that operators and founders actually pay for.
+> The software stack for operators and founders. Sourced operator briefings and comparisons, clearly labeled.
 
 Built with **Astro 5 + MDX + Tailwind v4**. Deploys to **Vercel**. Zero JS on article pages. Jane edits in **Keystatic** (`/keystatic`), which commits MDX back to this repo. No separate CMS vendor.
 
@@ -11,6 +11,8 @@ pnpm install
 pnpm dev          # http://localhost:4321  ·  admin: http://127.0.0.1:4321/keystatic
 pnpm typecheck    # astro check (zero errors required)
 pnpm lint         # eslint
+pnpm check:content # fail if a published piece is missing required fields
+pnpm test:content # publish-gate unit checks
 pnpm build        # astro build + pagefind index
 pnpm preview      # serve dist/
 ```
@@ -28,6 +30,7 @@ Requires Node 22+ and pnpm 10+.
 | `src/components/ui/` | Buttons, cards, disclosure banner, newsletter form, etc. |
 | `src/lib/seo.ts`, `src/lib/schema.ts` | SEO helpers + typed JSON-LD builders (`schema-dts`) |
 | `src/lib/publish.ts` | Draft / unlisted / published / seed visibility |
+| `src/lib/content-model.ts` | Four article types and publish-gate rules |
 | `src/lib/newsletter.ts` | Provider-agnostic subscribe interface (stub / beehiiv / convertkit / buttondown) |
 | `src/lib/og.ts` + `src/pages/og/[...slug].png.ts` | 1200×630 OG slots (typographic placeholder until Kinjal uploads) |
 | `src/pages/llms.txt.ts` | AEO/GEO file for assistants; lists published articles only |
@@ -48,38 +51,42 @@ Visibility:
 | `unlisted` | Built for preview. `noindex`. Kept out of RSS, sitemap, home, and sections. |
 | `published` | Live, listed, indexed. |
 
-`seed: true` is a hold flag for leftover placeholder articles. Seed entries stay off the live domain even if someone flips visibility. Do not delete them without clearing that flag on purpose.
+`seed: true` is a hold flag for leftover placeholder articles. Seed entries stay off the live domain even if someone flips visibility. `template: true` is the same hold for skeleton files. Neither may be published.
 
-The first-ship Jane skeleton is `src/content/articles/openai-cursor-cutoff-november-2026.mdx` (`template: true`, `status: draft`, `seed: true`). It is not live. OG title line is OpenAI may cut GPT in Cursor 12 Nov. Do not invent first-person tests. Kinjal fills the 1200×630 OG slot after the verified draft lands.
+Every MDX is exactly one type: `review` | `roundup` | `briefing` | `explainer`. Loose `article` is deprecated. Published pieces need `answer` (40–80 words), at least one `source`, and `author`. Reviews also need `products` plus `lastTested` or `testMethod`. Disclosure renders whenever products, ProductCards, or sponsored links are present, not only on reviews.
 
 ```mdx
 ---
-type: review              # article | review | roundup
+type: review              # review | roundup | briefing | explainer
 status: draft             # draft | unlisted | published
 title: Linear review
 description: 80–220 chars, used as meta description and OG description.
-eyebrow: Review
+answer: 40 to 80 words. Required to publish.
+eyebrow: Sourced review
 category: productivity    # references src/content/categories/*.md slug
-author: the-editors       # references src/content/authors/*.md
+author: dipen             # required
 date: 2026-04-25
 updated: 2026-04-30
 products:
-  - linear                # references src/content/products/*.md
-rating: 4.7
+  - linear                # required for review
+lastTested: 2026-04-30
+sources:
+  - title: Linear pricing
+    url: https://linear.app/pricing
+    checked: 2026-04-30
 faq:
   - q: Is Linear better than Jira?
     a: ...
 related: []
 ---
 
-<Disclosure /> renders the FTC banner.
 <ProductCard product="linear" /> embeds a product card.
 <PullQuote cite="...">...</PullQuote>
 <Callout tone="info" title="...">...</Callout>
 <ComparisonTable> wrap a markdown table </ComparisonTable>
 ```
 
-Reviews automatically render the disclosure banner and emit `Review` JSON-LD. FAQ pairs emit `FAQPage` JSON-LD.
+Reviews emit `Review` JSON-LD. FAQ pairs emit `FAQPage` JSON-LD. `pnpm check:content` fails the build if a published piece is missing required fields.
 
 Affiliate URLs use `?via=morningstacks` (not `via=morning-stacks`). Older `?ref=morningstacks` placeholders were normalized to `via`.
 
@@ -113,10 +120,10 @@ pnpm build && pnpm preview
 
 ## Lint, typecheck, build before every commit
 
-CI (`.github/workflows/ci.yml`) runs all three on every PR. Locally:
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, content gates, and build on every PR. Locally:
 
 ```bash
-pnpm lint && pnpm typecheck && pnpm build
+pnpm lint && pnpm typecheck && pnpm test:content && pnpm check:content && pnpm build
 ```
 
 ## Brand
