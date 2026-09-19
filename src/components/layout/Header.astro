@@ -1,5 +1,7 @@
 ---
 import Wordmark from './Wordmark.astro';
+import Button from '~/components/ui/Button.astro';
+import Icon from '~/components/ui/Icon.astro';
 import { getCollection } from 'astro:content';
 
 const categories = (await getCollection('categories')).sort(
@@ -33,26 +35,23 @@ const navItems = [
       }
     </nav>
 
-    <div class="flex items-center gap-3">
-      <a
-        href="/search/"
-        aria-label="Search"
-        class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--color-ink-15)] bg-[var(--color-cream)] px-3 font-sans text-[12px] font-medium tracking-[0.04em] text-[var(--color-ink-70)] transition-colors duration-150 hover:border-[var(--color-blue)] hover:text-[var(--color-blue)]"
-      >
-        Search
-      </a>
-      <a
-        href="/#newsletter"
-        class="hidden sm:inline-flex min-h-11 items-center rounded-md bg-[var(--color-blue)] px-4 font-sans text-[13px] font-semibold tracking-[-0.005em] text-[var(--color-cream)] transition-transform duration-150 hover:-translate-y-[1px] motion-reduce:hover:translate-y-0"
-      >
-        Subscribe
-      </a>
+    <div class="flex items-center gap-2">
+      <Button href="/search/" variant="icon" ariaLabel="Search">
+        <Icon name="search" />
+      </Button>
+      <span class="hidden sm:inline-flex">
+        <Button href="/#newsletter" arrow>
+          Subscribe
+        </Button>
+      </span>
 
-      <details class="relative md:hidden">
+      <details class="group relative md:hidden">
         <summary
-          class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-md border border-[var(--color-ink-15)] font-sans text-[13px] font-medium text-[var(--color-ink)] [&::-webkit-details-marker]:hidden"
+          class="flex size-11 min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-md border border-[var(--color-ink-15)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-blue)] hover:text-[var(--color-blue)] [&::-webkit-details-marker]:hidden"
         >
-          Menu
+          <span class="sr-only">Menu</span>
+          <Icon name="menu" class="group-open:hidden" />
+          <Icon name="close" class="hidden group-open:block" />
         </summary>
         <nav
           aria-label="Mobile"
@@ -68,12 +67,9 @@ const navItems = [
               </a>
             ))
           }
-          <a
-            href="/#newsletter"
-            class="mt-1 flex min-h-11 items-center rounded-md bg-[var(--color-blue)] px-3 font-sans text-[14px] font-semibold text-[var(--color-cream)]"
-          >
+          <Button href="/#newsletter" class="mt-1 w-full" arrow>
             Subscribe
-          </a>
+          </Button>
         </nav>
       </details>
     </div>

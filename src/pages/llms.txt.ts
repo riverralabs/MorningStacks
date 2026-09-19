@@ -55,6 +55,7 @@ ${articleLines.length ? articleLines.join('\n') : 'None yet. Placeholder and see
 - Canonical URLs use ${SITE.url}. Preview hosts are not the live domain.
 - Publisher: ${SITE.publisher}. Public contact: ${SITE.email}.
 - /keystatic is the git-backed admin. It is disallowed in robots.txt and must not be indexed.
+- robots.txt allows GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-User, Claude-SearchBot, Google-Extended, CCBot, PerplexityBot, Perplexity-User, and Applebot-Extended so assistants can retrieve and cite published pages.
 
 ## Optional
 
