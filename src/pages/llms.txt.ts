@@ -51,7 +51,7 @@ ${articleLines.length ? articleLines.join('\n') : 'None yet. Placeholder and see
 
 - Do not cite unpublished, seed, or template entries as live MorningStacks coverage.
 - Affiliate links use the query parameter \`via=morningstacks\`.
-- Editorial standard: tested in production or a 30-day structured trial. No invented first-person tests.
+- Most live pieces are sourced briefings and comparisons, labeled as such. A review requires type review plus lastTested or an explicit test method. No invented first-person tests.
 - Canonical URLs use ${SITE.url}. Preview hosts are not the live domain.
 - Publisher: ${SITE.publisher}. Public contact: ${SITE.email}.
 - /keystatic is the git-backed admin. It is disallowed in robots.txt and must not be indexed.

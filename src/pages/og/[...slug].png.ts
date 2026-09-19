@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 
   entries.push({
     params: { slug: 'default' },
-    props: { title: "Software we'd renew tomorrow." },
+    props: { title: 'Sourced briefings and comparisons.' },
   });
 
   entries.push({

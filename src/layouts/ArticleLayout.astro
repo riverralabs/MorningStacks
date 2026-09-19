@@ -7,9 +7,16 @@ import Disclosure from '~/components/ui/Disclosure.astro';
 import NewsletterForm from '~/components/ui/NewsletterForm.astro';
 import ArticleCard from '~/components/ui/ArticleCard.astro';
 import Stars from '~/components/ui/Stars.astro';
+import TypeBadge from '~/components/ui/TypeBadge.astro';
+import ProductCard from '~/components/ui/ProductCard.astro';
+import ProsCons from '~/components/ui/ProsCons.astro';
+import Verdict from '~/components/ui/Verdict.astro';
+import Callout from '~/components/ui/Callout.astro';
 import { articleSchema, reviewSchema, faqSchema, breadcrumbSchema } from '~/lib/schema';
 import { ogImage, SITE, canonical } from '~/lib/seo';
 import { articleSlug, articleVisibility, isPublished } from '~/lib/publish';
+import { shouldShowDisclosure, typeLabel } from '~/lib/content-model';
+import { authorByline } from '~/lib/byline';
 
 type Props = {
   entry: CollectionEntry<'articles'>;
@@ -17,10 +24,16 @@ type Props = {
 
 const { entry } = Astro.props;
 const { data } = entry;
+const body = typeof entry.body === 'string' ? entry.body : '';
 
 const category = await getEntry(data.category);
 if (!category) {
   throw new Error(`Missing category for article ${entry.id}`);
+}
+
+const author = await getEntry(data.author);
+if (!author) {
+  throw new Error(`Missing author for article ${entry.id}`);
 }
 
 const slug = articleSlug(entry.id);
@@ -29,7 +42,7 @@ const heroPath = `${category.data.slug}/${slug}`;
 const visibility = articleVisibility(data);
 const noindex = visibility !== 'published';
 
-const allArticles = await getCollection('articles', ({ data: item }) => isPublished(item) && item.type !== 'review');
+const allArticles = await getCollection('articles', ({ data: item }) => isPublished(item));
 const fallbackRelated = allArticles
   .filter((a) => a.id !== entry.id && a.data.category.id === data.category.id)
   .slice(0, 3);
@@ -39,8 +52,24 @@ const relatedEntries = data.related.length
   : fallbackRelated;
 const related = relatedEntries.filter((r): r is CollectionEntry<'articles'> => Boolean(r) && isPublished(r.data));
 
+const productEntries = (
+  await Promise.all(data.products.map((ref) => getEntry(ref)))
+).filter((p): p is CollectionEntry<'products'> => Boolean(p));
+
 const isReview = data.type === 'review';
-const reviewedProduct = isReview && data.products[0] ? await getEntry(data.products[0]) : null;
+const isRoundup = data.type === 'roundup';
+const isBriefing = data.type === 'briefing';
+const reviewedProduct = isReview ? productEntries[0] ?? null : null;
+const showDisclosure = shouldShowDisclosure({ products: data.products, body });
+const bodyHasProductCard = /<ProductCard\b/.test(body);
+const bodyHasProsCons = /<ProsCons\b/.test(body);
+const bodyHasVerdict = /<Verdict\b/.test(body);
+const showLayoutProductCards = isReview && productEntries.length > 0 && !bodyHasProductCard;
+const showLayoutProsCons = isReview && productEntries[0] && !bodyHasProsCons;
+const showLayoutVerdict = isReview && (data.rating || productEntries[0]) && !bodyHasVerdict;
+const lastTested = data.lastTested ?? productEntries[0]?.data.lastTested;
+const testMethod = data.testMethod;
+const ourPick = data.ourPick ?? productEntries[0]?.data.ourVerdict;
 
 const customOg = data.og
   ? await getImage({ src: data.og, width: 1200, height: 630, format: 'png' })
@@ -82,6 +111,7 @@ if (faq) ld.push(faq);
 
 const datePub = data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const lastTestedLabel = lastTested?.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 ---
 
 <BaseLayout
@@ -107,8 +137,10 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
       </nav>
 
       <header class="mt-4">
-        <p class="text-eyebrow">
-          {data.eyebrow}
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <TypeBadge type={data.type} />
+          <span aria-hidden="true" class="text-[var(--color-ink-25)]">·</span>
+          <span class="text-eyebrow">{data.eyebrow}</span>
         </p>
         <h1
           class="mt-2 font-serif text-[42px] font-medium leading-[1.05] tracking-[-0.026em] text-[var(--color-ink)] sm:text-[46px]"
@@ -116,6 +148,7 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
           {data.title}
         </h1>
         <p class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-[13px] text-[var(--color-ink-55)]">
+          <span>{authorByline(author.data)}</span>
           <time datetime={data.date.toISOString()}>{datePub}</time>
           {
             data.updated && (
@@ -134,6 +167,19 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
           data.answer && (
             <p class="mt-4 font-serif text-[17px] leading-[1.7] text-[var(--color-ink)]">
               {data.answer}
+            </p>
+          )
+        }
+        {
+          isReview && (lastTestedLabel || testMethod) && (
+            <p class="mt-3 font-sans text-[13px] text-[var(--color-ink-55)]">
+              {lastTestedLabel && (
+                <span>
+                  Last tested <time datetime={lastTested!.toISOString()}>{lastTestedLabel}</time>
+                </span>
+              )}
+              {lastTestedLabel && testMethod && <span aria-hidden="true"> · </span>}
+              {testMethod && <span>{testMethod}</span>}
             </p>
           )
         }
@@ -156,7 +202,48 @@ const dateUpd = data.updated?.toLocaleDateString('en-US', { month: 'long', day: 
     </div>
 
     <div class="container-article mt-10">
-      {isReview && <Disclosure variant="banner" />}
+      {showDisclosure && <Disclosure variant="banner" />}
+
+      {
+        isBriefing && (
+          <Callout title="Not a product test">
+            This is a sourced {typeLabel(data.type).toLowerCase()}, not a lived-with review.
+          </Callout>
+        )
+      }
+
+      {
+        isRoundup && ourPick && (
+          <aside class="not-prose mb-8 border-l-[3px] border-[var(--color-blue)] bg-[var(--color-cream)] px-5 py-4">
+            <p class="font-sans text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--color-blue)]">
+              Our pick
+            </p>
+            <p class="mt-2 font-serif text-[16px] leading-relaxed text-[var(--color-ink-85)]">
+              {ourPick}
+            </p>
+          </aside>
+        )
+      }
+
+      {
+        showLayoutProductCards &&
+          productEntries.map((product) => <ProductCard product={product.id} />)
+      }
+
+      {
+        showLayoutProsCons && productEntries[0] && (
+          <ProsCons title={productEntries[0].data.name} pros={productEntries[0].data.pros} cons={productEntries[0].data.cons} />
+        )
+      }
+
+      {
+        showLayoutVerdict && (
+          <Verdict>
+            {productEntries[0]?.data.ourVerdict ?? `Rated ${data.rating} of 5.`}
+          </Verdict>
+        )
+      }
+
       <div class="prose-ms">
         <slot />
       </div>

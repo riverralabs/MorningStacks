@@ -125,11 +125,12 @@ export default config({
         type: fields.select({
           label: 'Type',
           options: [
-            { label: 'Article', value: 'article' },
             { label: 'Review', value: 'review' },
             { label: 'Roundup', value: 'roundup' },
+            { label: 'Briefing', value: 'briefing' },
+            { label: 'Explainer', value: 'explainer' },
           ],
-          defaultValue: 'article',
+          defaultValue: 'explainer',
         }),
         description: fields.text({
           label: 'Description',
@@ -152,6 +153,7 @@ export default config({
         author: fields.relationship({
           label: 'Author',
           collection: 'authors',
+          validation: { isRequired: true },
         }),
         date: fields.date({ label: 'Date', validation: { isRequired: true } }),
         updated: fields.date({ label: 'Updated' }),
@@ -185,6 +187,20 @@ export default config({
           step: 0.1,
           validation: { min: 0, max: 5 },
         }),
+        lastTested: fields.date({
+          label: 'Last tested',
+          description: 'Required to publish a review unless Test method is filled.',
+        }),
+        testMethod: fields.text({
+          label: 'Test method',
+          multiline: true,
+          description: 'Explicit test method when lastTested is empty. Reviews only.',
+        }),
+        ourPick: fields.text({
+          label: 'Our pick',
+          multiline: true,
+          description: 'Roundup winner. Never a paid slot.',
+        }),
         faq: fields.array(
           fields.object({
             q: fields.text({ label: 'Question', validation: { isRequired: true } }),
@@ -212,7 +228,10 @@ export default config({
           label: 'Related articles',
           collection: 'articles',
         }),
-        featured: fields.checkbox({ label: 'Featured on the home page' }),
+        featured: fields.checkbox({
+          label: 'Featured on the home page',
+          description: 'At most one published featured piece at a time.',
+        }),
         seed: fields.checkbox({
           label: 'Seed placeholder',
           description:

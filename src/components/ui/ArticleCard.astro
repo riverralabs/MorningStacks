@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { articleHref } from '~/lib/publish';
+import TypeBadge from './TypeBadge.astro';
 
 type Props = {
   article: CollectionEntry<'articles'>;
@@ -37,8 +38,10 @@ const titleClass = {
       </a>
     )
   }
-  <p class="mt-4 text-eyebrow">
-    {data.eyebrow}
+  <p class="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+    <TypeBadge type={data.type} />
+    <span aria-hidden="true" class="text-[var(--color-ink-25)]">·</span>
+    <span class="text-eyebrow">{data.eyebrow}</span>
   </p>
   <h3 class:list={['mt-2 font-serif font-medium text-[var(--color-ink)]', titleClass]}>
     <a href={href} class="inline-flex min-h-11 items-center transition-opacity hover:opacity-80">{data.title}</a>

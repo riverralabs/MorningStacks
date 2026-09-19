@@ -11,6 +11,8 @@
     "astro": "astro",
     "lint": "eslint . --ext .js,.ts,.astro,.mjs,.cjs",
     "typecheck": "astro check",
+    "check:content": "node --experimental-strip-types scripts/check-publish-gates.mjs",
+    "test:content": "node --experimental-strip-types --test scripts/check-publish-gates.test.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {
