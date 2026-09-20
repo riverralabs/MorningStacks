@@ -5,14 +5,19 @@ import vercel from '@astrojs/vercel';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
-import { sitemapExcludeFragments } from './src/lib/sitemap-excludes';
+import {
+  articleLastmodByUrl,
+  serializeSitemapItem,
+  shouldIncludeSitemapPage,
+} from './src/lib/sitemap';
 import { resolveSiteUrl } from './src/lib/site-url';
 
 const SITE = resolveSiteUrl(process.env.SITE_URL);
-const exclude = sitemapExcludeFragments();
+const sitemapLastmods = articleLastmodByUrl(SITE);
 
 export default defineConfig({
   site: SITE,
+  trailingSlash: 'always',
   output: 'static',
   env: {
     schema: {
@@ -36,8 +41,9 @@ export default defineConfig({
     mdx(),
     keystatic(),
     sitemap({
-      filter: (page) => !exclude.some((fragment) => page.includes(fragment)),
-      customPages: [`${SITE.replace(/\/$/, '')}/llms.txt`, `${SITE.replace(/\/$/, '')}/rss.xml`],
+      filter: shouldIncludeSitemapPage,
+      serialize: (item) => serializeSitemapItem(item, sitemapLastmods),
+      namespaces: { news: false, xhtml: false, image: false, video: false },
     }),
   ],
   image: {

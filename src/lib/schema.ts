@@ -32,10 +32,11 @@ export function websiteSchema(): WithContext<WebSite> {
     '@type': 'WebSite',
     name: SITE.name,
     url: SITE.url,
+    inLanguage: 'en-US',
     description: SITE.description,
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${SITE.url}/search?q={search_term_string}`,
+      target: `${SITE.url}/search/?q={search_term_string}`,
       // schema-dts requires query-input as a string-like enum entry; cast below
       'query-input': 'required name=search_term_string',
     } as unknown as WebSite['potentialAction'],
@@ -50,6 +51,7 @@ export function articleSchema(input: {
   dateModified?: Date;
   image: string;
   section?: string;
+  authorName: string;
 }): WithContext<Article> {
   return {
     '@context': 'https://schema.org',
@@ -59,6 +61,11 @@ export function articleSchema(input: {
     image: input.image,
     datePublished: input.datePublished.toISOString(),
     dateModified: (input.dateModified ?? input.datePublished).toISOString(),
+    inLanguage: 'en-US',
+    author: {
+      '@type': 'Person',
+      name: input.authorName,
+    },
     publisher: {
       '@type': 'Organization',
       name: SITE.publisher,
@@ -83,6 +90,7 @@ export function reviewSchema(input: {
   productCategory?: string;
   rating: number;
   ratingMax?: number;
+  authorName: string;
 }): WithContext<Review> {
   return {
     '@context': 'https://schema.org',
@@ -92,6 +100,11 @@ export function reviewSchema(input: {
     image: input.image,
     datePublished: input.datePublished.toISOString(),
     dateModified: (input.dateModified ?? input.datePublished).toISOString(),
+    inLanguage: 'en-US',
+    author: {
+      '@type': 'Person',
+      name: input.authorName,
+    },
     publisher: {
       '@type': 'Organization',
       name: SITE.publisher,

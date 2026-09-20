@@ -6,12 +6,20 @@ type Props = {
   description?: string;
   eyebrow?: string;
   ogSlug?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
 };
 
-const { title, description, eyebrow, ogSlug } = Astro.props;
+const { title, description, eyebrow, ogSlug, canonicalPath, noindex } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} ogSlug={ogSlug}>
+<BaseLayout
+  title={title}
+  description={description}
+  ogSlug={ogSlug}
+  canonicalPath={canonicalPath}
+  noindex={noindex}
+>
   <article class="container-article py-16">
     <header class="mb-10">
       {

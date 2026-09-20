@@ -1,4 +1,4 @@
-import { resolveSiteUrl } from './site-url';
+import { canonicalUrl, resolveSiteUrl } from './site-url';
 
 export const SITE = {
   name: 'MorningStacks',
@@ -34,8 +34,7 @@ export function buildDescription(pageDescription?: string): string {
 }
 
 export function canonical(pathname: string, base: string = SITE.url): string {
-  const path = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
-  return new URL(path, base).toString();
+  return canonicalUrl(pathname, base);
 }
 
 export function ogImage(slug?: string, base: string = SITE.url): string {

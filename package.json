@@ -12,7 +12,9 @@
     "lint": "eslint . --ext .js,.ts,.astro,.mjs,.cjs",
     "typecheck": "astro check",
     "check:content": "node --experimental-strip-types scripts/check-publish-gates.mjs",
+    "check:sitemap": "node --experimental-strip-types scripts/check-sitemap.mjs",
     "test:content": "node --experimental-strip-types --test scripts/check-publish-gates.test.mjs",
+    "test:seo": "node --experimental-strip-types --test scripts/seo.test.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {

@@ -24,4 +24,5 @@ Disallow: /keystatic/
 Disallow: /api/
 
 Sitemap: https://www.morningstacks.com/sitemap-index.xml
+# Alias: https://www.morningstacks.com/sitemap.xml → sitemap-index.xml
 # Machine-readable catalog: https://www.morningstacks.com/llms.txt

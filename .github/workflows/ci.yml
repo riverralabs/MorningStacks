@@ -26,9 +26,13 @@ jobs:
 
       - run: pnpm test:content
 
+      - run: pnpm test:seo
+
       - run: pnpm check:content
 
       - run: pnpm build
         env:
           NEWSLETTER_PROVIDER: stub
           SITE_URL: https://www.morningstacks.com
+
+      - run: pnpm check:sitemap
