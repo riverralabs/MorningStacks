@@ -35,6 +35,7 @@ Requires Node 22+ and pnpm 10+.
 | `src/lib/og.ts` + `src/pages/og/[...slug].png.ts` | 1200×630 OG slots (typographic placeholder until Kinjal uploads) |
 | `src/pages/llms.txt.ts` | AEO/GEO file for assistants; lists published articles only |
 | `src/pages/rss.xml.ts` | RSS feed (published only) |
+| `src/lib/sitemap.ts` | Sitemap filter + article `lastmod` map used by `@astrojs/sitemap` |
 | `public/fonts/` | Self-hosted Lora + Space Grotesk woff2 (Latin subset) for the site |
 | `src/assets/fonts/` | TTF copies for Satori OG generation only |
 | `brand/` | Brand book v1.1 reference. Source of truth for tokens and patterns |
@@ -106,9 +107,21 @@ The form posts to `/api/subscribe`, which calls `src/lib/newsletter.ts`. The cur
    - Keystatic GitHub App vars when Jane should edit on a deployed preview: `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`.
 5. Deploy. The first build runs `pnpm build` (which is `astro build && pagefind --site .vercel/output/static`) and Vercel routes everything via the adapter.
 
-Canonical host is `https://www.morningstacks.com`. Apex requests 301 to www via `vercel.json`. Keep both hosts attached in Vercel so the redirect can fire.
+Canonical host is `https://www.morningstacks.com`. Apex requests 301 to www via `vercel.json`. Keep both hosts attached in Vercel so the redirect can fire. HTML URLs use a trailing slash (`/about/`, `/ai-tools/slug/`). Bare paths 308 to the slashed URL.
 
 `@astrojs/vercel` outputs prerendered HTML to the static asset CDN and turns `/api/subscribe` and `/keystatic` (any route with `prerender = false`) into Vercel Serverless Functions. OG images are prerendered at build time, so they're served as cached static PNGs unless Kinjal uploads a 1200×630 file into the article OG slot.
+
+### Google indexing
+
+The build emits `sitemap-index.xml` + `sitemap-0.xml`. `/sitemap.xml` 308s to the index so a Search Console paste still works. `robots.txt` already lists the index. Article `<loc>` entries include `lastmod` from `updated` or `date`. Search, Keystatic, API, OG images, and `/affiliate-disclosure/` (canonicalized to `/disclosure/`) stay out of the sitemap.
+
+Google Search Console verification file: `public/google044d8d30cc3be5fb.html`. Keep it. After a production Promote:
+
+1. Search Console → Sitemaps → submit `https://www.morningstacks.com/sitemap-index.xml` once (Google refetches on its own after that).
+2. URL Inspection → Request indexing on the homepage and each new article URL, using the trailing-slash www form that matches the canonical tag.
+3. Watch the Pages report. A slash mismatch between sitemap `<loc>` and `rel=canonical` is the usual “duplicate / page with redirect” trap; both now use the slashed URL.
+
+Google ignores sitemap `priority` and `changefreq`, so we do not set them. Preview deploys (`VERCEL_ENV=preview`) send `noindex`.
 
 ### Local preview
 
@@ -123,7 +136,7 @@ pnpm build && pnpm preview
 CI (`.github/workflows/ci.yml`) runs lint, typecheck, content gates, and build on every PR. Locally:
 
 ```bash
-pnpm lint && pnpm typecheck && pnpm test:content && pnpm check:content && pnpm build
+pnpm lint && pnpm typecheck && pnpm test:content && pnpm test:seo && pnpm check:content && pnpm build && pnpm check:sitemap
 ```
 
 ## Brand

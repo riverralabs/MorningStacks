@@ -35,6 +35,7 @@ ${SITE.description}
 - Contact: ${SITE.url}/contact/
 - RSS: ${SITE.url}/rss.xml
 - Sitemap: ${SITE.url}/sitemap-index.xml
+- Sitemap alias: ${SITE.url}/sitemap.xml
 
 ## Sections
 

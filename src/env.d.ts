@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly SITE?: string;
   readonly SITE_URL?: string;
   readonly PUBLIC_KEYSTATIC_GITHUB_APP_SLUG?: string;
+  readonly VERCEL_ENV?: 'production' | 'preview' | 'development';
 }
 
 interface ImportMeta {
@@ -13,6 +14,7 @@ interface ImportMeta {
 declare namespace NodeJS {
   interface ProcessEnv {
     SITE_URL?: string;
+    VERCEL_ENV?: 'production' | 'preview' | 'development';
     NEWSLETTER_PROVIDER?: 'stub' | 'beehiiv' | 'convertkit' | 'buttondown';
     KEYSTATIC_GITHUB_CLIENT_ID?: string;
     KEYSTATIC_GITHUB_CLIENT_SECRET?: string;

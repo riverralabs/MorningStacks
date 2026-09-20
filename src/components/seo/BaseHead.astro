@@ -48,11 +48,18 @@ const siteJsonLd = JSON.stringify(websiteSchema());
 <title>{finalTitle}</title>
 <meta name="description" content={finalDescription} />
 <link rel="canonical" href={finalCanonical} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{
+  noindex || import.meta.env.VERCEL_ENV === 'preview' ? (
+    <meta name="robots" content="noindex, nofollow" />
+  ) : (
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+  )
+}
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="alternate icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" href="/favicon.svg" />
+<link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
 

@@ -5,6 +5,26 @@ const CANONICAL_HOST = 'www.morningstacks.com';
 const APEX_HOST = 'morningstacks.com';
 
 /**
+ * Public HTML URLs keep a trailing slash so canonical, og:url, JSON-LD,
+ * internal links, and sitemap `<loc>` all match the 200 URL Vercel serves.
+ * Files with extensions (rss.xml, llms.txt, images) stay extension URLs.
+ */
+export function canonicalUrl(pathname: string, base: string = CANONICAL_SITE_URL): string {
+  const origin = base.endsWith('/') ? base : `${base}/`;
+  const url = new URL(pathname, origin);
+  url.hash = '';
+  url.search = '';
+  const last = url.pathname.split('/').filter(Boolean).pop() ?? '';
+  const isFile = /\.[a-z0-9]{1,8}$/i.test(last);
+  if (isFile) {
+    url.pathname = url.pathname.replace(/\/+$/, '');
+  } else if (!url.pathname.endsWith('/')) {
+    url.pathname += '/';
+  }
+  return url.toString();
+}
+
+/**
  * Single resolver for the public site origin.
  * `SITE_URL` may override the default (preview/local), but the production
  * apex host is always rewritten to https://www.morningstacks.com so GSC
