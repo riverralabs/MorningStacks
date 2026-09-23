@@ -35,6 +35,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['@resvg/resvg-js', 'satori'],
   poweredByHeader: false,
   images: { unoptimized: true },
+  experimental: { inlineCss: true },
   env: {
     NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG:
       process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG ||

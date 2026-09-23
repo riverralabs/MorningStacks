@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
-import { sans, serif } from './fonts';
+import { sans, serif, serifItalic } from './fonts';
 import { SITE, homeTitle } from '~/lib/seo';
 
 export const metadata: Metadata = {
@@ -35,7 +35,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} bg-[var(--color-paper)]`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${serif.variable} ${serifItalic.variable} bg-[var(--color-paper)]`}
+    >
       <head>
         <link rel="sitemap" href="/sitemap-index.xml" />
       </head>

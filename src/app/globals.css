@@ -124,6 +124,10 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+
+  :is(.font-serif, .prose-ms) :is(em, i, cite) {
+    font-family: var(--ms-font-serif-italic);
+  }
 }
 
 @utility container-page {
