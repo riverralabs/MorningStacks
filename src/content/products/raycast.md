@@ -9,7 +9,7 @@ ourVerdict: If you live on macOS and you're not using Raycast yet, this is the s
 pros:
   - Extension ecosystem covers nearly every internal tool we use
   - Window management, clipboard, and snippets are top-tier alone
-  - Pro AI is well-integrated — it's a launcher feature, not a separate app
+  - Pro AI is well integrated. It's a launcher feature, not a separate app
 cons:
   - macOS only (Windows beta is improving but not yet there)
   - The "everything is a hotkey" mental model has a learning week, not a day
