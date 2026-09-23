@@ -16,5 +16,8 @@ cons:
 rating: 4.7
 affiliateUrl: https://linear.app/?via=morningstacks
 websiteUrl: https://linear.app
+program: direct
+status: none
+commissionNote: Not a joined program. Placeholder query only.
 lastTested: 2026-04-22
 ---

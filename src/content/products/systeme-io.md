@@ -13,6 +13,9 @@ cons:
 rating: 0
 affiliateUrl: https://systeme.io/?via=morningstacks
 websiteUrl: https://systeme.io
+program: direct
+status: none
+commissionNote: Not a joined program. Placeholder query only.
 lastTested: 2026-01-01
 placeholder: true
 ---

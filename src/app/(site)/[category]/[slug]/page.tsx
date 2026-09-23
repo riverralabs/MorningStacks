@@ -81,6 +81,7 @@ export default async function ArticlePage({
       category={category}
       author={author}
       products={products}
+      catalog={catalog}
       related={related}
     />
   );

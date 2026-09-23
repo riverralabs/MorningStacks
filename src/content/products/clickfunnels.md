@@ -13,6 +13,9 @@ cons:
 rating: 0
 affiliateUrl: https://www.clickfunnels.com/?via=morningstacks
 websiteUrl: https://www.clickfunnels.com
+program: direct
+status: none
+commissionNote: Not a joined program. Placeholder query only.
 lastTested: 2026-01-01
 placeholder: true
 ---

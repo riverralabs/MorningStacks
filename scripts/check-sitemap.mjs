@@ -50,7 +50,7 @@ for (const block of urlBlocks) {
   }
 }
 
-const banned = ['/keystatic', '/api/', '/og/', '/search', '/affiliate-disclosure'];
+const banned = ['/keystatic', '/api/', '/og/', '/search', '/go/', '/affiliate-disclosure'];
 for (const loc of locs) {
   if (banned.some((fragment) => loc.includes(fragment))) {
     fail(`non-indexable URL in sitemap: ${loc}`);

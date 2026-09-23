@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { withAffiliateVia } from '~/lib/affiliate';
+import { goHref, isActiveProgram } from '~/lib/affiliate';
 import type { Product } from '~/lib/content';
 import { formatDate } from '~/lib/content';
 import { Stars } from '~/components/editorial/Stars';
@@ -167,14 +167,19 @@ export function Figure({
   );
 }
 
-export function ProductCardView({ product }: { product: Product }) {
-  const href = withAffiliateVia(product.affiliateUrl);
-  let host = '';
+function publicHost(product: Product): string {
+  const raw = product.websiteUrl || product.affiliateUrl;
   try {
-    host = new URL(product.affiliateUrl).hostname.replace(/^www\./, '');
+    return new URL(raw).hostname.replace(/^www\./, '');
   } catch {
-    host = '';
+    return '';
   }
+}
+
+export function ProductCardView({ product }: { product: Product }) {
+  const paid = isActiveProgram(product);
+  const href = paid ? goHref(product.slug) : product.websiteUrl || product.affiliateUrl;
+  const host = publicHost(product);
   return (
     <article className="not-prose my-10 border border-[var(--color-ink)]">
       <div className="grid gap-0 md:grid-cols-[1.4fr_1fr]">
@@ -219,11 +224,10 @@ export function ProductCardView({ product }: { product: Product }) {
           <div>
             <a
               href={href}
-              rel="sponsored noopener"
-              target="_blank"
+              {...(paid ? { rel: 'sponsored noopener', target: '_blank' } : { rel: 'noopener' })}
               className="inline-flex min-h-11 w-full items-center justify-center border border-[var(--color-ink)] px-4 font-sans text-[13px] uppercase tracking-[0.14em] hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)]"
             >
-              Try {product.name}
+              {paid ? `Try ${product.name}` : `Visit ${product.name}`}
             </a>
             <p className="mt-3 font-sans text-[11px] uppercase tracking-[0.12em] text-[var(--color-ink-55)]">
               {host}
@@ -233,6 +237,29 @@ export function ProductCardView({ product }: { product: Product }) {
         </aside>
       </div>
     </article>
+  );
+}
+
+export function AffiliateLinkView({
+  product,
+  children,
+}: {
+  product: Product;
+  children?: ReactNode;
+}) {
+  if (!isActiveProgram(product)) {
+    const href = product.websiteUrl || product.affiliateUrl;
+    if (!href) return <>{children}</>;
+    return (
+      <a href={href} rel="noopener">
+        {children}
+      </a>
+    );
+  }
+  return (
+    <a href={goHref(product.slug)} rel="sponsored noopener" target="_blank">
+      {children}
+    </a>
   );
 }
 
@@ -251,6 +278,11 @@ export function createMdxComponents(products: Product[]) {
       const item = bySlug.get(product);
       if (!item) return null;
       return <ProductCardView product={item} />;
+    },
+    AffiliateLink: ({ product, children }: { product: string; children?: ReactNode }) => {
+      const item = bySlug.get(product);
+      if (!item) return <>{children}</>;
+      return <AffiliateLinkView product={item}>{children}</AffiliateLinkView>;
     },
   };
 }

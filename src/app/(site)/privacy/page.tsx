@@ -41,9 +41,10 @@ export default function PrivacyPage() {
       </p>
       <h2>Affiliate links</h2>
       <p>
-        Some links to vendor sites use the query <code>via=morningstacks</code>. If you click one, that vendor or
-        its affiliate network may know you arrived from MorningStacks. What they collect after you leave this
-        site is governed by their own policies. See the <Link href="/disclosure/">affiliate disclosure</Link>.
+        Some buttons go to <code>/go/</code> and then to a vendor. We do not add an advertising pixel on that
+        redirect. The vendor or its affiliate network may know you arrived from MorningStacks. What they collect
+        after you leave this site is governed by their own policies. See the{' '}
+        <Link href="/disclosure/">affiliate disclosure</Link>.
       </p>
       <h2>How long we keep email</h2>
       <p>

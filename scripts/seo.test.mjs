@@ -78,6 +78,7 @@ date: 2026-09-02
   assert.equal(shouldIncludeSitemapPage(`${ORIGIN}/ai-tools/live/`, fragments), true);
   assert.equal(shouldIncludeSitemapPage(`${ORIGIN}/search/`, fragments), false);
   assert.equal(shouldIncludeSitemapPage(`${ORIGIN}/affiliate-disclosure/`, fragments), false);
+  assert.equal(shouldIncludeSitemapPage(`${ORIGIN}/go/linear/`, fragments), false);
 
   const lastmods = articleLastmodByUrl(ORIGIN, [published, unlisted]);
   assert.equal(lastmods.get(`${ORIGIN}/ai-tools/live/`), '2026-09-02');
