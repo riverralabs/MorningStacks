@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { canonicalUrl, CANONICAL_SITE_URL } from '../src/lib/site-url.ts';
 import {
   articleLastmodByUrl,
@@ -9,26 +6,16 @@ import {
   isPublishedOnSitemap,
   loadArticleSitemapRecords,
 } from '../src/lib/sitemap.ts';
+import { renderSitemapIndex, renderSitemapUrlset } from '../src/lib/sitemap-document.ts';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const staticDir = join(root, '.vercel/output/static');
-const indexPath = join(staticDir, 'sitemap-index.xml');
-const urlsetPath = join(staticDir, 'sitemap-0.xml');
 const errors = [];
 
 function fail(message) {
   errors.push(message);
 }
 
-if (!existsSync(indexPath) || !existsSync(urlsetPath)) {
-  console.error(
-    'Sitemap files missing. Run `pnpm build` first. Expected sitemap-index.xml and sitemap-0.xml in .vercel/output/static/.',
-  );
-  process.exit(1);
-}
-
-const indexXml = readFileSync(indexPath, 'utf8');
-const urlsetXml = readFileSync(urlsetPath, 'utf8');
+const indexXml = renderSitemapIndex();
+const urlsetXml = renderSitemapUrlset();
 
 if (!indexXml.includes(`${CANONICAL_SITE_URL}/sitemap-0.xml`)) {
   fail(`sitemap-index.xml must point at ${CANONICAL_SITE_URL}/sitemap-0.xml`);

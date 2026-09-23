@@ -5,7 +5,7 @@ export const SITE = {
   tagline: 'The software stack for operators and founders.',
   description:
     'Sourced operator briefings and comparisons of SaaS, AI tools, and software operators actually pay for. Clearly labeled. Editorial first, commerce second.',
-  url: resolveSiteUrl(import.meta.env.SITE ?? import.meta.env.SITE_URL),
+  url: resolveSiteUrl(process.env.SITE_URL),
   twitter: '@morningstacks',
   defaultOgImage: '/og/default.png',
   defaultLocale: 'en_US',
