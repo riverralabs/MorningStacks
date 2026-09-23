@@ -2,19 +2,19 @@
 
 > The software stack for operators and founders. Sourced operator briefings and comparisons, clearly labeled.
 
-Built with **Astro 5 + MDX + Tailwind v4**. Deploys to **Vercel**. Zero JS on article pages. Jane edits in **Keystatic** (`/keystatic`), which commits MDX back to this repo. No separate CMS vendor.
+Built with **Next.js App Router + MDX + Tailwind v4**. Deploys to **Vercel**. Jane edits in **Keystatic** (`/keystatic`), which commits MDX back to this repo. No separate CMS vendor.
 
 ## Quick start
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:4321  ·  admin: http://127.0.0.1:4321/keystatic
-pnpm typecheck    # astro check (zero errors required)
+pnpm dev          # http://localhost:3000  ·  admin: http://127.0.0.1:3000/keystatic
+pnpm typecheck    # tsc --noEmit
 pnpm lint         # eslint
 pnpm check:content # fail if a published piece is missing required fields
 pnpm test:content # publish-gate unit checks
-pnpm build        # astro build + pagefind index
-pnpm preview      # serve dist/
+pnpm build        # next build + pagefind index
+pnpm start        # serve the production build
 ```
 
 Requires Node 22+ and pnpm 10+.
@@ -23,26 +23,26 @@ Requires Node 22+ and pnpm 10+.
 
 | Path | Purpose |
 | --- | --- |
-| `src/content/` | Articles (MDX), products, categories, authors. Schemas in `src/content.config.ts` |
+| `src/content/` | Articles (MDX), products, categories, authors. Schema in `keystatic.config.ts` |
 | `keystatic.config.ts` | Git-backed admin mapped onto those same collections |
-| `src/layouts/` | `BaseLayout`, `ArticleLayout`, `PageLayout` |
-| `src/components/seo/BaseHead.astro` | Title, meta, OG, JSON-LD wiring |
-| `src/components/ui/` | Buttons, cards, disclosure banner, newsletter form, etc. |
+| `src/app/` | App Router pages, sitemap, RSS, llms.txt, subscribe, Keystatic |
+| `src/components/editorial/` | Masthead, footer, wordmark, issue index |
+| `src/components/mdx/` | React MDX blocks (Callout, ProductCard, Verdict, and the rest) |
 | `src/lib/seo.ts`, `src/lib/schema.ts` | SEO helpers + typed JSON-LD builders (`schema-dts`) |
 | `src/lib/publish.ts` | Draft / unlisted / published / seed visibility |
 | `src/lib/content-model.ts` | Four article types and publish-gate rules |
 | `src/lib/newsletter.ts` | Provider-agnostic subscribe interface (stub / beehiiv / convertkit / buttondown) |
-| `src/lib/og.ts` + `src/pages/og/[...slug].png.ts` | 1200×630 OG slots (typographic placeholder until Kinjal uploads) |
-| `src/pages/llms.txt.ts` | AEO/GEO file for assistants; lists published articles only |
-| `src/pages/rss.xml.ts` | RSS feed (published only) |
-| `src/lib/sitemap.ts` | Sitemap filter + article `lastmod` map used by `@astrojs/sitemap` |
+| `src/lib/og.ts` + `src/app/og/` | 1200×630 OG cards, or the uploaded PNG when one exists |
+| `src/app/llms.txt/route.ts` | AEO/GEO file for assistants; lists published articles only |
+| `src/app/rss.xml/route.ts` | RSS feed (published only) |
+| `src/lib/sitemap.ts` | Sitemap filter + article `lastmod` map |
 | `public/fonts/` | Self-hosted Lora + Space Grotesk woff2 (Latin subset) for the site |
 | `src/assets/fonts/` | TTF copies for Satori OG generation only |
 | `brand/` | Brand book v1.1 reference. Source of truth for tokens and patterns |
 
 ## Authoring articles
 
-Jane should prefer Keystatic at `/keystatic` (local filesystem in `pnpm dev`; GitHub mode on Vercel when the Keystatic GitHub App env vars are set). Articles still live in `src/content/articles/*.mdx`. Frontmatter is validated by `src/content.config.ts`.
+Jane should prefer Keystatic at `/keystatic` (local filesystem in `pnpm dev`; GitHub mode on Vercel when the Keystatic GitHub App env vars are set). Articles still live in `src/content/articles/*.mdx`. The schema is `keystatic.config.ts`.
 
 Visibility:
 
@@ -99,17 +99,15 @@ The form posts to `/api/subscribe`, which calls `src/lib/newsletter.ts`. The cur
 
 1. Push to GitHub.
 2. Vercel dashboard → Add New → Project → Import the repo.
-3. Framework preset: **Astro** (auto-detected). Build command and output dir auto-detected from `@astrojs/vercel`.
+3. Framework preset: **Next.js**. Build command is `pnpm build`.
 4. Set environment variables (Project → Settings → Environment Variables):
    - `SITE_URL` — `https://www.morningstacks.com` (canonical production host). Apex `https://morningstacks.com` is rewritten to www at build time.
    - `NEWSLETTER_PROVIDER` — `stub` for now.
    - `BEEHIIV_API_KEY` / `BEEHIIV_PUBLICATION_ID` (or the matching ConvertKit / Buttondown vars) when ready.
-   - Keystatic GitHub App vars when Jane should edit on a deployed preview: `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`.
-5. Deploy. The first build runs `pnpm build` (which is `astro build && pagefind --site .vercel/output/static`) and Vercel routes everything via the adapter.
+   - Keystatic GitHub App vars when Jane should edit on a deployed preview: `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` (or `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`).
+5. Deploy. `pnpm build` runs `next build`, then Pagefind writes the search index into `.next/static/pagefind`.
 
-Canonical host is `https://www.morningstacks.com`. Apex requests 301 to www via `vercel.json`. Keep both hosts attached in Vercel so the redirect can fire. HTML URLs use a trailing slash (`/about/`, `/ai-tools/slug/`). Bare paths 308 to the slashed URL.
-
-`@astrojs/vercel` outputs prerendered HTML to the static asset CDN and turns `/api/subscribe` and `/keystatic` (any route with `prerender = false`) into Vercel Serverless Functions. OG images are prerendered at build time, so they're served as cached static PNGs unless Kinjal uploads a 1200×630 file into the article OG slot.
+Canonical host is `https://www.morningstacks.com`. Apex requests 301 to www via `vercel.json`. Keep both hosts attached in Vercel so the redirect can fire. HTML URLs use a trailing slash (`/about/`, `/ai-tools/slug/`). Middleware 308s bare HTML paths. `/api/` and `/keystatic` are left alone so POST bodies survive. Uploaded article OG images in `src/assets/og/{slug}/og.png` are served at `/og/{category}/{slug}.png`. Otherwise that URL is a typographic card.
 
 ### Google indexing
 
@@ -129,7 +127,7 @@ Google ignores sitemap `priority` and `changefreq`, so we do not set them. Previ
 pnpm build && pnpm preview
 ```
 
-`vercel dev` also works if you want the full Vercel runtime locally; it's not required for everyday development since `pnpm dev` runs the same Astro server.
+`pnpm dev` is enough for everyday work. `pnpm build && pnpm start` serves the production build.
 
 ## Lint, typecheck, build before every commit
 
@@ -141,4 +139,4 @@ pnpm lint && pnpm typecheck && pnpm test:content && pnpm test:seo && pnpm check:
 
 ## Brand
 
-Tokens, type scale, and component patterns mirror the brand book at `brand/morningstacks_voice_and_tone.html`. CSS tokens live in `src/styles/tokens.css` (Tailwind v4 `@theme` block). Don't fork the tokens. Edit them in the `@theme` block and they propagate as Tailwind utilities everywhere.
+Tokens, type scale, and component patterns mirror the brand book at `brand/morningstacks_voice_and_tone.html`. CSS tokens live in `src/app/globals.css` (Tailwind v4 `@theme` block). Don't fork the tokens. Edit them in the `@theme` block and they propagate as Tailwind utilities everywhere.

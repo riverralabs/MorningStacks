@@ -1,5 +1,6 @@
 # build
 dist/
+.next/
 .astro/
 .vercel/
 
@@ -25,3 +26,5 @@ yarn-error.log*
 
 # pagefind
 pagefind/
+tsconfig.tsbuildinfo
+.playwright-mcp/
