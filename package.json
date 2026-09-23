@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "check:content": "node --experimental-strip-types scripts/check-publish-gates.mjs",
     "check:sitemap": "node --experimental-strip-types scripts/check-sitemap.mjs",
-    "test:content": "node --experimental-strip-types --test scripts/check-publish-gates.test.mjs",
+    "test:content": "node --experimental-strip-types --test scripts/check-publish-gates.test.mjs scripts/affiliate.test.mjs",
     "test:seo": "node --experimental-strip-types --test scripts/seo.test.mjs",
     "format": "prettier --write ."
   },

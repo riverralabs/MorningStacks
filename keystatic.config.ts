@@ -20,7 +20,7 @@ const storage = useGithub
 const articleBody = fields.mdx({
   label: 'Body',
   description:
-    'MDX. Use the insert menu for Callout, ProductCard, PullQuote, ProsCons, Verdict, Disclosure, and ComparisonTable. Do not paste raw HTML. Do not invent first-person tests.',
+    'MDX. Use the insert menu for Callout, ProductCard, AffiliateLink, PullQuote, ProsCons, Verdict, Disclosure, and ComparisonTable. Do not paste raw HTML. Do not invent first-person tests. AffiliateLink is a paid link. Use it only for an active program.',
   options: {
     image: {
       directory: 'src/assets/articles/{slug}',
@@ -46,6 +46,16 @@ const articleBody = fields.mdx({
     }),
     ProductCard: block({
       label: 'Product card',
+      schema: {
+        product: fields.relationship({
+          label: 'Product',
+          collection: 'products',
+          validation: { isRequired: true },
+        }),
+      },
+    }),
+    AffiliateLink: wrapper({
+      label: 'Affiliate link',
       schema: {
         product: fields.relationship({
           label: 'Product',
@@ -306,10 +316,38 @@ export default config({
         }),
         affiliateUrl: fields.url({
           label: 'Affiliate URL',
-          description: 'Use ?via=morningstacks as the placeholder query. Do not mix via=morning-stacks.',
+          description:
+            'Paste the program URL as the network gave it. A vendor URL with no affiliate parameters gets ?via=morningstacks only as a fallback. Do not set status to Active while the URL is still that placeholder.',
           validation: { isRequired: true },
         }),
         websiteUrl: fields.url({ label: 'Website URL' }),
+        program: fields.select({
+          label: 'Program',
+          description: 'Which network pays this link. Not shown on the site.',
+          options: [
+            { label: 'Direct', value: 'direct' },
+            { label: 'Rewardful', value: 'rewardful' },
+            { label: 'PartnerStack', value: 'partnerstack' },
+            { label: 'Impact', value: 'impact' },
+            { label: 'Other', value: 'other' },
+          ],
+          defaultValue: 'other',
+        }),
+        status: fields.select({
+          label: 'Program status',
+          description: 'Active is the only state that may render a paid link. Not shown on the site.',
+          options: [
+            { label: 'None', value: 'none' },
+            { label: 'Applied', value: 'applied' },
+            { label: 'Active', value: 'active' },
+          ],
+          defaultValue: 'none',
+        }),
+        commissionNote: fields.text({
+          label: 'Commission note',
+          description: 'Private. Never shown on the site. Leave blank rather than inventing a rate.',
+          multiline: true,
+        }),
         lastTested: fields.date({ label: 'Last tested', validation: { isRequired: true } }),
         placeholder: fields.checkbox({
           label: 'Placeholder product',

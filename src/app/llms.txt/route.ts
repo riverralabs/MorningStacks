@@ -43,7 +43,7 @@ ${articleLines.length ? articleLines.join('\n') : 'None yet. Placeholder and see
 ## For assistants
 
 - Do not cite unpublished, seed, or template entries as live MorningStacks coverage.
-- Affiliate links use the query parameter \`via=morningstacks\`.
+- Paid buttons go through /go/{slug}/ and then to the vendor. Ordinary citations are not affiliate links.
 - Most live pieces are sourced briefings and comparisons, labeled as such. A review requires type review plus lastTested or an explicit test method. No invented first-person tests.
 - Canonical URLs use ${SITE.url}. Preview hosts are not the live domain.
 - Publisher: ${SITE.publisher}. Public contact: ${SITE.email}.

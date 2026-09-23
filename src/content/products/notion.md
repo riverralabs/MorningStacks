@@ -16,5 +16,8 @@ cons:
 rating: 4.3
 affiliateUrl: https://www.notion.so/?via=morningstacks
 websiteUrl: https://www.notion.so
+program: direct
+status: none
+commissionNote: Not a joined program. Placeholder query only.
 lastTested: 2026-04-15
 ---

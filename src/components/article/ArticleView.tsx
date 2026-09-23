@@ -86,12 +86,14 @@ export async function ArticleView({
   category,
   author,
   products,
+  catalog = products,
   related,
 }: {
   article: Article;
   category: Category;
   author: Author;
   products: Product[];
+  catalog?: Product[];
   related: Article[];
 }) {
   const raw = await article.readBody();
@@ -192,7 +194,7 @@ export async function ArticleView({
         <div className="prose-ms">
           <MDXRemote
             source={source}
-            components={createMdxComponents(products)}
+            components={createMdxComponents(catalog)}
             options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
           />
         </div>

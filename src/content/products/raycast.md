@@ -16,5 +16,8 @@ cons:
 rating: 4.8
 affiliateUrl: https://www.raycast.com/?via=morningstacks
 websiteUrl: https://www.raycast.com
+program: direct
+status: none
+commissionNote: Not a joined program. Placeholder query only.
 lastTested: 2026-05-01
 ---

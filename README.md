@@ -54,7 +54,7 @@ Visibility:
 
 `seed: true` is a hold flag for leftover placeholder articles. Seed entries stay off the live domain even if someone flips visibility. `template: true` is the same hold for skeleton files. Neither may be published.
 
-Every MDX is exactly one type: `review` | `roundup` | `briefing` | `explainer`. Loose `article` is deprecated. Published pieces need `answer` (40–80 words), at least one `source`, and `author`. Reviews also need `products` plus `lastTested` or `testMethod`. Disclosure renders whenever products, ProductCards, or sponsored links are present, not only on reviews.
+Every MDX is exactly one type: `review` | `roundup` | `briefing` | `explainer`. Loose `article` is deprecated. Published pieces need `answer` (40–80 words), at least one `source`, and `author`. Reviews also need `products` plus `lastTested` or `testMethod`. Disclosure renders whenever products, ProductCards, AffiliateLinks, or sponsored links are present, not only on reviews.
 
 ```mdx
 ---
@@ -82,6 +82,7 @@ related: []
 ---
 
 <ProductCard product="linear" /> embeds a product card.
+<AffiliateLink product="linear">Try Linear</AffiliateLink> is an explicit paid link.
 <PullQuote cite="...">...</PullQuote>
 <Callout tone="info" title="...">...</Callout>
 <ComparisonTable> wrap a markdown table </ComparisonTable>
@@ -89,7 +90,7 @@ related: []
 
 Reviews emit `Review` JSON-LD. FAQ pairs emit `FAQPage` JSON-LD. `pnpm check:content` fails the build if a published piece is missing required fields.
 
-Affiliate URLs use `?via=morningstacks` (not `via=morning-stacks`). Older `?ref=morningstacks` placeholders were normalized to `via`.
+A product stores the real program URL in `affiliateUrl` and the public site in `websiteUrl`. `program` is `direct`, `rewardful`, `partnerstack`, `impact`, or `other`. `status` is `none`, `applied`, or `active`. Only `active` renders a paid link, and only through `/go/{slug}/`, which redirects to the stored URL. A network URL is not rewritten. `?via=morningstacks` is a fallback for a vendor URL that has no affiliate parameters, and it cannot be `active`. `commissionNote` stays in the file and is not rendered. Until a program is active, a product card links to `websiteUrl` without `rel="sponsored"`.
 
 ## Newsletter
 
