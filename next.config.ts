@@ -36,6 +36,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: { unoptimized: true },
   experimental: { inlineCss: true },
+  /* Server routes read content at request time (Keystatic reader, product files for /go/,
+   * article lookups for /og/). The tracer cannot follow those paths, so ship them explicitly. */
+  outputFileTracingIncludes: {
+    '/**': ['./src/content/**/*'],
+    '/og/**': ['./src/assets/og/**/*', './src/assets/fonts/**/*', './public/brand/**/*'],
+    '/media/**': ['./src/assets/articles/**/*'],
+  },
   env: {
     NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG:
       process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG ||
