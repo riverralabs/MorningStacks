@@ -1,49 +1,65 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Paper } from '~/components/editorial/Paper';
+import { DocPage } from '~/components/stories/DocPage';
 import { pageMetadata } from '~/lib/metadata';
 import { SITE } from '~/lib/seo';
 
 export const metadata: Metadata = pageMetadata({
-  title: 'Privacy Policy',
+  title: 'Privacy policy',
   description:
-    'How MorningStacks handles email, affiliate clicks, and the fact that we do not run analytics pixels today. Draft policy. Not legal advice.',
+    'What MorningStacks collects (very little), why there is no cookie banner, how email and affiliate links work, and how to ask us to delete your data.',
   path: '/privacy/',
   ogSlug: 'privacy',
 });
 
 export default function PrivacyPage() {
   return (
-    <Paper eyebrow="Legal" title="Privacy Policy">
+    <DocPage
+      path="/privacy/"
+      title="Privacy policy"
+      summary="We collect as little as we can. No analytics, no advertising pixels, and no cookies on reader pages."
+      updated="Last updated September 2026. Draft. Not legal advice."
+    >
       <p>
         This is a working draft for an affiliate publication. It is not legal advice. Questions go to{' '}
         <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
       <h2>Who we are</h2>
       <p>
-        MorningStacks is an independent publication. The publisher is Riverra Labs LLP. The contact address for
-        this policy is {SITE.email}.
+        MorningStacks is an independent publication. The publisher is {SITE.publisher}. The contact address for this
+        policy is {SITE.email}.
       </p>
       <h2>What we collect</h2>
       <p>
-        If you email us, we receive the address you send from, the message, and any files you attach. We use that
-        to reply, correct a piece, or consider a pitch. We do not sell that information.
+        If you email us, we receive the address you send from, the message, and any files you attach. We use that to
+        reply, correct a piece, or consider a pitch. We do not sell that information.
       </p>
       <p>
-        If you use the newsletter block, it opens a message to {SITE.email}. There is no live email service
-        connected to this site yet. When a provider is connected, this page will name it before any list is
-        collected through the form.
+        The newsletter sign-up is not connected to an email service yet. Until it is, joining means emailing{' '}
+        {SITE.email}, and your address stays in our inbox. When a provider is connected, this page will name it before
+        any address is collected through the form.
       </p>
-      <h2>What we do not collect today</h2>
+      <h2>Cookies</h2>
       <p>
-        We do not run analytics, advertising pixels, or a cookie banner. We do not set tracking cookies for
-        third-party ads. If that changes, we will update this page before those tools run.
+        Reader pages on MorningStacks do not set cookies. We do not run analytics, advertising pixels, or tracking
+        scripts, and our fonts and search index are served from our own domain. That is why there is no cookie banner:
+        there is nothing to consent to.
+      </p>
+      <p>
+        The editor sign-in at <code>/keystatic</code> uses cookies to keep staff signed in. Readers never reach it. If
+        we ever add analytics or advertising, we will ask for your consent before it runs and update this page first.
+      </p>
+      <h2>Hosting and security</h2>
+      <p>
+        The site is hosted by Vercel and served only over HTTPS. To deliver pages and protect the site from abuse,
+        Vercel processes technical request data such as your IP address and browser type. The sign-up form checks your
+        IP address in memory to slow down repeated automated submissions. We do not store it.
       </p>
       <h2>Affiliate links</h2>
       <p>
-        Some buttons go to <code>/go/</code> and then to a vendor. We do not add an advertising pixel on that
-        redirect. The vendor or its affiliate network may know you arrived from MorningStacks. What they collect
-        after you leave this site is governed by their own policies. See the{' '}
+        Some buttons go to <code>/go/</code> and then to a vendor. We do not add an advertising pixel on that redirect.
+        The vendor or its affiliate network may know you arrived from MorningStacks, and may set its own cookies once
+        you are on its site. What they collect is governed by their policies. See the{' '}
         <Link href="/disclosure/">affiliate disclosure</Link>.
       </p>
       <h2>How long we keep email</h2>
@@ -56,9 +72,6 @@ export default function PrivacyPage() {
         To ask what we hold about you, or to ask us to delete an email you sent, write to{' '}
         <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. We do not operate a phone line for these requests.
       </p>
-      <p className="mt-12 font-sans text-[13px] text-[var(--color-ink-55)]">
-        Last updated September 2026. Draft. Not legal advice.
-      </p>
-    </Paper>
+    </DocPage>
   );
 }

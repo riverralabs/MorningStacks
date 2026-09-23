@@ -12,6 +12,7 @@ export function pageMetadata(input: {
   path: string;
   ogSlug?: string;
   ogImageUrl?: string;
+  ogImageAlt?: string;
   noindex?: boolean;
   type?: 'website' | 'article';
   publishedTime?: string;
@@ -22,6 +23,7 @@ export function pageMetadata(input: {
   const description = buildDescription(input.description);
   const url = canonical(input.path);
   const image = input.ogImageUrl ?? ogImage(input.ogSlug);
+  const imageAlt = input.ogImageAlt ?? (input.title ? `${input.title}, on ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`);
   const hidden = Boolean(input.noindex) || isPreviewDeployment();
 
   return {
@@ -38,7 +40,7 @@ export function pageMetadata(input: {
       url,
       siteName: SITE.name,
       locale: SITE.defaultLocale,
-      images: [{ url: image, width: 1200, height: 630 }],
+      images: [{ url: image, width: 1200, height: 630, alt: imageAlt }],
       ...(input.publishedTime ? { publishedTime: input.publishedTime } : {}),
       ...(input.modifiedTime ? { modifiedTime: input.modifiedTime } : {}),
     },
@@ -47,7 +49,7 @@ export function pageMetadata(input: {
       site: SITE.twitter,
       title: social,
       description,
-      images: [image],
+      images: [{ url: image, alt: imageAlt }],
     },
   };
 }

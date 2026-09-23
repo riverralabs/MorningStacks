@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Paper } from '~/components/editorial/Paper';
+import { DocPage } from '~/components/stories/DocPage';
 import { pageMetadata } from '~/lib/metadata';
 import { SITE } from '~/lib/seo';
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function DisclosurePage() {
   return (
-    <Paper eyebrow="Disclosure" title="Affiliate disclosure">
+    <DocPage path="/disclosure/" title="Affiliate disclosure" summary="How affiliate links work on MorningStacks, and what they never influence." updated="Last updated September 2026. Draft. Not legal advice.">
       <p>
         <strong>In one sentence:</strong> we may earn a commission if you buy after clicking some links on this
         site. That commission does not change the verdict, the score, or what we choose to cover.
@@ -67,9 +67,6 @@ export default function DisclosurePage() {
         If you spot an undisclosed affiliate link, write to <Link href="/contact/">contact</Link> or {SITE.email}.
         We will correct it on the page.
       </p>
-      <p className="mt-12 font-sans text-[13px] text-[var(--color-ink-55)]">
-        Last updated September 2026. Draft. Not legal advice.
-      </p>
-    </Paper>
+    </DocPage>
   );
 }

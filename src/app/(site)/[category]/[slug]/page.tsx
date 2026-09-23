@@ -39,6 +39,7 @@ export async function generateMetadata({
     path: article.href,
     ogSlug: articleOgPath(article),
     ogImageUrl: ogImage(articleOgPath(article)),
+    ogImageAlt: article.ogAlt ?? article.ogTitle ?? article.title,
     noindex: article.visibility !== 'published',
     type: 'article',
     publishedTime: published,

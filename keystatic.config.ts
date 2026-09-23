@@ -177,11 +177,14 @@ export default config({
           directory: 'src/assets/heroes/{slug}',
           publicPath: '../../assets/heroes/{slug}/',
         }),
-        heroAlt: fields.text({ label: 'Hero alt text' }),
+        heroAlt: fields.text({
+          label: 'Hero alt text',
+          description: 'Describe what the image shows for readers who cannot see it. Required when a hero image is set.',
+        }),
         og: fields.image({
-          label: 'OG image (1200 x 630)',
+          label: 'Social card (1200 x 630)',
           description:
-            'Kinjal fills this 1200 by 630 slot after Jane\'s draft. Cream field, Lora wordmark, Lora title, ink-blue rule. No logos. No prices.',
+            'Optional. Leave empty and the site draws the card: warm white field, navy top band, MorningStacks wordmark, section and format label, Schibsted Grotesk headline from the OG title line. Upload only a card that follows that layout.',
           directory: 'src/assets/og/{slug}',
           publicPath: '../../assets/og/{slug}/',
         }),
@@ -189,7 +192,7 @@ export default config({
         ogTitle: fields.text({
           label: 'OG title line',
           description:
-            '1200 by 630 cream slot. Lora wordmark 28, Lora title, horizontal ink-blue rule. No logos, no prices, no dates as decoration. First ship: OpenAI may cut GPT in Cursor 12 Nov.',
+            'Short headline for the social card and og:title. About 60 characters reads best on the card. Example: OpenAI may cut GPT in Cursor 12 Nov.',
           validation: { length: { max: 80 } },
         }),
         products: fields.multiRelationship({

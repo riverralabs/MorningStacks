@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { sans, serif } from './fonts';
 import { SITE } from '~/lib/seo';
 
 export const metadata: Metadata = {
@@ -13,9 +14,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' },
+      { url: '/favicon.ico', sizes: 'any' },
     ],
-    apple: '/favicon.svg',
+    apple: '/apple-touch-icon.png',
   },
   alternates: {
     types: {
@@ -25,23 +26,20 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: '#1E3A5F',
+  colorScheme: 'light',
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="bg-[var(--color-page)]">
+    <html lang="en" className={`${sans.variable} ${serif.variable} bg-[var(--color-paper)]`}>
       <head>
-        <meta name="theme-color" content="#FAF4E8" />
-        <meta name="color-scheme" content="light" />
         <link rel="sitemap" href="/sitemap-index.xml" />
-        <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-latin.woff2" crossOrigin="" />
-        <link
-          rel="preload"
-          as="font"
-          type="font/woff2"
-          href="/fonts/space-grotesk-latin.woff2"
-          crossOrigin=""
-        />
       </head>
-      <body className="flex min-h-dvh flex-col bg-[var(--color-page)] text-[var(--color-ink)] antialiased">
+      <body className="flex min-h-dvh flex-col bg-[var(--color-paper)] text-[var(--color-ink)] antialiased">
         {children}
       </body>
     </html>

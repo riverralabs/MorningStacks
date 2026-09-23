@@ -8,6 +8,7 @@ import { isProgramName, isProgramStatus, type ProgramName, type ProgramStatus } 
 import { isArticleType, type ArticleType } from './content-model';
 import { articleHref, articleVisibility, isBuildable, isPublished, type Visibility } from './publish';
 import { authorByline } from './byline';
+import { readingMinutes } from './reading';
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
@@ -180,6 +181,14 @@ export const getBuildableArticles = cache(async (): Promise<Article[]> => {
   return articles.filter((article) => isBuildable(article));
 });
 
+export const getReadingTimes = cache(async (): Promise<Map<string, number>> => {
+  const articles = await getBuildableArticles();
+  const entries = await Promise.all(
+    articles.map(async (article) => [article.slug, readingMinutes(await article.readBody())] as const),
+  );
+  return new Map(entries);
+});
+
 export const getCategories = cache(async (): Promise<Category[]> => {
   const all = await reader.collections.categories.all();
   return all
@@ -312,6 +321,19 @@ export function formatDate(value: string | null | undefined): string {
     day: 'numeric',
     year: 'numeric',
   });
+}
+
+export function formatShortDate(value: string | null | undefined): string {
+  if (!value) return '';
+  const date = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(date.valueOf())) return value;
+  return date.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+export function monthLabel(value: string): string {
+  const date = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(date.valueOf())) return value.slice(0, 7);
+  return date.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' });
 }
 
 export function issueDate(now = new Date()): string {

@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArticleIndex } from '~/components/editorial/ArticleIndex';
-import { Newsletter } from '~/components/editorial/Newsletter';
-import { TypeBadge } from '~/components/editorial/TypeBadge';
-import { formatDate, getCategories, getPublishedArticles } from '~/lib/content';
+import { NewsletterBand } from '~/components/newsletter/Newsletter';
+import { ModuleHead, PageHead, StoryItem, StoryRow, storyContext } from '~/components/stories/Story';
+import { formatShortDate, getCategories, getPublishedArticles } from '~/lib/content';
 import { pageMetadata } from '~/lib/metadata';
 
 export async function generateStaticParams() {
@@ -24,73 +23,87 @@ export async function generateMetadata({
   const category = categories.find((item) => item.slug === slug);
   if (!category) return {};
   return pageMetadata({
-    title: `${category.name} · software for operators and founders`,
+    title: `${category.name}: briefings and comparisons`,
     description: category.description,
     path: category.href,
     ogSlug: `category-${category.slug}`,
   });
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category: slug } = await params;
-  const [categories, articles] = await Promise.all([getCategories(), getPublishedArticles()]);
+  const [categories, articles, context] = await Promise.all([
+    getCategories(),
+    getPublishedArticles(),
+    storyContext(),
+  ]);
   const category = categories.find((item) => item.slug === slug);
   if (!category) notFound();
   const inSection = articles.filter((article) => article.category === category.slug);
   const [lead, ...rest] = inSection;
+  const others = categories.filter((item) => item.slug !== category.slug);
+  const count = inSection.length;
 
   return (
     <>
-      <header className="border-b border-[var(--color-ink)]">
-        <div className="container-grid py-12 sm:py-16">
-          <p className="text-eyebrow">Section</p>
-          <h1 className="mt-3 font-serif text-[48px] font-medium leading-[0.98] tracking-[-0.03em] sm:text-[68px]">
-            {category.name}
-            <span className="text-[var(--color-blue)]">.</span>
-          </h1>
-          <p className="mt-5 max-w-[40rem] font-serif text-[20px] italic leading-relaxed text-[var(--color-ink-70)]">
-            {category.description}
-          </p>
-        </div>
-      </header>
+      <PageHead
+        crumbs={[
+          { href: '/', label: 'Front page' },
+          { href: category.href, label: category.name },
+        ]}
+        title={category.name}
+        description={category.description}
+        meta={
+          count > 0
+            ? `${count} ${count === 1 ? 'piece' : 'pieces'} · latest ${formatShortDate(lead?.date)}`
+            : 'Nothing published here yet'
+        }
+      />
+
       {lead ? (
-        <section className="container-grid border-b border-[var(--color-ink-10)] py-12">
-          <p className="flex flex-wrap items-center gap-x-2">
-            <span className="text-eyebrow">Latest</span>
-            <span aria-hidden="true" className="text-[var(--color-ink-25)]">
-              ·
-            </span>
-            <TypeBadge type={lead.type} />
-          </p>
-          <h2 className="mt-3 max-w-[20ch] font-serif text-[34px] font-medium leading-[1.08] tracking-[-0.02em] sm:text-[44px]">
-            <Link href={lead.href} className="hover:text-[var(--color-blue)]">
-              {lead.title}
-            </Link>
-          </h2>
-          <p className="mt-4 max-w-[62ch] font-serif text-[18px] leading-relaxed text-[var(--color-ink-85)]">
-            {lead.answer || lead.description}
-          </p>
-          <p className="mt-4 font-sans text-[12px] uppercase tracking-[0.14em] text-[var(--color-ink-55)]">
-            <time dateTime={lead.date}>{formatDate(lead.date)}</time>
+        <section aria-label="Latest in this section" className="container-page section-y">
+          <div className="grid gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <StoryItem article={lead} context={context} size="lg" excerpt withSection={false} />
+            </div>
+          </div>
+          {rest.length > 0 ? (
+            <div className="mt-12">
+              <ModuleHead title={`More in ${category.name}`} />
+              <ol className="divide-y divide-[var(--color-rule)]">
+                {rest.map((article) => (
+                  <li key={article.slug}>
+                    <StoryRow article={article} context={context} />
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
+        </section>
+      ) : (
+        <section className="container-page section-y">
+          <p className="max-w-[60ch] text-[17px] text-[var(--color-ink-2)]">
+            Nothing is published in {category.name} yet. The{' '}
+            <Link href="/archive/" className="link">
+              archive
+            </Link>{' '}
+            lists everything else.
           </p>
         </section>
-      ) : null}
-      <section className="container-grid py-12">
-        {rest.length > 0 ? (
-          <ArticleIndex articles={rest} />
-        ) : !lead ? (
-          <p className="font-serif text-[18px] italic text-[var(--color-ink-70)]">
-            Nothing published in this section yet.
-          </p>
-        ) : null}
-      </section>
-      <div className="container-grid pb-16">
-        <Newsletter source={`category-${category.slug}`} />
-      </div>
+      )}
+
+      <nav aria-label="Other sections" className="border-t border-[var(--color-rule)]">
+        <div className="container-page flex flex-wrap items-center gap-x-6 gap-y-2 py-6">
+          <span className="text-[14px] font-extrabold tracking-[0.08em] uppercase">Other sections</span>
+          {others.map((item) => (
+            <Link key={item.slug} href={item.href} className="link inline-flex min-h-11 items-center text-[15px] font-semibold">
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </nav>
+
+      <NewsletterBand source={`category-${category.slug}`} />
     </>
   );
 }

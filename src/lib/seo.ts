@@ -2,9 +2,9 @@ import { canonicalUrl, resolveSiteUrl } from './site-url';
 
 export const SITE = {
   name: 'MorningStacks',
-  tagline: 'The software stack for operators and founders.',
+  tagline: 'Straight answers on the software you pay for.',
   description:
-    'Sourced operator briefings and comparisons of SaaS, AI tools, and software operators actually pay for. Clearly labeled. Editorial first, commerce second.',
+    'Sourced briefings, comparisons, and reviews of the SaaS, AI, and developer tools operators and founders pay for. Prices checked. Affiliate links labeled.',
   url: resolveSiteUrl(process.env.SITE_URL),
   twitter: '@morningstacks',
   defaultOgImage: '/og/default.png',
