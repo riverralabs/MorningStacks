@@ -88,6 +88,8 @@ function loadArticles() {
         lastTested: scalar(fm, 'lastTested'),
         testMethod: scalar(fm, 'testMethod'),
         featured: scalar(fm, 'featured') === true,
+        hero: scalar(fm, 'hero'),
+        heroAlt: scalar(fm, 'heroAlt'),
         body: bodyAfterFrontmatter(raw),
       };
     });

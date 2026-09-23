@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
   featuredPublishedCount,
+  imageAltErrors,
   publishGateErrors,
   shouldShowDisclosure,
   wordCount,
@@ -145,4 +146,20 @@ test('answer word count is 40 to 80 for publish', () => {
     products: [],
   });
   assert.equal(short.some((error) => error.path === 'answer'), true);
+});
+
+test('images without alt text fail', () => {
+  assert.deepEqual(imageAltErrors({ hero: '../hero.png', heroAlt: '' }).map((error) => error.path), ['heroAlt']);
+  assert.equal(imageAltErrors({ hero: '../hero.png', heroAlt: 'Cursor pricing page' }).length, 0);
+  const body = [
+    '<Figure src={pricing} alt="" />',
+    '<Figure src={checklist} alt="Five-step checklist" caption="Checklist" />',
+    '![](chart.png)',
+    '![Plan comparison chart](chart.png)',
+    '<img src="/x.png">',
+  ].join('\n');
+  assert.deepEqual(
+    imageAltErrors({ body }).map((error) => error.message),
+    ['Figure needs a non-empty alt', 'Markdown image needs alt text', 'img tag needs alt text'],
+  );
 });

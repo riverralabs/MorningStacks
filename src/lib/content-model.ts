@@ -47,6 +47,8 @@ export type PublishGateInput = {
   lastTested?: Date | string | null;
   testMethod?: string | null;
   featured?: boolean;
+  hero?: unknown;
+  heroAlt?: unknown;
   body?: string;
   catalog?: ProgramCatalogEntry[];
 };
@@ -104,6 +106,31 @@ export function publishGateErrors(data: PublishGateInput): GateError[] {
     errors.push(...affiliatePromotionErrors(data));
   }
 
+  errors.push(...imageAltErrors(data));
+
+  return errors;
+}
+
+/** Every image a reader can see needs alt text: the hero, Figures, Markdown images, and raw img tags. */
+export function imageAltErrors(data: Pick<PublishGateInput, 'hero' | 'heroAlt' | 'body'>): GateError[] {
+  const errors: GateError[] = [];
+  const hasText = (value: unknown) => typeof value === 'string' && value.trim() !== '';
+  if (hasText(data.hero) && !hasText(data.heroAlt)) {
+    errors.push({ path: 'heroAlt', message: 'hero image needs alt text' });
+  }
+  const body = data.body ?? '';
+  for (const match of body.matchAll(/<Figure\b[\s\S]*?\/?>/g)) {
+    const alt = match[0].match(/\balt=(?:"([^"]*)"|'([^']*)'|\{["'`]([^"'`]*)["'`]\})/);
+    if (!alt || !(alt[1] ?? alt[2] ?? alt[3] ?? '').trim()) {
+      errors.push({ path: 'body', message: 'Figure needs a non-empty alt' });
+    }
+  }
+  for (const match of body.matchAll(/!\[([^\]]*)\]\([^)]*\)/g)) {
+    if (!(match[1] ?? '').trim()) errors.push({ path: 'body', message: 'Markdown image needs alt text' });
+  }
+  for (const match of body.matchAll(/<img\b[^>]*>/gi)) {
+    if (!/\balt=["'][^"']+["']/.test(match[0])) errors.push({ path: 'body', message: 'img tag needs alt text' });
+  }
   return errors;
 }
 
