@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { sans, serif } from './fonts';
-import { SITE } from '~/lib/seo';
+import { SITE, homeTitle } from '~/lib/seo';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    absolute: `${SITE.name} · ${SITE.tagline}`,
+    absolute: homeTitle(),
   },
   description: SITE.description,
   applicationName: SITE.name,

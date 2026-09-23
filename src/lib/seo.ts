@@ -13,8 +13,12 @@ export const SITE = {
   publisher: 'Riverra Labs LLP',
 } as const;
 
+export function homeTitle(): string {
+  return `${SITE.name} · ${SITE.tagline.replace(/\.$/, '')}`;
+}
+
 export function buildTitle(pageTitle?: string): string {
-  if (!pageTitle) return `${SITE.name} · ${SITE.tagline}`;
+  if (!pageTitle) return homeTitle();
   const composed = `${pageTitle} · ${SITE.name}`;
   return composed.length <= 60 ? composed : pageTitle;
 }
