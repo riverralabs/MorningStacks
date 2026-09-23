@@ -22,7 +22,13 @@ function sameSite(request: Request): boolean {
   if (!origin) return true;
   try {
     const from = new URL(origin).host;
-    return from === new URL(request.url).host || from === new URL(SITE.url).host;
+    const allowed = [
+      new URL(request.url).host,
+      new URL(SITE.url).host,
+      request.headers.get('host'),
+      request.headers.get('x-forwarded-host'),
+    ];
+    return allowed.includes(from);
   } catch {
     return false;
   }
