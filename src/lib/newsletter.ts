@@ -15,10 +15,37 @@ export type SubscribeResult =
   | { ok: true; provider: string }
   | { ok: false; provider: string; reason: string };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function isValidEmail(email: string): boolean {
   return EMAIL_RE.test(email) && email.length <= 254;
+}
+
+/** A real provider is configured. The stub accepts everything, so it does not count. */
+export function isNewsletterLive(provider = process.env.NEWSLETTER_PROVIDER): boolean {
+  return Boolean(provider && provider !== 'stub');
+}
+
+export type SpamCheckInput = {
+  honeypot: string;
+  startedAt: string;
+  now: number;
+};
+
+/** Minimum time a person needs to type an address and press Subscribe. */
+export const MIN_FILL_MS = 2500;
+
+/** True when the submission looks automated. No-JS visitors have no start time and pass. */
+export function looksAutomated({ honeypot, startedAt, now }: SpamCheckInput): boolean {
+  if (honeypot.trim() !== '') return true;
+  const started = Number(startedAt);
+  if (!startedAt || !Number.isFinite(started)) return false;
+  const elapsed = now - started;
+  return elapsed >= 0 && elapsed < MIN_FILL_MS;
+}
+
+export function cleanSource(value: unknown): string {
+  return typeof value === 'string' && /^[a-z0-9-]{1,64}$/.test(value) ? value : 'site';
 }
 
 type Provider = (_input: SubscribeInput, _env: Env) => Promise<SubscribeResult>;

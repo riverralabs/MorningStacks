@@ -1,39 +1,93 @@
 import { NextResponse } from 'next/server';
-import { subscribe } from '~/lib/newsletter';
+import { cleanSource, isValidEmail, looksAutomated, subscribe } from '~/lib/newsletter';
+import { SITE } from '~/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(request: Request) {
-  let email: string | null = null;
-  let source: string | undefined;
-  const contentType = request.headers.get('content-type') ?? '';
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_PER_WINDOW = 5;
+const recent = new Map<string, number[]>();
 
-  if (contentType.includes('application/json')) {
-    const body = (await request.json()) as { email?: string; source?: string };
-    email = body.email ?? null;
-    source = body.source;
-  } else {
-    try {
-      const form = await request.formData();
-      email = String(form.get('email') ?? '').trim() || null;
-      const src = form.get('source');
-      source = typeof src === 'string' ? src : undefined;
-    } catch {
-      email = null;
-    }
+/** Per-instance limit. It slows a single client down; it is not a global quota. */
+function rateLimited(key: string, now: number): boolean {
+  const hits = (recent.get(key) ?? []).filter((at) => now - at < WINDOW_MS);
+  hits.push(now);
+  recent.set(key, hits);
+  if (recent.size > 5000) recent.clear();
+  return hits.length > MAX_PER_WINDOW;
+}
+
+function sameSite(request: Request): boolean {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+  try {
+    const from = new URL(origin).host;
+    return from === new URL(request.url).host || from === new URL(SITE.url).host;
+  } catch {
+    return false;
   }
+}
 
-  const redirectTo = (status: string, reason?: string) => {
+type Fields = { email: string; source: string; website: string; t: string };
+
+async function readFields(request: Request): Promise<Fields | null> {
+  const contentType = request.headers.get('content-type') ?? '';
+  try {
+    if (contentType.includes('application/json')) {
+      const body = (await request.json()) as Record<string, unknown>;
+      return {
+        email: String(body.email ?? ''),
+        source: String(body.source ?? ''),
+        website: String(body.website ?? ''),
+        t: String(body.t ?? ''),
+      };
+    }
+    const form = await request.formData();
+    return {
+      email: String(form.get('email') ?? ''),
+      source: String(form.get('source') ?? ''),
+      website: String(form.get('website') ?? ''),
+      t: String(form.get('t') ?? ''),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function POST(request: Request) {
+  const wantsJson = (request.headers.get('accept') ?? '').includes('application/json');
+  const respond = (status: 'success' | 'invalid' | 'error', reason?: string) => {
+    if (wantsJson) {
+      return NextResponse.json(
+        { ok: status === 'success', ...(reason ? { reason } : {}) },
+        { status: status === 'success' ? 200 : 400, headers: { 'cache-control': 'no-store' } },
+      );
+    }
     const url = new URL('/newsletter/', request.url);
     url.searchParams.set('status', status);
     if (reason) url.searchParams.set('reason', reason);
-    return NextResponse.redirect(url, 303);
+    const response = NextResponse.redirect(url, 303);
+    response.headers.set('cache-control', 'no-store');
+    return response;
   };
 
-  if (!email) return redirectTo('invalid');
+  if (!sameSite(request)) return respond('error', 'origin');
+
+  const now = Date.now();
+  const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0]?.trim() || 'unknown';
+  if (rateLimited(ip, now)) return respond('error', 'too-many-attempts');
+
+  const fields = await readFields(request);
+  if (!fields) return respond('invalid');
+
+  // Bots get the same answer as people, so they learn nothing from the response.
+  if (looksAutomated({ honeypot: fields.website, startedAt: fields.t, now })) return respond('success');
+
+  const email = fields.email.trim();
+  if (!isValidEmail(email)) return respond('invalid');
 
   const result = await subscribe(
-    { email, source },
+    { email, source: cleanSource(fields.source) },
     {
       NEWSLETTER_PROVIDER: process.env.NEWSLETTER_PROVIDER,
       BEEHIIV_API_KEY: process.env.BEEHIIV_API_KEY,
@@ -44,10 +98,6 @@ export async function POST(request: Request) {
     },
   );
 
-  const accept = request.headers.get('accept') ?? '';
-  if (accept.includes('application/json')) {
-    return NextResponse.json(result, { status: result.ok ? 200 : 400 });
-  }
-  if (!result.ok) return redirectTo('error', result.reason);
-  return redirectTo('success');
+  if (!result.ok) return respond('error', result.reason);
+  return respond('success');
 }
