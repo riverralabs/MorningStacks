@@ -1,0 +1,533 @@
+@import 'tailwindcss';
+
+/* Brand fonts — self-hosted, subset Latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/lora-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/lora-latin-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin.woff2') format('woff2');
+}
+
+/* MorningStacks design tokens — source of truth lives in brand book v1.1.
+ * Tailwind v4 reads CSS variables from @theme as utilities.
+ */
+@theme {
+  --color-cream: #faf4e8;
+  --color-cream-warm: #f5eddb;
+  --color-page: #f2eee5;
+  --color-ink: #1c1916;
+  --color-blue: #1e3a5f;
+  --color-ink-blue: #1e3a5f;
+  --color-good: #3a7d5c;
+  --color-bad: #a84e2e;
+  --color-warn: #b8862e;
+
+  --color-ink-85: rgba(28, 25, 22, 0.85);
+  --color-ink-70: rgba(28, 25, 22, 0.7);
+  --color-ink-55: rgba(28, 25, 22, 0.55);
+  --color-ink-40: rgba(28, 25, 22, 0.4);
+  --color-ink-25: rgba(28, 25, 22, 0.25);
+  --color-ink-15: rgba(28, 25, 22, 0.15);
+  --color-ink-10: rgba(28, 25, 22, 0.1);
+  --color-ink-06: rgba(28, 25, 22, 0.06);
+
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+
+  --container-article: 720px;
+  --container-grid: 1200px;
+  --container-email: 620px;
+
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.14em;
+
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.4;
+
+  --text-lede: 1.25rem;
+  --text-lede--line-height: 1.5;
+
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.3;
+  --text-h4--letter-spacing: -0.01em;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.017em;
+
+  --text-h2: 2.125rem;
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.026em;
+
+  --text-h1: 3rem;
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.029em;
+
+  --text-hero: 3.5rem;
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.036em;
+}
+
+/* Base resets and global styles */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-ink);
+    background: var(--color-page);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--color-blue);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-ink-10);
+    margin: 2rem 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+
+    *:hover,
+    *:focus-visible {
+      transform: none !important;
+    }
+  }
+}
+
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@utility container-article {
+  max-width: var(--container-article);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility container-grid {
+  max-width: var(--container-grid);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility text-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+}
+
+@utility text-meta {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--color-ink-55);
+}
+
+@utility text-lede {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--color-ink-70);
+}
+
+/* MorningStacks article prose — applied via class .prose-ms on MDX bodies.
+ * Article width: var(--container-article) = 720px. Body type Lora 17/1.75.
+ */
+
+.prose-ms {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-ink-85);
+}
+
+.prose-ms > * + * {
+  margin-top: 1.55em;
+}
+
+.prose-ms > p:first-of-type {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+.prose-ms > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.18em;
+  letter-spacing: -0.02em;
+}
+
+.prose-ms h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin-top: 4.75rem;
+  margin-bottom: 0.9rem;
+  scroll-margin-top: 5rem;
+}
+
+.prose-ms > * + h2 {
+  margin-top: 4.75rem;
+}
+
+.prose-ms h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--color-ink);
+  margin-top: 2.5rem;
+  margin-bottom: 0.65rem;
+  scroll-margin-top: 5rem;
+}
+
+.prose-ms > * + h3 {
+  margin-top: 2.5rem;
+}
+
+.prose-ms h3.how-to-step {
+  padding-left: 1.7rem;
+  text-indent: -1.7rem;
+}
+
+.prose-ms h4 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose-ms p {
+  margin: 0;
+}
+
+.prose-ms a {
+  color: var(--color-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 150ms var(--ease-enter);
+}
+
+.prose-ms a:hover {
+  opacity: 0.7;
+}
+
+.prose-ms strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.prose-ms em {
+  font-style: italic;
+}
+
+.prose-ms ul,
+.prose-ms ol {
+  padding-left: 1.75rem;
+  margin: 0;
+}
+
+.prose-ms ul > li,
+.prose-ms ol > li {
+  margin-top: 0.85rem;
+  padding-left: 0.4rem;
+}
+
+.prose-ms ul > li::marker {
+  color: var(--color-ink-blue);
+}
+
+.prose-ms ol > li::marker {
+  color: var(--color-ink-blue);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.prose-ms blockquote {
+  border: 0;
+  border-left: 3px solid var(--color-ink-blue);
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--color-ink);
+  quotes: none;
+}
+
+.prose-ms blockquote::before,
+.prose-ms blockquote::after {
+  content: none;
+}
+
+.prose-ms blockquote p {
+  color: var(--color-ink);
+}
+
+.prose-ms code {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--color-ink-06);
+  color: var(--color-blue);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+}
+
+.prose-ms pre {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose-ms pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.prose-ms img {
+  border-radius: var(--radius-lg);
+  width: 100%;
+  height: auto;
+}
+
+.prose-ms figure {
+  margin: 2rem 0;
+}
+
+.prose-ms figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--color-ink-55);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.prose-ms hr {
+  border: 0;
+  border-top: 1px solid var(--color-ink-10);
+  margin: 3rem auto;
+  width: 4rem;
+}
+
+/* Tables sit in the 720 article column. Cells wrap; no forced min-width
+ * that creates a desktop horizontal scroll. */
+.prose-ms .table-wrap {
+  margin: 2rem 0;
+  padding: 0;
+  overflow-x: visible;
+}
+
+.prose-ms table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-ink-85);
+}
+
+.prose-ms thead th {
+  background: var(--color-cream-warm);
+  border-bottom: 1px solid var(--color-ink-15);
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  padding: 0.55rem 0.6rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.prose-ms tbody td,
+.prose-ms tbody th {
+  border-bottom: 1px solid var(--color-ink-06);
+  padding: 0.55rem 0.6rem;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.prose-ms tbody th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.prose-ms tbody tr:last-child td,
+.prose-ms tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+.prose-ms tbody tr:nth-child(even) {
+  background: rgba(28, 25, 22, 0.025);
+}
+
+.prose-ms tbody td strong,
+.prose-ms tbody th strong {
+  color: var(--color-ink);
+}
+
+.prose-ms tbody td:first-child,
+.prose-ms tbody th:first-child {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.prose-ms table th:nth-child(1),
+.prose-ms table td:nth-child(1) {
+  width: 18%;
+}
+
+.prose-ms table th:nth-child(2),
+.prose-ms table td:nth-child(2) {
+  width: 16%;
+}
+
+.prose-ms table th:nth-child(3),
+.prose-ms table td:nth-child(3) {
+  width: 16%;
+}
+
+/* MDX section break — soft horizontal rule between major sections */
+.prose-ms .section-break {
+  border: 0;
+  border-top: 1px solid var(--color-ink-10);
+  width: 100%;
+  margin: 3.5rem 0;
+}
+
+/* Tighten spacing inside lists so they read denser when each bullet
+ * is short, but breathe when bullets are paragraphs. */
+.prose-ms ul > li > p,
+.prose-ms ol > li > p {
+  margin: 0;
+}
+
+.prose-ms ul ul,
+.prose-ms ol ol,
+.prose-ms ul ol,
+.prose-ms ol ul {
+  margin-top: 0.5rem;
+}
+
+/* Editorial figures — same 720 column as type. Crop empty cream;
+ * keep Kinjal type at top left. */
+.ms-figure {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.ms-figure:not(:has(figcaption)) {
+  max-height: 390px;
+}
+
+.ms-figure--hero:not(:has(figcaption)) {
+  max-height: 450px;
+}
+
+.ms-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.ms-figure--hero img {
+  max-height: 450px;
+}

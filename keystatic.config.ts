@@ -1,10 +1,15 @@
 import { config, fields, collection } from '@keystatic/core';
 import { block, wrapper } from '@keystatic/core/content-components';
 
-const githubConfigured = Boolean(process.env.KEYSTATIC_GITHUB_CLIENT_ID);
-const onVercel = Boolean(process.env.VERCEL);
+// NEXT_PUBLIC_KEYSTATIC_STORAGE is set in next.config from VERCEL / the GitHub
+// client id so the admin UI bundle and the API route agree. Local `next dev`
+// leaves it unset and uses the filesystem.
+const useGithub =
+  process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE === 'github' ||
+  Boolean(process.env.KEYSTATIC_GITHUB_CLIENT_ID) ||
+  Boolean(process.env.VERCEL);
 
-const storage = githubConfigured || onVercel
+const storage = useGithub
   ? {
       kind: 'github' as const,
       repo: { owner: 'riverralabs', name: 'MorningStacks' },
@@ -240,6 +245,16 @@ export default config({
         template: fields.checkbox({
           label: 'Jane article template',
           description: 'Skeleton only. Do not publish until the verified draft lands.',
+        }),
+        draft: fields.checkbox({
+          label: 'Legacy draft flag',
+          description: 'Older files. Visibility is status. Kept so existing MDX still reads.',
+          defaultValue: false,
+        }),
+        unlisted: fields.checkbox({
+          label: 'Legacy unlisted flag',
+          description: 'Older files. Visibility is status. Kept so existing MDX still reads.',
+          defaultValue: false,
         }),
         body: articleBody,
       },

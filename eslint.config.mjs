@@ -1,14 +1,20 @@
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
-import astro from 'eslint-plugin-astro';
 import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist/**', '.astro/**', '.vercel/**', 'node_modules/**', 'pnpm-lock.yaml', '**/*.d.ts'],
+    ignores: [
+      'dist/**',
+      '.astro/**',
+      '.next/**',
+      '.vercel/**',
+      'node_modules/**',
+      'pnpm-lock.yaml',
+      '**/*.d.ts',
+    ],
   },
   js.configs.recommended,
-  ...astro.configs.recommended,
   {
     languageOptions: {
       globals: {
@@ -25,6 +31,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        ecmaFeatures: { jsx: true },
       },
     },
   },

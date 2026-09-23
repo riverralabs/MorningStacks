@@ -1,0 +1,44 @@
+import type { Metadata } from 'next';
+import { Paper } from '~/components/editorial/Paper';
+import { pageMetadata } from '~/lib/metadata';
+import { SITE } from '~/lib/seo';
+
+export const metadata: Metadata = pageMetadata({
+  title: 'Contact',
+  description: 'Pitch a product, send a tip, or flag a correction. Email hello@morningstacks.com.',
+  path: '/contact/',
+  ogSlug: 'contact',
+});
+
+export default function ContactPage() {
+  return (
+    <Paper eyebrow="Contact" title="Contact">
+      <p>
+        The public contact for MorningStacks is email. Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        We read every message. We do not reply to all of them.
+      </p>
+      <h2>Pitch a product</h2>
+      <p>
+        One paragraph: what it does, who it is for, and a way we can test it ourselves. A free trial is enough. Do
+        not send a press kit. Do not follow up the same week. We do not accept paid placements.
+      </p>
+      <p>
+        <a href={`mailto:${SITE.email}?subject=Pitch`}>{SITE.email}</a>
+      </p>
+      <h2>Tips and corrections</h2>
+      <p>
+        Story leads and corrections use the same address. For a correction, include the URL and what is wrong.
+      </p>
+      <p>
+        <a href={`mailto:${SITE.email}?subject=Correction`}>{SITE.email}</a>
+      </p>
+      <h2>What we do not accept</h2>
+      <ul>
+        <li>Sponsored content of any kind.</li>
+        <li>Guest posts. We do not run them.</li>
+        <li>Paid product placements.</li>
+        <li>SEO link insertions on existing pieces.</li>
+      </ul>
+    </Paper>
+  );
+}
