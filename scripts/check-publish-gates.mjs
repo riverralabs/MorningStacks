@@ -2,10 +2,11 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { featuredPublishedCount, publishGateErrors } from '../src/lib/content-model.ts';
+import { featuredPublishedCount, productProgramErrors, publishGateErrors } from '../src/lib/content-model.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const articlesDir = join(root, 'src/content/articles');
+const productsDir = join(root, 'src/content/products');
 
 function parseFrontmatter(raw, file) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -59,6 +60,10 @@ function listItems(fm, key) {
   return items;
 }
 
+function bodyAfterFrontmatter(raw) {
+  return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+}
+
 function loadArticles() {
   return readdirSync(articlesDir)
     .filter((name) => name.endsWith('.md') || name.endsWith('.mdx'))
@@ -83,19 +88,54 @@ function loadArticles() {
         lastTested: scalar(fm, 'lastTested'),
         testMethod: scalar(fm, 'testMethod'),
         featured: scalar(fm, 'featured') === true,
+        hero: scalar(fm, 'hero'),
+        heroAlt: scalar(fm, 'heroAlt'),
+        body: bodyAfterFrontmatter(raw),
+      };
+    });
+}
+
+function loadProducts() {
+  return readdirSync(productsDir)
+    .filter((name) => name.endsWith('.md') || name.endsWith('.mdx'))
+    .map((name) => {
+      const raw = readFileSync(join(productsDir, name), 'utf8');
+      const fm = parseFrontmatter(raw, name);
+      return {
+        file: name,
+        slug: name.replace(/\.mdx?$/, ''),
+        status: scalar(fm, 'status'),
+        program: scalar(fm, 'program'),
+        affiliateUrl: scalar(fm, 'affiliateUrl'),
       };
     });
 }
 
 function main() {
   const articles = loadArticles();
+  const products = loadProducts();
+  const catalog = products.map((product) => ({
+    slug: product.slug,
+    programStatus: typeof product.status === 'string' ? product.status : 'none',
+    affiliateUrl: typeof product.affiliateUrl === 'string' ? product.affiliateUrl : '',
+  }));
   const failures = [];
+
+  for (const product of products) {
+    for (const error of productProgramErrors({
+      status: typeof product.status === 'string' ? product.status : undefined,
+      program: typeof product.program === 'string' ? product.program : undefined,
+      affiliateUrl: typeof product.affiliateUrl === 'string' ? product.affiliateUrl : undefined,
+    })) {
+      failures.push(`${product.file}: ${error.path}: ${error.message}`);
+    }
+  }
 
   for (const article of articles) {
     if (!article.author) {
       failures.push(`${article.file}: author is required`);
     }
-    for (const error of publishGateErrors(article)) {
+    for (const error of publishGateErrors({ ...article, catalog })) {
       failures.push(`${article.file}: ${error.path}: ${error.message}`);
     }
   }

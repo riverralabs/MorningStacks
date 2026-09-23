@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Paper } from '~/components/editorial/Paper';
+import { DocPage } from '~/components/stories/DocPage';
 import { pageMetadata } from '~/lib/metadata';
 import { SITE } from '~/lib/seo';
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function ContactPage() {
   return (
-    <Paper eyebrow="Contact" title="Contact">
+    <DocPage path="/contact/" title="Contact" summary="Email is the only public contact. Pitches, tips, and corrections all go to the same address.">
       <p>
         The public contact for MorningStacks is email. Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
         We read every message. We do not reply to all of them.
@@ -39,6 +39,6 @@ export default function ContactPage() {
         <li>Paid product placements.</li>
         <li>SEO link insertions on existing pieces.</li>
       </ul>
-    </Paper>
+    </DocPage>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Paper } from '~/components/editorial/Paper';
+import { DocPage } from '~/components/stories/DocPage';
 import { pageMetadata } from '~/lib/metadata';
 
 export const metadata: Metadata = pageMetadata({
@@ -13,7 +13,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function MethodologyPage() {
   return (
-    <Paper eyebrow="Methodology" title="How we test">
+    <DocPage path="/methodology/" title="How we test" summary="The bar a piece has to clear before we call it a review, and what we will not accept money for.">
       <p>
         Most live MorningStacks pieces are sourced operator briefings and comparisons, labeled as such. They are
         not production tests. This page is the bar for a real review. If a review does not live up to what is
@@ -72,6 +72,6 @@ export default function MethodologyPage() {
         a vendor, that writer does not write the review. If you spot a conflict we missed,{' '}
         <Link href="/contact/">tell us</Link>.
       </p>
-    </Paper>
+    </DocPage>
   );
 }

@@ -1,3 +1,5 @@
+import { isActiveProgram, isPlaceholderAffiliateUrl, isProgramName, isProgramStatus } from './affiliate.ts';
+
 export const ARTICLE_TYPES = ['review', 'roundup', 'briefing', 'explainer'] as const;
 export type ArticleType = (typeof ARTICLE_TYPES)[number];
 
@@ -22,6 +24,12 @@ export function wordCount(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+export type ProgramCatalogEntry = {
+  slug: string;
+  programStatus?: string;
+  affiliateUrl?: string;
+};
+
 export type PublishGateInput = {
   type: string;
   status: string;
@@ -39,6 +47,10 @@ export type PublishGateInput = {
   lastTested?: Date | string | null;
   testMethod?: string | null;
   featured?: boolean;
+  hero?: unknown;
+  heroAlt?: unknown;
+  body?: string;
+  catalog?: ProgramCatalogEntry[];
 };
 
 export type GateError = { path: string; message: string };
@@ -90,6 +102,112 @@ export function publishGateErrors(data: PublishGateInput): GateError[] {
     });
   }
 
+  if (data.type === 'review' || data.type === 'roundup') {
+    errors.push(...affiliatePromotionErrors(data));
+  }
+
+  errors.push(...imageAltErrors(data));
+
+  return errors;
+}
+
+/** Every image a reader can see needs alt text: the hero, Figures, Markdown images, and raw img tags. */
+export function imageAltErrors(data: Pick<PublishGateInput, 'hero' | 'heroAlt' | 'body'>): GateError[] {
+  const errors: GateError[] = [];
+  const hasText = (value: unknown) => typeof value === 'string' && value.trim() !== '';
+  if (hasText(data.hero) && !hasText(data.heroAlt)) {
+    errors.push({ path: 'heroAlt', message: 'hero image needs alt text' });
+  }
+  const body = data.body ?? '';
+  for (const match of body.matchAll(/<Figure\b[\s\S]*?\/?>/g)) {
+    const alt = match[0].match(/\balt=(?:"([^"]*)"|'([^']*)'|\{["'`]([^"'`]*)["'`]\})/);
+    if (!alt || !(alt[1] ?? alt[2] ?? alt[3] ?? '').trim()) {
+      errors.push({ path: 'body', message: 'Figure needs a non-empty alt' });
+    }
+  }
+  for (const match of body.matchAll(/!\[([^\]]*)\]\([^)]*\)/g)) {
+    if (!(match[1] ?? '').trim()) errors.push({ path: 'body', message: 'Markdown image needs alt text' });
+  }
+  for (const match of body.matchAll(/<img\b[^>]*>/gi)) {
+    if (!/\balt=["'][^"']+["']/.test(match[0])) errors.push({ path: 'body', message: 'img tag needs alt text' });
+  }
+  return errors;
+}
+
+function componentProductSlugs(body: string, tag: string): string[] {
+  const pattern = new RegExp(`<${tag}\\b[^>]*\\bproduct=["']([^"']+)["']`, 'gi');
+  return [...body.matchAll(pattern)].flatMap((match) => (match[1] ? [match[1]] : []));
+}
+
+/**
+ * A live review or roundup may list a product before its program is active.
+ * The automatic card then links to the public site and is not marked sponsored.
+ * A ProductCard or AffiliateLink in the body is a promotion, so that program
+ * must be active. A program marked active while the URL is still
+ * `?via=morningstacks` fails.
+ */
+export function affiliatePromotionErrors(data: PublishGateInput): GateError[] {
+  if (!data.catalog) return [];
+  const errors: GateError[] = [];
+  const bySlug = new Map(data.catalog.map((entry) => [entry.slug, entry]));
+  const body = data.body ?? '';
+  const named = new Set<string>();
+  for (const item of data.products ?? []) {
+    if (typeof item === 'string' && item.trim()) named.add(item.trim());
+  }
+  for (const slug of componentProductSlugs(body, 'ProductCard')) named.add(slug);
+  for (const slug of componentProductSlugs(body, 'AffiliateLink')) named.add(slug);
+
+  const promotedInBody = [
+    ...componentProductSlugs(body, 'AffiliateLink'),
+    ...componentProductSlugs(body, 'ProductCard'),
+  ];
+  for (const slug of promotedInBody) {
+    const product = bySlug.get(slug);
+    if (!product || !isActiveProgram(product)) {
+      errors.push({
+        path: 'products',
+        message: `${slug} is promoted but is not an active program`,
+      });
+    }
+  }
+
+  for (const slug of named) {
+    const product = bySlug.get(slug);
+    if (!product) continue;
+    if (product.programStatus === 'active' && isPlaceholderAffiliateUrl(product.affiliateUrl ?? '')) {
+      errors.push({
+        path: 'affiliateUrl',
+        message: `${slug} is marked active but the affiliate URL is still the via=morningstacks placeholder`,
+      });
+    }
+  }
+
+  return errors;
+}
+
+export function productProgramErrors(product: {
+  status?: string;
+  program?: string;
+  affiliateUrl?: string;
+}): GateError[] {
+  const errors: GateError[] = [];
+  const status = product.status || 'none';
+  if (!isProgramStatus(status)) {
+    errors.push({ path: 'status', message: 'program status must be none, applied, or active' });
+  }
+  if (product.program && !isProgramName(product.program)) {
+    errors.push({
+      path: 'program',
+      message: 'program must be direct, rewardful, partnerstack, impact, or other',
+    });
+  }
+  if (status === 'active' && (!product.affiliateUrl || isPlaceholderAffiliateUrl(product.affiliateUrl))) {
+    errors.push({
+      path: 'affiliateUrl',
+      message: 'active program cannot use the via=morningstacks placeholder',
+    });
+  }
   return errors;
 }
 
@@ -99,7 +217,8 @@ export function shouldShowDisclosure(input: { products?: unknown[]; body?: strin
   return (
     /rel=["']sponsored\b/i.test(body) ||
     /via=morningstacks/i.test(body) ||
-    /<ProductCard\b/i.test(body)
+    /<ProductCard\b/i.test(body) ||
+    /<AffiliateLink\b/i.test(body)
   );
 }
 

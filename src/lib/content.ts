@@ -1,10 +1,14 @@
 import 'server-only';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { cache } from 'react';
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import { isProgramName, isProgramStatus, type ProgramName, type ProgramStatus } from './affiliate';
 import { isArticleType, type ArticleType } from './content-model';
 import { articleHref, articleVisibility, isBuildable, isPublished, type Visibility } from './publish';
 import { authorByline } from './byline';
+import { readingMinutes } from './reading';
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
@@ -66,6 +70,7 @@ export type Product = {
   slug: string;
   name: string;
   vendor: string;
+  category: string;
   summary: string;
   price: string;
   ourVerdict: string;
@@ -73,6 +78,9 @@ export type Product = {
   cons: string[];
   rating: number;
   affiliateUrl: string;
+  websiteUrl: string;
+  program: ProgramName;
+  programStatus: ProgramStatus;
   lastTested: string | null;
 };
 
@@ -173,6 +181,14 @@ export const getBuildableArticles = cache(async (): Promise<Article[]> => {
   return articles.filter((article) => isBuildable(article));
 });
 
+export const getReadingTimes = cache(async (): Promise<Map<string, number>> => {
+  const articles = await getBuildableArticles();
+  const entries = await Promise.all(
+    articles.map(async (article) => [article.slug, readingMinutes(await article.readBody())] as const),
+  );
+  return new Map(entries);
+});
+
 export const getCategories = cache(async (): Promise<Category[]> => {
   const all = await reader.collections.categories.all();
   return all
@@ -206,24 +222,83 @@ export const getAuthors = cache(async (): Promise<Author[]> => {
   });
 });
 
-export const getProducts = cache(async (): Promise<Product[]> => {
-  const all = await reader.collections.products.all();
-  return all.map((item) => {
-    const entry = item.entry as unknown as Record<string, unknown>;
+/**
+ * Products are read from disk, not through the Keystatic reader. The reader
+ * result includes `commissionNote`, and Next embeds that awaited value in the
+ * page payload. The note stays in the file for the editor and never reaches HTML.
+ */
+function readProductFiles(): Product[] {
+  const dir = join(process.cwd(), 'src/content/products');
+  let files: string[] = [];
+  try {
+    files = readdirSync(dir).filter((name) => /\.mdx?$/.test(name));
+  } catch {
+    return [];
+  }
+  return files.map((file) => {
+    const raw = readFileSync(join(dir, file), 'utf8');
+    const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+    const { scalars, pros, cons } = parseProductFrontmatter(fm);
+    const program = scalars.program ?? '';
+    const programStatus = scalars.status ?? '';
+    const rating = Number(scalars.rating);
     return {
-      slug: item.slug,
-      name: str(entry.name),
-      vendor: str(entry.vendor),
-      summary: str(entry.summary),
-      price: str(entry.price),
-      ourVerdict: str(entry.ourVerdict),
-      pros: Array.isArray(entry.pros) ? entry.pros.map(String) : [],
-      cons: Array.isArray(entry.cons) ? entry.cons.map(String) : [],
-      rating: typeof entry.rating === 'number' ? entry.rating : 0,
-      affiliateUrl: str(entry.affiliateUrl),
-      lastTested: strOrNull(entry.lastTested),
+      slug: file.replace(/\.mdx?$/, ''),
+      name: scalars.name ?? '',
+      vendor: scalars.vendor ?? '',
+      category: scalars.category ?? '',
+      summary: scalars.summary ?? '',
+      price: scalars.price ?? '',
+      ourVerdict: scalars.ourVerdict ?? '',
+      pros,
+      cons,
+      rating: Number.isFinite(rating) ? rating : 0,
+      affiliateUrl: scalars.affiliateUrl ?? '',
+      websiteUrl: scalars.websiteUrl ?? '',
+      program: isProgramName(program) ? program : 'other',
+      programStatus: isProgramStatus(programStatus) ? programStatus : 'none',
+      lastTested: scalars.lastTested?.trim() ? scalars.lastTested : null,
     };
   });
+}
+
+function parseProductFrontmatter(fm: string): { scalars: Record<string, string>; pros: string[]; cons: string[] } {
+  const lines = fm.split(/\r?\n/);
+  const scalars: Record<string, string> = {};
+  const lists: Record<string, string[]> = {};
+  let index = 0;
+  while (index < lines.length) {
+    const line = lines[index] ?? '';
+    const match = line.match(/^([A-Za-z0-9]+):\s*(.*)$/);
+    if (!match) {
+      index += 1;
+      continue;
+    }
+    const key = match[1] ?? '';
+    const rest = (match[2] ?? '').trim();
+    if (key === 'commissionNote') {
+      index += 1;
+      while (index < lines.length && !/^[A-Za-z0-9]+:/.test(lines[index] ?? '')) index += 1;
+      continue;
+    }
+    if (rest === '') {
+      const items: string[] = [];
+      index += 1;
+      while (index < lines.length && /^\s*-\s+/.test(lines[index] ?? '')) {
+        items.push((lines[index] ?? '').replace(/^\s*-\s+/, '').trim());
+        index += 1;
+      }
+      lists[key] = items;
+      continue;
+    }
+    scalars[key] = rest.replace(/^['"]|['"]$/g, '');
+    index += 1;
+  }
+  return { scalars, pros: lists.pros ?? [], cons: lists.cons ?? [] };
+}
+
+export const getProducts = cache(async (): Promise<Product[]> => {
+  return readProductFiles();
 });
 
 export async function getCategory(slug: string): Promise<Category | undefined> {
@@ -246,6 +321,19 @@ export function formatDate(value: string | null | undefined): string {
     day: 'numeric',
     year: 'numeric',
   });
+}
+
+export function formatShortDate(value: string | null | undefined): string {
+  if (!value) return '';
+  const date = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(date.valueOf())) return value;
+  return date.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+export function monthLabel(value: string): string {
+  const date = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(date.valueOf())) return value.slice(0, 7);
+  return date.toLocaleDateString('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' });
 }
 
 export function issueDate(now = new Date()): string {

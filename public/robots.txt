@@ -3,6 +3,7 @@ Allow: /
 Disallow: /keystatic
 Disallow: /keystatic/
 Disallow: /api/
+Disallow: /go/
 
 # AI retrieval and citation crawlers. Allow so assistants can cite MorningStacks.
 # Named groups replace the former Disallow: / blocks on GPTBot, ClaudeBot,
@@ -22,6 +23,7 @@ Allow: /
 Disallow: /keystatic
 Disallow: /keystatic/
 Disallow: /api/
+Disallow: /go/
 
 Sitemap: https://www.morningstacks.com/sitemap-index.xml
 # Alias: https://www.morningstacks.com/sitemap.xml → sitemap-index.xml

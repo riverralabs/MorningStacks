@@ -17,6 +17,7 @@ const STATIC_EXCLUDE_PATHS = [
   '/api/',
   '/og/',
   '/search',
+  '/go/',
   '/affiliate-disclosure',
 ];
 

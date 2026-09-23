@@ -1,22 +1,23 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { typeLabel } from '~/lib/content-model';
 import { getBuildableArticles, getCategories } from '~/lib/content';
-import { renderOg } from '~/lib/og';
+import { renderOg, type OgInput } from '~/lib/og';
 
 export const runtime = 'nodejs';
 
-const STATIC_TITLES: Record<string, string> = {
-  default: 'Sourced briefings and comparisons.',
-  slot: 'OpenAI may cut GPT in Cursor 12 Nov',
-  about: 'About MorningStacks',
-  methodology: 'How we test',
-  disclosure: 'Affiliate disclosure',
-  contact: 'Contact MorningStacks',
-  newsletter: 'Monday morning, in your inbox.',
-  search: 'Search the archive',
-  privacy: 'Privacy Policy',
-  terms: 'Terms of Use',
-  archive: 'All writing',
+const STATIC_CARDS: Record<string, OgInput> = {
+  default: { title: 'Straight answers on the software you pay for.', kicker: 'For operators and founders' },
+  slot: { title: 'OpenAI may cut GPT in Cursor 12 Nov', kicker: 'AI Tools · Briefing' },
+  about: { title: 'About MorningStacks', kicker: 'The publication' },
+  methodology: { title: 'How we test', kicker: 'The publication' },
+  disclosure: { title: 'Affiliate disclosure', kicker: 'Policies' },
+  contact: { title: 'Contact MorningStacks', kicker: 'The publication' },
+  newsletter: { title: 'The Monday letter', kicker: 'Newsletter' },
+  search: { title: 'Search every published piece', kicker: 'Search' },
+  privacy: { title: 'Privacy policy', kicker: 'Policies' },
+  terms: { title: 'Terms and conditions', kicker: 'Policies' },
+  archive: { title: 'Every published piece, newest first', kicker: 'Archive' },
 };
 
 function png(body: Buffer | ArrayBuffer) {
@@ -29,15 +30,12 @@ function png(body: Buffer | ArrayBuffer) {
   return new Response(copy, {
     headers: {
       'content-type': 'image/png',
-      'cache-control': 'public, max-age=31536000, immutable',
+      'cache-control': 'public, max-age=86400, s-maxage=31536000',
     },
   });
 }
 
-export async function GET(
-  _request: Request,
-  context: { params: Promise<{ path: string[] }> },
-) {
+export async function GET(_request: Request, context: { params: Promise<{ path: string[] }> }) {
   const { path } = await context.params;
   const key = path.join('/').replace(/\.png$/i, '');
   const slug = path.at(-1)?.replace(/\.png$/i, '') ?? '';
@@ -47,21 +45,28 @@ export async function GET(
       const file = await readFile(join(process.cwd(), 'src/assets/og', slug, 'og.png'));
       return png(file);
     } catch {
-      /* fall through to the typographic card */
+      /* no uploaded card; render one below */
     }
   }
 
-  let title = STATIC_TITLES[key];
-  if (!title && key.startsWith('category-')) {
+  let card: OgInput | undefined = STATIC_CARDS[key];
+  if (!card && key.startsWith('category-')) {
     const categories = await getCategories();
-    title = categories.find((category) => category.slug === key.slice('category-'.length))?.name;
+    const category = categories.find((item) => item.slug === key.slice('category-'.length));
+    if (category) card = { title: category.name, kicker: 'Section' };
   }
-  if (!title && path.length >= 2) {
-    const articles = await getBuildableArticles();
+  if (!card && path.length >= 2) {
+    const [articles, categories] = await Promise.all([getBuildableArticles(), getCategories()]);
     const article = articles.find((item) => item.slug === slug);
-    title = article?.ogTitle ?? article?.title;
+    if (article) {
+      const section = categories.find((item) => item.slug === article.category)?.name;
+      card = {
+        title: article.ogTitle ?? article.title,
+        kicker: section ? `${section} · ${typeLabel(article.type)}` : typeLabel(article.type),
+      };
+    }
   }
-  if (!title) return new Response('Not found', { status: 404 });
+  if (!card) return new Response('Not found', { status: 404 });
 
-  return png(Buffer.from(await renderOg({ title })));
+  return png(Buffer.from(await renderOg(card)));
 }

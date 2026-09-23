@@ -31,7 +31,7 @@ export async function GET(
     return new Response(copy, {
       headers: {
         'content-type': type,
-        'cache-control': 'public, max-age=31536000, immutable',
+        'cache-control': 'public, max-age=86400, s-maxage=31536000',
       },
     });
   } catch {

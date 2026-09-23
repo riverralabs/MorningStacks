@@ -32,13 +32,15 @@ export async function generateMetadata({
   if (!article) return {};
   const published = `${article.date.slice(0, 10)}T00:00:00.000Z`;
   const modified = article.updated ? `${article.updated.slice(0, 10)}T00:00:00.000Z` : undefined;
+  const searchTitle = article.title.length > 60 && article.ogTitle ? article.ogTitle : article.title;
   return pageMetadata({
-    title: article.title,
+    title: searchTitle,
     ogTitle: article.ogTitle ?? undefined,
     description: article.description,
     path: article.href,
     ogSlug: articleOgPath(article),
     ogImageUrl: ogImage(articleOgPath(article)),
+    ogImageAlt: article.ogAlt ?? article.ogTitle ?? article.title,
     noindex: article.visibility !== 'published',
     type: 'article',
     publishedTime: published,
@@ -81,6 +83,7 @@ export default async function ArticlePage({
       category={category}
       author={author}
       products={products}
+      catalog={catalog}
       related={related}
     />
   );
