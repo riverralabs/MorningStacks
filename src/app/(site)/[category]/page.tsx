@@ -64,7 +64,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         <section aria-label="Latest in this section" className="container-page section-y">
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <StoryItem article={lead} context={context} size="lg" excerpt withSection={false} />
+              <StoryItem article={lead} context={context} size="lg" excerpt withSection={false} level={2} />
             </div>
           </div>
           {rest.length > 0 ? (

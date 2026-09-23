@@ -73,13 +73,16 @@ export function StoryItem({
   size = 'md',
   excerpt = false,
   withSection = true,
+  level = 3,
 }: {
   article: Article;
   context: StoryContext;
   size?: 'sm' | 'md' | 'lg';
   excerpt?: boolean;
   withSection?: boolean;
+  level?: 2 | 3;
 }) {
+  const Heading = level === 2 ? 'h2' : 'h3';
   const headline = {
     sm: 'text-[length:var(--text-head-sm)] leading-[var(--text-head-sm--line-height)] tracking-[var(--text-head-sm--letter-spacing)] font-bold',
     md: 'text-[length:var(--text-head-md)] leading-[var(--text-head-md--line-height)] tracking-[var(--text-head-md--letter-spacing)] font-bold',
@@ -88,11 +91,11 @@ export function StoryItem({
   return (
     <article>
       <p className="kicker">{kickerText(article, context, withSection)}</p>
-      <h3 className={`mt-2 ${headline}`}>
+      <Heading className={`mt-2 ${headline}`}>
         <Link href={article.href} className="headline-link">
           {article.title}
         </Link>
-      </h3>
+      </Heading>
       {excerpt ? (
         <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-[var(--color-ink-2)]">
           {article.description}
