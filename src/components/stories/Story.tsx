@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { typeLabel } from '~/lib/content-model';
@@ -33,9 +34,44 @@ export function StoryMeta({
   const minutes = context.minutes.get(article.slug);
   return (
     <p className="meta">
-      <time dateTime={article.date}>{long ? formatDate(article.date) : formatShortDate(article.date)}</time>
+      <time dateTime={article.date}>
+        {long ? formatDate(article.date) : formatShortDate(article.date)}
+      </time>
       {minutes ? <span> · {minutes} min read</span> : null}
     </p>
+  );
+}
+
+/** 1200×630 stock heroes, scaled to the card. Same art as /media/articles/<slug>/hero.png. */
+export function CoverThumb({
+  article,
+  sizes,
+  priority = false,
+  className = '',
+}: {
+  article: Article;
+  sizes: string;
+  priority?: boolean;
+  className?: string;
+}) {
+  if (!article.hero) return null;
+  const alt = article.heroAlt ?? '';
+  return (
+    <Link
+      href={article.href}
+      tabIndex={-1}
+      aria-hidden={alt ? undefined : true}
+      className={`relative block aspect-[1200/630] overflow-hidden border border-[var(--color-rule)] bg-[var(--color-paper-2)] ${className}`}
+    >
+      <Image
+        src={article.hero}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+      />
+    </Link>
   );
 }
 
@@ -48,9 +84,19 @@ export function LeadStory({
   context: StoryContext;
   image?: ReactNode;
 }) {
+  const cover = image ? (
+    <div className="mb-6">{image}</div>
+  ) : (
+    <CoverThumb
+      article={article}
+      sizes="(min-width: 1024px) 720px, 100vw"
+      priority
+      className="mb-6"
+    />
+  );
   return (
     <article>
-      {image ? <div className="mb-6">{image}</div> : null}
+      {cover}
       <p className="kicker">{kickerText(article, context)}</p>
       <h2 className="mt-3 text-[length:var(--text-display)] leading-[var(--text-display--line-height)] font-extrabold tracking-[var(--text-display--letter-spacing)]">
         <Link href={article.href} className="headline-link">
@@ -88,8 +134,19 @@ export function StoryItem({
     md: 'text-[length:var(--text-head-md)] leading-[var(--text-head-md--line-height)] tracking-[var(--text-head-md--letter-spacing)] font-bold',
     lg: 'text-[length:var(--text-head-lg)] leading-[var(--text-head-lg--line-height)] tracking-[var(--text-head-lg--letter-spacing)] font-extrabold',
   }[size];
+  const coverSizes =
+    size === 'lg'
+      ? '(min-width: 1024px) 720px, 100vw'
+      : size === 'md'
+        ? '(min-width: 768px) 50vw, 100vw'
+        : '(min-width: 1024px) 360px, (min-width: 768px) 45vw, 100vw';
   return (
     <article>
+      <CoverThumb
+        article={article}
+        sizes={coverSizes}
+        className={size === 'lg' ? 'mb-5' : 'mb-3'}
+      />
       <p className="kicker">{kickerText(article, context, withSection)}</p>
       <Heading className={`mt-2 ${headline}`}>
         <Link href={article.href} className="headline-link">
@@ -111,12 +168,20 @@ export function StoryItem({
 /** Dated row for archive and section lists. */
 export function StoryRow({ article, context }: { article: Article; context: StoryContext }) {
   const minutes = context.minutes.get(article.slug);
+  const cover = article.hero ? (
+    <CoverThumb
+      article={article}
+      sizes="(min-width: 768px) 240px, 100vw"
+      className="md:col-span-3"
+    />
+  ) : null;
   return (
-    <article className="grid gap-2 py-6 md:grid-cols-12 md:gap-8">
+    <article className="grid gap-3 py-6 md:grid-cols-12 md:items-start md:gap-8">
       <p className="meta md:col-span-2 md:pt-1">
         <time dateTime={article.date}>{formatShortDate(article.date)}</time>
       </p>
-      <div className="md:col-span-10">
+      {cover}
+      <div className={cover ? 'md:col-span-7' : 'md:col-span-10'}>
         <p className="kicker">{kickerText(article, context)}</p>
         <h3 className="mt-2 text-[length:var(--text-head-md)] leading-[var(--text-head-md--line-height)] font-bold tracking-[var(--text-head-md--letter-spacing)]">
           <Link href={article.href} className="headline-link">
@@ -167,7 +232,10 @@ export function Breadcrumbs({ crumbs }: { crumbs: Crumb[] }) {
         {crumbs.map((crumb, index) => (
           <li key={crumb.href} className="flex items-center gap-x-2">
             {index > 0 ? <span aria-hidden="true">/</span> : null}
-            <Link href={crumb.href} className="inline-flex min-h-11 items-center hover:text-[var(--color-ink)] hover:underline">
+            <Link
+              href={crumb.href}
+              className="inline-flex min-h-11 items-center hover:text-[var(--color-ink)] hover:underline"
+            >
               {crumb.label}
             </Link>
           </li>
