@@ -24,6 +24,9 @@ export const metadata: Metadata = {
       'text/plain': '/llms.txt',
     },
   },
+  other: {
+    'google-adsense-account': 'ca-pub-9447330391546137',
+  },
 };
 
 export const viewport: Viewport = {
