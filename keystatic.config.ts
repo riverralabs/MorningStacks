@@ -23,8 +23,8 @@ const articleBody = fields.mdx({
     'MDX. Use the insert menu for Callout, ProductCard, AffiliateLink, PullQuote, ProsCons, Verdict, Disclosure, and ComparisonTable. Do not paste raw HTML. Do not invent first-person tests. AffiliateLink is a paid link. Use it only for an active program.',
   options: {
     image: {
-      directory: 'src/assets/articles/{slug}',
-      publicPath: '../../assets/articles/{slug}/',
+      directory: 'src/assets/articles',
+      publicPath: '../../assets/articles/',
     },
   },
   components: {
@@ -174,8 +174,8 @@ export default config({
         updated: fields.date({ label: 'Updated' }),
         hero: fields.image({
           label: 'Hero image',
-          directory: 'src/assets/heroes/{slug}',
-          publicPath: '../../assets/heroes/{slug}/',
+          directory: 'src/assets/articles',
+          publicPath: '../../assets/articles/',
         }),
         heroAlt: fields.text({
           label: 'Hero alt text',
@@ -185,8 +185,8 @@ export default config({
           label: 'Social card (1200 x 630)',
           description:
             'Optional. Leave empty and the site draws the card: warm white field, navy top band, MorningStacks wordmark, section and format label, Schibsted Grotesk headline from the OG title line. Upload only a card that follows that layout.',
-          directory: 'src/assets/og/{slug}',
-          publicPath: '../../assets/og/{slug}/',
+          directory: 'src/assets/og',
+          publicPath: '../../assets/og/',
         }),
         ogAlt: fields.text({ label: 'OG alt text' }),
         ogTitle: fields.text({

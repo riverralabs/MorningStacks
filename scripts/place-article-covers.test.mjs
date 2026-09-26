@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import {
   COVERS,
@@ -8,6 +11,8 @@ import {
   setScalar,
   yamlQuote,
 } from './place-article-covers.mjs';
+
+const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 test('cover table is the 18 published slugs', () => {
   const slugs = COVERS.map((cover) => cover.slug);
@@ -75,4 +80,16 @@ body
 
 test('placed covers stay on the live hero and og paths', () => {
   assert.deepEqual(checkCovers(), []);
+});
+
+test('Keystatic image fields append the entry slug and must not contain a literal {slug}', () => {
+  const src = readFileSync(join(repoRoot, 'keystatic.config.ts'), 'utf8');
+  assert.match(src, /hero: fields\.image\(\{[\s\S]*?directory: 'src\/assets\/articles'/);
+  assert.match(src, /hero: fields\.image\(\{[\s\S]*?publicPath: '\.\.\/\.\.\/assets\/articles\/'/);
+  assert.match(src, /og: fields\.image\(\{[\s\S]*?directory: 'src\/assets\/og'/);
+  assert.match(src, /og: fields\.image\(\{[\s\S]*?publicPath: '\.\.\/\.\.\/assets\/og\/'/);
+  assert.match(src, /image: \{\s*directory: 'src\/assets\/articles'/);
+  assert.equal(src.includes("directory: 'src/assets/heroes"), false);
+  assert.equal(/directory: '[^']*\{slug\}/.test(src), false);
+  assert.equal(/publicPath: '[^']*\{slug\}/.test(src), false);
 });
