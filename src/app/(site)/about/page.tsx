@@ -20,19 +20,24 @@ export default function AboutPage() {
       summary="Straight answers on the software you pay for, written for operators and founders."
     >
       <p>
-        MorningStacks covers the software a small company actually pays for: SaaS, AI tools, marketing tools, and
-        developer infrastructure. Each piece answers a buying question. What does it cost, what is it good at, where
-        does it fall short, and is it worth the money for a team like yours.
+        MorningStacks covers the software a small company actually pays for: SaaS, AI tools,
+        marketing tools, and developer infrastructure. Each piece answers a buying question. What
+        does it cost, what is it good at, where does it fall short, and is it worth the money for a
+        team like yours.
       </p>
       <h2>What we publish</h2>
-      <p>Every piece is labeled with one of four formats, so you know what kind of evidence is behind it.</p>
+      <p>
+        Every piece is labeled with one of four formats, so you know what kind of evidence is behind
+        it.
+      </p>
       <ul>
         <li>
-          <strong>Briefings</strong> cover a change, such as a price increase or a product being cut, and what to do
-          about it.
+          <strong>Briefings</strong> cover a change, such as a price increase or a product being
+          cut, and what to do about it.
         </li>
         <li>
-          <strong>Roundups</strong> put tools side by side with current prices, trade-offs, and a pick.
+          <strong>Roundups</strong> put tools side by side with current prices, trade-offs, and a
+          pick.
         </li>
         <li>
           <strong>Explainers</strong> show how a product, plan, or price works.
@@ -42,30 +47,34 @@ export default function AboutPage() {
         </li>
       </ul>
       <p>
-        Briefings, roundups, and explainers are sourced from vendor pages and public documents, listed at the end of
-        each piece with the date we checked them. Only a review claims hands-on testing. The standard for that is on
-        the <Link href="/methodology/">How we test</Link> page.
+        Briefings, roundups, and explainers are sourced from vendor pages and public documents,
+        listed at the end of each piece with the date we checked them. Only a review claims hands-on
+        testing. The standard for that is on the <Link href="/methodology/">How we test</Link> page.
       </p>
       <h2>Sections</h2>
       <p>
         <Link href="/productivity/">Productivity</Link>, <Link href="/ai-tools/">AI Tools</Link>,{' '}
-        <Link href="/marketing/">Marketing</Link>, and <Link href="/developer-tools/">Developer Tools</Link>. The{' '}
+        <Link href="/marketing/">Marketing</Link>, and{' '}
+        <Link href="/developer-tools/">Developer Tools</Link>. The{' '}
         <Link href="/archive/">archive</Link> lists every published piece.
       </p>
       <h2>How we make money</h2>
       <p>
-        Affiliate commissions on some links to vendor sites. A commission never decides a verdict, a rating, or what
-        we cover. We do not sell sponsored posts or placements. The <Link href="/disclosure/">affiliate disclosure</Link>{' '}
-        explains the details.
+        Affiliate commissions on some links to vendor sites, and ads served through Google AdSense.
+        Neither a commission nor an ad decides a verdict, a rating, or what we cover. We do not
+        sell sponsored posts or placements. The{' '}
+        <Link href="/disclosure/">affiliate disclosure</Link> explains affiliate links. The{' '}
+        <Link href="/privacy/">privacy policy</Link> explains advertising cookies.
       </p>
       <h2>How we write</h2>
       <p>
-        Plainly, with numbers. We name prices and the date we checked them. We say when a tool is not worth it. If we
-        get something wrong, we correct the piece and date the correction.
+        Plainly, with numbers. We name prices and the date we checked them. We say when a tool is
+        not worth it. If we get something wrong, we correct the piece and date the correction.
       </p>
       <h2>Publisher</h2>
       <p>
-        MorningStacks is published by {SITE.publisher}. Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        MorningStacks is published by {SITE.publisher}. Write to{' '}
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
     </DocPage>
   );

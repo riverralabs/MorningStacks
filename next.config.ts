@@ -5,18 +5,56 @@ const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
+  },
 ];
 
 /* Next streams page data through inline scripts, so script-src keeps 'unsafe-inline'.
- * Pagefind search compiles WebAssembly, which needs 'wasm-unsafe-eval'. */
+ * Pagefind search compiles WebAssembly, which needs 'wasm-unsafe-eval'.
+ * Google hosts are for AdSense and the EEA, UK, and Swiss consent message.
+ * frame-src is set because ad slots and that message load in iframes.
+ * img-src already allows any https image. */
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+  [
+    "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+    'https://pagead2.googlesyndication.com',
+    'https://tpc.googlesyndication.com',
+    'https://www.googletagservices.com',
+    'https://adservice.google.com',
+    'https://www.google.com',
+    'https://www.gstatic.com',
+    'https://fundingchoicesmessages.google.com',
+    'https://securepubads.g.doubleclick.net',
+  ].join(' '),
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self'",
-  "connect-src 'self'",
+  [
+    "connect-src 'self'",
+    'https://pagead2.googlesyndication.com',
+    'https://googleads.g.doubleclick.net',
+    'https://adservice.google.com',
+    'https://ep1.adtrafficquality.google',
+    'https://ep2.adtrafficquality.google',
+    'https://fundingchoicesmessages.google.com',
+    'https://csi.gstatic.com',
+    'https://www.google.com',
+    'https://www.gstatic.com',
+    'https://securepubads.g.doubleclick.net',
+  ].join(' '),
+  [
+    'frame-src',
+    'https://googleads.g.doubleclick.net',
+    'https://tpc.googlesyndication.com',
+    'https://pagead2.googlesyndication.com',
+    'https://www.google.com',
+    'https://fundingchoicesmessages.google.com',
+    'https://www.googletagservices.com',
+    'https://securepubads.g.doubleclick.net',
+  ].join(' '),
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -26,7 +64,8 @@ const contentSecurityPolicy = [
 
 /* Production only: dev needs eval for Fast Refresh, and Vercel previews inject the toolbar. */
 const enforceCsp =
-  process.env.NODE_ENV === 'production' && (!process.env.VERCEL || process.env.VERCEL_ENV === 'production');
+  process.env.NODE_ENV === 'production' &&
+  (!process.env.VERCEL || process.env.VERCEL_ENV === 'production');
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
@@ -64,7 +103,9 @@ const nextConfig: NextConfig = {
         : []),
       {
         source: '/brand/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+        ],
       },
     ];
   },

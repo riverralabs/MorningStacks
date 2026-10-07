@@ -25,6 +25,17 @@ Disallow: /keystatic/
 Disallow: /api/
 Disallow: /go/
 
+# AdSense crawlers. Public pages stay open. Admin, API, and affiliate redirects stay closed.
+# A named group does not inherit the * rules, so the same Allow and Disallow lines are repeated.
+User-agent: Mediapartners-Google
+User-agent: AdsBot-Google
+User-agent: AdsBot-Google-Mobile
+Allow: /
+Disallow: /keystatic
+Disallow: /keystatic/
+Disallow: /api/
+Disallow: /go/
+
 Sitemap: https://www.morningstacks.com/sitemap-index.xml
 # Alias: https://www.morningstacks.com/sitemap.xml → sitemap-index.xml
 # Machine-readable catalog: https://www.morningstacks.com/llms.txt
