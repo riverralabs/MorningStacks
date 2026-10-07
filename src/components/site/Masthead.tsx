@@ -1,16 +1,22 @@
 import Link from 'next/link';
 import type { Category } from '~/lib/content';
+import { isNewsletterLive } from '~/lib/newsletter';
 import { SITE } from '~/lib/seo';
 import { SectionNav } from './SectionNav';
 import { Wordmark } from './Wordmark';
 
 export function Masthead({ categories }: { categories: Category[] }) {
+  const newsletterLive = isNewsletterLive();
   return (
     <header>
       <div className="bg-[var(--color-navy)] text-[var(--color-white)]">
         <p className="container-page py-2.5 text-[13px] leading-snug">
-          Some links on MorningStacks earn us a commission. That never changes what we recommend.{' '}
-          <Link href="/disclosure/" className="font-semibold whitespace-nowrap underline underline-offset-2">
+          Some links on MorningStacks earn us a commission, and the site shows ads through Google
+          AdSense. Neither changes what we recommend.{' '}
+          <Link
+            href="/disclosure/"
+            className="font-semibold whitespace-nowrap underline underline-offset-2"
+          >
             How we make money
           </Link>
         </p>
@@ -18,7 +24,9 @@ export function Masthead({ categories }: { categories: Category[] }) {
       <div className="container-page flex items-center justify-between gap-4 py-4 md:py-6">
         <div className="min-w-0">
           <Wordmark />
-          <p className="mt-1 hidden text-[14px] text-[var(--color-ink-2)] sm:block">{SITE.tagline}</p>
+          <p className="mt-1 hidden text-[14px] text-[var(--color-ink-2)] sm:block">
+            {SITE.tagline}
+          </p>
         </div>
         <div className="flex flex-none items-center gap-1 sm:gap-4">
           <Link
@@ -27,10 +35,12 @@ export function Masthead({ categories }: { categories: Category[] }) {
           >
             Search
           </Link>
-          <Link href="/newsletter/" className="btn btn-primary">
-            <span className="sm:hidden">Newsletter</span>
-            <span className="hidden sm:inline">Get the Monday letter</span>
-          </Link>
+          {newsletterLive ? (
+            <Link href="/newsletter/" className="btn btn-primary">
+              <span className="sm:hidden">Newsletter</span>
+              <span className="hidden sm:inline">Get the Monday letter</span>
+            </Link>
+          ) : null}
         </div>
       </div>
       <SectionNav
@@ -38,6 +48,8 @@ export function Masthead({ categories }: { categories: Category[] }) {
         pages={[
           { href: '/archive/', label: 'Archive' },
           { href: '/about/', label: 'About' },
+          { href: '/contact/', label: 'Contact' },
+          { href: '/privacy/', label: 'Privacy' },
         ]}
       />
     </header>

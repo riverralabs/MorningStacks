@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { NewsletterPanel } from '~/components/newsletter/Newsletter';
 import { PageHead } from '~/components/stories/Story';
+import { isNewsletterLive } from '~/lib/newsletter';
 import { pageMetadata } from '~/lib/metadata';
+import { SITE } from '~/lib/seo';
 
 export const metadata: Metadata = pageMetadata({
   title: 'The Monday letter',
@@ -14,7 +16,10 @@ export const metadata: Metadata = pageMetadata({
 const MESSAGES: Record<string, { tone: 'good' | 'bad'; text: string }> = {
   success: { tone: 'good', text: 'Thanks. You are on the list for the next Monday letter.' },
   invalid: { tone: 'bad', text: 'That email address did not look right. Check it and try again.' },
-  error: { tone: 'bad', text: 'We could not add that address just now. Try again in a few minutes.' },
+  error: {
+    tone: 'bad',
+    text: 'We could not add that address just now. Try again in a few minutes.',
+  },
 };
 
 export default async function NewsletterPage({
@@ -24,6 +29,7 @@ export default async function NewsletterPage({
 }) {
   const { status } = await searchParams;
   const message = status ? MESSAGES[status] : undefined;
+  const live = isNewsletterLive();
 
   return (
     <>
@@ -49,7 +55,17 @@ export default async function NewsletterPage({
               {message.text}
             </p>
           ) : null}
-          <NewsletterPanel source="newsletter-page" />
+          {live ? (
+            <NewsletterPanel source="newsletter-page" />
+          ) : (
+            <p className="max-w-[46ch] text-[17px] leading-relaxed text-[var(--color-ink-2)]">
+              There is no sign-up form on this page. To reach the publication, email{' '}
+              <a href={`mailto:${SITE.email}`} className="link">
+                {SITE.email}
+              </a>
+              .
+            </p>
+          )}
         </div>
         <div className="lg:col-span-5 lg:col-start-8">
           <p className="border-t-[3px] border-[var(--color-ink)] pt-3 text-[13px] font-extrabold tracking-[0.08em] uppercase">
@@ -59,10 +75,16 @@ export default async function NewsletterPage({
             {[
               ['When', 'Monday morning. Nothing on the other six days.'],
               ['What', 'The week’s new pieces, with the short answer from each.'],
-              ['Links', 'Affiliate links are labeled in the letter the same way they are on the site.'],
+              [
+                'Links',
+                'Affiliate links are labeled in the letter the same way they are on the site.',
+              ],
               ['Leaving', 'One click, at the bottom of every letter.'],
             ].map(([term, detail]) => (
-              <div key={term} className="grid grid-cols-[6rem_1fr] gap-4 py-4 text-[15px] leading-relaxed">
+              <div
+                key={term}
+                className="grid grid-cols-[6rem_1fr] gap-4 py-4 text-[15px] leading-relaxed"
+              >
                 <dt className="font-bold">{term}</dt>
                 <dd className="text-[var(--color-ink-2)]">{detail}</dd>
               </div>
