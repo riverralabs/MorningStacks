@@ -1,0 +1,188 @@
+---
+type: explainer
+title: "FAQ schema in 2026: is it still worth adding?"
+description: "Google stopped showing FAQ rich results on 7 May 2026. What FAQPage schema does, what Google says about AI search, and whether to keep it. Checked 8 Oct 2026."
+answer: "FAQ schema is schema.org FAQPage markup that labels the questions and answers on a page. Google stopped showing FAQ rich results on 7 May 2026 and removed the documentation in June. It no longer earns a special Google result, and Google says its AI features need no special schema. It's still valid markup, so keep it if your page has a real, visible FAQ, and skip it everywhere else."
+eyebrow: Sourced explainer
+category: marketing
+author: dipen
+date: 2026-10-08
+og: ../../assets/og/faq-schema/og.png
+heroAlt: "Letter tiles spelling FAQ held by two small toy hands on a blue background."
+hero: ../../assets/articles/faq-schema/hero.png
+ogAlt: "FAQ schema in 2026: is it still worth adding?"
+ogTitle: "FAQ schema 2026: what's left after Google dropped it"
+products: []
+faq:
+  - q: Does Google still show FAQ rich results?
+    a: No. Google's documentation changelog says the FAQ rich result stopped appearing in Google Search starting 7 May 2026. Google removed the FAQ structured data documentation on 15 June 2026.
+  - q: Should I remove FAQ schema from my site?
+    a: You don't have to. Google hasn't asked anyone to remove it, and it's still valid schema.org markup. Remove it if it's on pages without a visible FAQ, or if keeping it in sync with your content is a chore.
+  - q: Does FAQ schema help with AI Overviews or AI Mode?
+    a: Google says no special schema.org markup is needed for its generative AI features, and that structured data isn't required for them. Those features rely on Google's normal ranking and quality systems.
+  - q: Can I use QAPage markup instead of FAQPage?
+    a: Only for pages where users can submit answers to a single question, like a forum thread. Google's QAPage documentation lists an FAQ page written by the site itself as an invalid use case.
+  - q: Do other search engines or AI tools use FAQPage markup?
+    a: Possibly, but we couldn't find current public documentation from another major search engine or AI vendor confirming how they use FAQPage. Treat any claim that it boosts AI citations as unproven.
+sources:
+  - title: "Latest Google Search documentation updates"
+    url: https://developers.google.com/search/updates
+    checked: 2026-10-08
+  - title: "Optimizing your website for generative AI features on Google Search"
+    url: https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+    checked: 2026-10-08
+  - title: "FAQPage (schema.org)"
+    url: https://schema.org/FAQPage
+    checked: 2026-10-08
+  - title: "Q&A page (QAPage) structured data"
+    url: https://developers.google.com/search/docs/appearance/structured-data/qapage
+    checked: 2026-10-08
+  - title: "General structured data guidelines"
+    url: https://developers.google.com/search/docs/appearance/structured-data/sd-policies
+    checked: 2026-10-08
+related:
+  - what-is-llms-txt
+  - get-site-indexed-google-search-console
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+import timelineFigure from '../../assets/articles/faq-schema/timeline.png';
+
+FAQ schema used to be one of the easiest SEO wins around. Add a few questions in JSON-LD, and Google might expand your result with drop-down answers that pushed competitors down the page.
+
+That result is gone. Google stopped showing FAQ rich results on **7 May 2026**, and plenty of guides still haven't caught up. We went through Google's changelog, its AI search guidance, and the schema.org spec on **8 October 2026** to work out what FAQ schema still does and whether it's worth your time.
+
+## What is FAQ schema?
+
+FAQ schema is structured data using the schema.org [FAQPage](https://schema.org/FAQPage) type. It tells machines, "this page contains these questions, and these are the answers." Most sites add it as JSON-LD in the page head:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Stripe charge a monthly fee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Stripe doesn't charge setup, monthly, or closure fees on standard pricing."
+      }
+    }
+  ]
+}
+```
+
+It's still widely used. Schema.org reports FAQPage on **1 million to 10 million domains**, based on Google's web index for August 2026.
+
+## What did Google change about FAQ rich results?
+
+The decline happened in two steps, three years apart.
+
+<Figure
+  src={timelineFigure}
+  alt="Timeline of Google's FAQ rich result changes: September 2023 limited to authoritative government and health sites; 7 May 2026 FAQ rich results stop appearing; 8 May 2026 deprecation notice added; 15 May 2026 AI optimization guide published; 15 June 2026 FAQ documentation removed and llms.txt note added."
+  caption="Google's FAQ rich result changes, 2023 to 2026. Source: Google Search Central documentation updates changelog, checked 8 Oct 2026."
+/>
+
+1. **14 September 2023.** Google updated its FAQ documentation to say the rich result would only show for "well-known, authoritative government and health websites." For most sites, the feature effectively ended here.
+2. **7 May 2026.** FAQ rich results stopped appearing in Google Search entirely. Google added a deprecation notice on 8 May.
+3. **15 June 2026.** Google removed the FAQ rich result documentation. Its stated reason: "The FAQ rich result feature is no longer shown in Google Search results."
+
+All three entries are in Google's [documentation updates changelog](https://developers.google.com/search/updates).
+
+## Was FAQ the only rich result Google retired?
+
+No. The same 14 September 2023 changelog entry removed the How-to structured data documentation, because that rich result was "no longer shown in search results, on both desktop and mobile devices."
+
+The pattern is worth noticing. Both features let a site take up extra room on the results page with content Google could show directly, and both are now gone. If you're deciding where to spend structured data effort, favor markup tied to things Google still lists in its [search gallery](https://developers.google.com/search/docs/appearance/structured-data/search-gallery).
+
+For a typical publisher or SaaS site, that list still includes:
+
+- **Article** and **Breadcrumb**, for blog posts and site hierarchy
+- **Organization**, for your logo and company details
+- **Product snippet**, **Review snippet**, and **Software app**, for product and review pages
+- **Video**, if you embed video
+- **Discussion forum** and **Q&A**, for community content
+
+Check each feature's own guidelines before you add it. Eligibility rules differ by type, and none of them guarantee a rich result.
+
+## Does FAQ schema help with AI Overviews or ChatGPT?
+
+For Google, no. Its [guide to optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), published in May 2026, is clear on this:
+
+- "Structured data isn't required for generative AI search, and there's no special schema.org markup you need to add."
+- AI Overviews and AI Mode rely on Google's core ranking and quality systems to pick pages.
+- The same guide still recommends structured data in general, "as it helps with being eligible for rich results on Google Search."
+
+So FAQ markup no longer earns a rich result, and Google says it isn't an AI shortcut either.
+
+For other AI tools, we couldn't find current public documentation from OpenAI, Anthropic, Perplexity, or Microsoft saying how they treat FAQPage markup. Plenty of blog posts claim it boosts AI citations. We haven't seen evidence for that, so we're not repeating it.
+
+## Is FAQ schema still worth adding in 2026?
+
+Here's where we land:
+
+<div class="table-wrap">
+
+| Situation | What to do |
+| --- | --- |
+| Page has a real, visible FAQ section | Keep or add FAQPage markup. It's cheap, valid, and accurate. |
+| Markup describes questions that aren't on the page | Remove it. Google's general guidelines say not to mark up content readers can't see. |
+| You added FAQs only to win the rich result | Rewrite or cut them. The reason they existed is gone. |
+| Forum or community answers to one question | Use QAPage markup instead. |
+| Your CMS generates it and nobody maintains it | Fine to leave if it matches the page. Turn it off if it drifts. |
+
+</div>
+
+Our honest take: FAQ schema is now a hygiene item. It costs almost nothing to output if your FAQ already exists, and there's no documented penalty for valid markup. It's also no longer something to plan content around.
+
+For transparency, this article carries FAQPage markup. MorningStacks generates it automatically from the visible FAQ section at the bottom of each article, so it always matches what you can read.
+
+## Can you switch FAQ markup to QAPage?
+
+Usually not. Google's [QAPage documentation](https://developers.google.com/search/docs/appearance/structured-data/qapage) is for pages where users can submit answers to a single question.
+
+It lists "an FAQ page written by the site itself with no way for users to submit alternative answers" as an invalid use. Blog posts and how-to guides that answer a question are invalid too. Swapping types to chase a different rich result is a quick way to get structured data ignored.
+
+## What should you do with the FAQs you already have?
+
+The FAQ section can still earn its place on the page, for readers. A good FAQ answers the follow-up questions people actually ask, in the first sentence of each answer.
+
+<h3 class="how-to-step">1. Audit where the markup lives</h3>
+
+Search your templates for `FAQPage`. List every page type that outputs it.
+
+<h3 class="how-to-step">2. Check that every marked-up question is visible</h3>
+
+Open each page type and compare the JSON-LD with the page. If the markup has questions the page doesn't show, fix or remove it.
+
+<h3 class="how-to-step">3. Cut filler questions</h3>
+
+"What is [our product]?" on a page about that product isn't helping anyone. Keep questions that answer real doubts, like price, limits, or how something compares.
+
+<h3 class="how-to-step">4. Put the answer first</h3>
+
+Start each answer with the direct answer, then the detail. That's good writing, and it's what any system quoting your page needs.
+
+<h3 class="how-to-step">5. Stop reporting on FAQ rich results</h3>
+
+If a dashboard or client report still tracks FAQ rich result impressions, retire it. The feature doesn't exist in Google Search anymore.
+
+## How do you check the FAQ markup your site outputs?
+
+Two quick checks, neither of which needs a paid tool:
+
+1. **View the rendered source.** Open a page, view source, and search for `FAQPage`. Many themes and SEO plugins output it without you knowing.
+2. **Run the Schema Markup Validator** at [validator.schema.org](https://validator.schema.org/). It checks markup against the schema.org vocabulary itself, independent of which Google features exist.
+
+If your SEO plugin has a setting for FAQ blocks, read what it outputs. Some add FAQPage to every page that uses an accordion, whether or not the content is a real FAQ.
+
+## What actually helps Google and AI search now?
+
+Google's guidance comes back to the same basics: indexable pages, useful and original content, and a clear structure. Its AI guide calls out "non-commodity content" that offers first-hand knowledge or a unique view.
+
+If you want a concrete next step, make sure your important pages are indexed (our [Search Console indexing guide](/marketing/get-site-indexed-google-search-console/) walks through it). And if someone suggests llms.txt as the next AI search fix, read [what llms.txt does and doesn't do](/marketing/what-is-llms-txt/) first. Google ignores it too.

@@ -1,0 +1,204 @@
+---
+type: explainer
+title: "Stripe fees in 2026: what you actually pay per sale"
+description: "Stripe charges 2.9% + 30¢ per US card payment. International, conversion, dispute, Billing, and Tax fees, with worked examples. Checked 8 Oct 2026."
+answer: "Stripe charges 2.9% plus 30 cents for each successful US card payment. International cards add 1.5%, currency conversion adds 1%, and manually keyed cards add 0.5%. ACH Direct Debit costs 0.8%, capped at $5. A dispute costs $15, plus another $15 if you contest it. Stripe Billing adds 0.7% on subscription volume, and refunds don't return the original processing fee."
+eyebrow: Sourced explainer
+category: developer-tools
+author: dipen
+date: 2026-10-08
+og: ../../assets/og/stripe-fees/og.png
+heroAlt: "Person holding a bank card in one hand while typing on a laptop to pay online."
+hero: ../../assets/articles/stripe-fees/hero.png
+ogAlt: "Stripe fees in 2026: what you actually pay per sale"
+ogTitle: "Stripe fees 2026: what you pay on every sale"
+products: []
+faq:
+  - q: How much does Stripe take from a $100 payment?
+    a: On a domestic US card, Stripe takes 2.9% plus 30 cents, which is $3.20, so you keep $96.80. On an international card it's $4.70, and $5.70 if currency conversion is also needed.
+  - q: Does Stripe charge a monthly fee?
+    a: No. On standard pricing, Stripe says it doesn't charge setup fees, monthly fees, or closure fees. Some optional products have monthly plans, such as Billing (from $620 a month on a 1-year contract), Radar (from $10 a month), and custom domains ($10 a month).
+  - q: Does Stripe refund its fee when I refund a customer?
+    a: No. Stripe doesn't charge to issue a refund on most payment methods, but the processing and currency conversion fees from the original payment aren't returned. Refunds on bank transfers can carry a fee.
+  - q: What is the cheapest way to get paid on Stripe in the US?
+    a: ACH Direct Debit, at 0.8% with a $5 cap. On a $2,000 invoice that's $5, compared with $58.30 on a card. It's slower and better suited to invoices and B2B payments than to impulse checkouts.
+  - q: How much does a chargeback cost on Stripe?
+    a: Stripe charges a $15 dispute fee for each dispute you receive. If you respond manually, there's another $15 countered fee, which you get back if you win. Smart Disputes costs 30% of the disputed amount, only on disputes you win.
+sources:
+  - title: "Stripe pricing and fees (US)"
+    url: https://stripe.com/pricing
+    checked: 2026-10-08
+  - title: "Stripe Billing pricing"
+    url: https://stripe.com/billing/pricing
+    checked: 2026-10-08
+  - title: "Stripe Tax pricing"
+    url: https://stripe.com/tax/pricing
+    checked: 2026-10-08
+related:
+  - supabase-vs-firebase-saas-mvp
+  - systeme-vs-clickfunnels
+  - resend-vs-sendgrid
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+import feeFigure from '../../assets/articles/stripe-fees/effective-rate.png';
+
+Stripe fees start at **2.9% plus 30 cents** for a US card payment. That headline rate is accurate, and it's also the least interesting part of your Stripe bill.
+
+The real number depends on where your customer's card was issued, whether you sell subscriptions, how often you get disputes, and how small your average sale is. We pulled every line below from Stripe's US pricing page on **8 October 2026** and worked through what it means on real prices.
+
+## What does Stripe charge per transaction in the US?
+
+These are the standard, pay-as-you-go rates. There's no setup fee, monthly fee, or closure fee on standard pricing.
+
+<div class="table-wrap">
+
+| Payment method | Fee per successful payment |
+| --- | --- |
+| Domestic cards and wallets | 2.9% + 30¢ |
+| Manually entered card | +0.5% |
+| International card | +1.5% |
+| Currency conversion needed | +1% |
+| ACH Direct Debit | 0.8%, capped at $5.00 |
+| Instant bank payments (Link) | 2.6% + 30¢ |
+| Pix and UPI (Link) | 1.8% + 30¢ |
+| Klarna (buy now, pay later) | 5.99% + 30¢ |
+| Stablecoins (Payments) | 1.5% of the USD amount |
+| In-person cards (Terminal) | 2.7% + 5¢ |
+
+</div>
+
+Source: [Stripe pricing](https://stripe.com/pricing). The surcharges stack. A foreign card that also needs currency conversion costs 2.9% + 1.5% + 1%, so 5.4% plus 30 cents.
+
+Stablecoin payments through Link are 0.8% on a promotional rate that runs through 1 January 2027, then 0.2% more after that, per the same page.
+
+## What do Stripe fees look like on real prices?
+
+The flat 30 cents is what hurts small sales. Here's the math on a few common price points, domestic card unless noted:
+
+<div class="table-wrap">
+
+| Sale | Stripe fee | You keep | Effective rate |
+| --- | --- | --- | --- |
+| $5 | $0.45 | $4.55 | 8.9% |
+| $10 | $0.59 | $9.41 | 5.9% |
+| $25 | $1.03 | $23.97 | 4.1% |
+| $50 | $1.75 | $48.25 | 3.5% |
+| $100 | $3.20 | $96.80 | 3.2% |
+| $100, international card | $4.70 | $95.30 | 4.7% |
+| $100, international + conversion | $5.70 | $94.30 | 5.7% |
+| $500 | $14.80 | $485.20 | 3.0% |
+| $2,000 by ACH | $5.00 | $1,995.00 | 0.25% |
+
+</div>
+
+Fees rounded to the cent. Our arithmetic from Stripe's published rates.
+
+<Figure
+  src={feeFigure}
+  alt="Line chart of Stripe's effective fee percentage by sale amount from 5 to 1,000 dollars. Domestic cards fall from 9 percent at 5 dollars toward 3 percent; international cards with conversion sit about 2.5 points higher; ACH stays at 0.8 percent and then falls once the 5 dollar cap applies."
+  caption="Effective Stripe fee by sale size for domestic cards, international cards with conversion, and ACH Direct Debit. Calculated from stripe.com/pricing (US), checked 8 Oct 2026."
+/>
+
+Two things jump out. Below about $20, the fixed fee does most of the damage. And for big B2B invoices, ACH is dramatically cheaper because of the $5 cap.
+
+## Which Stripe fees catch people out?
+
+### International cards and currency conversion
+
+If you sell software worldwide, a big share of your customers may pay with foreign cards. Each of those costs an extra 1.5%, and another 1% if Stripe has to convert currency.
+
+Adaptive Pricing, which shows prices in the buyer's local currency, is included on standard pricing. Stripe says the customer sees a conversion fee starting at 2%, so the cost moves to your buyer.
+
+### Disputes
+
+A dispute (chargeback) costs **$15** the moment you receive it. If you fight it yourself, there's a **$15 countered fee**, which comes back if you win. Smart Disputes, where Stripe assembles the evidence, costs **30% of the disputed amount** on wins only.
+
+So a lost $40 dispute costs you the $40, the original processing fee, and $15 to $30 on top.
+
+### Refunds
+
+Stripe doesn't charge to issue a refund on most methods. It also keeps the original processing fee. Refund a $100 card payment and you're out $3.20. Bank-transfer refunds can carry their own fee.
+
+### Instant payouts
+
+Standard payouts are free. If you want your money in minutes, Instant Payouts cost **1.5%** of the amount, with a 50 cent minimum.
+
+### In-person payments
+
+If you also sell face to face with Stripe Terminal, the US rate is **2.7% plus 5 cents** for domestic cards, plus 1.5% for international cards. Tap to Pay on a compatible iPhone or Android phone adds $0.10 per authorization. Optional point-to-point encryption adds $0.05 per authorization.
+
+A $40 sale in person on a domestic card costs $1.13. The same sale online costs $1.46.
+
+## What do Billing, Invoicing, and Tax add?
+
+Subscriptions and tax are where a Stripe bill grows beyond 2.9%. These are all on top of the payment fee.
+
+<div class="table-wrap">
+
+| Product | Standard price |
+| --- | --- |
+| Billing (pay as you go) | 0.7% of Billing volume |
+| Billing (pay monthly) | From $620/month, 1-year contract |
+| Invoicing Starter | 0.4% per paid invoice |
+| Post-payment invoices (Checkout, Payment Links) | 0.4%, capped at $2.00 per invoice |
+| Tax Basic | 0.5% per transaction where you're registered |
+| Tax Complete | From $90/month, 1-year contract |
+| Radar (fraud) | Radar Lite included; paid plans from $10/month, or from $0.05 per screened transaction |
+| Custom domain for Checkout or portal | $10/month |
+| Identity verification | $1.50 per verification |
+
+</div>
+
+Sources: [Stripe pricing](https://stripe.com/pricing), [Billing pricing](https://stripe.com/billing/pricing), and [Tax pricing](https://stripe.com/tax/pricing).
+
+Here's a $20/month subscription on a domestic card with Billing and Tax Basic: 2.9% + 30¢ is $0.88, Billing is $0.14, Tax is $0.10. That's **$1.12, or 5.6%**, every month. Bill annually at $200 and the same stack costs $8.50 a year (4.3%), against $13.44 for 12 monthly charges, because you only pay the 30 cents once.
+
+## What is Stripe Managed Payments?
+
+Managed Payments makes Stripe your **merchant of record**. Stripe handles indirect tax (sales tax, VAT, and GST) and remittance in more than 75 countries, plus fraud, disputes, and customer support for those sales.
+
+It costs **3.5% per transaction on top of the normal payment fees**. On a $20 domestic sale that's $0.88 plus $0.70.
+
+That's a lot next to Tax Basic at 0.5%. What you're paying for is not having to register for and file VAT and sales tax yourself. For a solo founder selling digital products to buyers in dozens of countries, that trade can make sense. For a US-only business, it rarely does.
+
+## How do Stripe fees compare across payment methods on one sale?
+
+Here's a single $80 order paid six different ways, using the published US rates:
+
+<div class="table-wrap">
+
+| Payment method | Fee on $80 | Effective rate |
+| --- | --- | --- |
+| ACH Direct Debit | $0.64 | 0.8% |
+| Stablecoins (Payments) | $1.20 | 1.5% |
+| Instant bank payment (Link) | $2.38 | 3.0% |
+| Domestic card | $2.62 | 3.3% |
+| International card with conversion | $4.62 | 5.8% |
+| Klarna | $5.09 | 6.4% |
+
+</div>
+
+Our arithmetic from [stripe.com/pricing](https://stripe.com/pricing). Klarna costs roughly twice a domestic card. Whether that's worth it depends on how much buy now, pay later lifts your conversion, which only your own data can tell you.
+
+## How do you lower your Stripe fees?
+
+Practical moves, using only Stripe's published rates:
+
+1. **Push annual plans.** You pay the 30 cent fee once a year instead of 12 times. On a $20 plan that saves $3.30 a year per customer in fixed fees alone.
+2. **Offer ACH for large invoices.** At a $5 cap, it's the cheapest US option by far above $625.
+3. **Avoid tiny charges.** Bundling three $5 add-ons into one $15 charge saves 60 cents.
+4. **Don't key cards by hand.** Manual entry adds 0.5%.
+5. **Fight disputes you can win.** The $15 countered fee comes back if you win.
+6. **Ask about custom pricing.** Stripe offers volume discounts and custom packages for large or unusual businesses. It doesn't publish the threshold.
+
+If you're still choosing a stack for a new product, our [Supabase vs Firebase](/developer-tools/supabase-vs-firebase-saas-mvp/) and [Resend vs SendGrid](/developer-tools/resend-vs-sendgrid/) guides cover the database and email side. If you'd rather not wire Stripe yourself, [Systeme vs ClickFunnels](/marketing/systeme-vs-clickfunnels/) compares two hosted checkout options.
+
+## What this guide doesn't cover
+
+- **Non-US pricing.** Stripe's rates differ by country. Everything here is the US page.
+- **Connect platform fees.** Marketplaces and platforms have a separate fee schedule.
+- **Custom contracts.** If you've negotiated pricing, your dashboard is the source of truth.
