@@ -1,0 +1,192 @@
+---
+type: explainer
+title: "Claude Code pricing in 2026: plans, limits, and API costs"
+description: "Claude Code comes with every paid Claude plan: Pro $20, Max $100 or $200, Team from $20 a seat. Usage limits, API rates, and Max credits, checked 8 Oct 2026."
+answer: "Claude Code has no price of its own. It comes with every paid Claude plan: Pro at $20 a month ($17 billed annually), Max 5x at $100, Max 20x at $200, and Team seats from $20. Every plan draws from one usage pool that resets every 5 hours, with weekly caps on top. Pay-as-you-go API billing is the other route, and Anthropic puts that at about $13 per developer per active day."
+eyebrow: Sourced explainer
+category: ai-tools
+author: dipen
+date: 2026-10-08
+og: ../../assets/og/claude-code-pricing/og.png
+heroAlt: "Laptop on a wooden desk showing code in a dark editor, lit by warm window light."
+hero: ../../assets/articles/claude-code-pricing/hero.png
+ogAlt: "Claude Code pricing in 2026: plans, limits, and API costs"
+ogTitle: "Claude Code pricing 2026: every plan and API rate"
+products: []
+faq:
+  - q: Is Claude Code free?
+    a: No. The Free Claude plan doesn't include Claude Code. You need Pro ($20 a month, or $17 a month billed annually), Max, Team, or Enterprise, or you can pay per token with a Claude Console API key.
+  - q: How much is Claude Code per month?
+    a: As of 8 October 2026, Pro is $20 a month or $200 a year, Max 5x is $100 a month, Max 20x is $200 a month, and Team Standard seats are $25 a month ($20 billed annually). Claude Code is included in all of them.
+  - q: Do Claude Code and the Claude chat app share limits?
+    a: Yes. Anthropic's help center says Claude Code draws from the same usage pool as Claude on the web, desktop, and mobile. Heavy coding sessions eat into your chat allowance and the other way around.
+  - q: Do the new Max monthly API credits cover Claude Code?
+    a: Not interactive Claude Code. The $100 or $200 monthly credits cover the Claude API, Managed Agents, the Agent SDK, and claude -p when you run it with an API key from your linked Console organization. Interactive sessions in the terminal, IDE, desktop, or web still use your plan limits.
+  - q: Is the API cheaper than a Max plan for Claude Code?
+    a: It depends on volume. Anthropic's costs page puts typical enterprise API spend at $150 to $250 per developer per month. If you code with Claude most days, Max 5x at $100 usually costs less. If you use it a few times a month, API billing can cost less.
+sources:
+  - title: "Claude plans and pricing"
+    url: https://claude.com/pricing
+    checked: 2026-10-08
+  - title: "Claude Team plan pricing"
+    url: https://claude.com/pricing/team
+    checked: 2026-10-08
+  - title: "What is the Max plan? (Claude Help Center)"
+    url: https://support.claude.com/en/articles/11049741-what-is-the-max-plan
+    checked: 2026-10-08
+  - title: "Manage costs effectively (Claude Code docs)"
+    url: https://code.claude.com/docs/en/costs
+    checked: 2026-10-08
+  - title: "Monthly API credits for Max and Team plans (Claude Help Center)"
+    url: https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans
+    checked: 2026-10-08
+  - title: "Manage usage credits for paid Claude plans (Claude Help Center)"
+    url: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans
+    checked: 2026-10-08
+related:
+  - cursor-vs-claude-code-2026
+  - claude-fable-effort-levels-cost
+  - chatgpt-plus-vs-claude-pro-vs-google-ai-pro
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+import plansFigure from '../../assets/articles/claude-code-pricing/plans.png';
+
+Claude Code pricing is simpler than the search results make it look. There's no Claude Code plan. You buy a Claude plan, and Claude Code comes with it.
+
+The catch is that every plan meters usage. Pro, Max, and Team all run the same agent in your terminal. What changes is how long you can keep it busy before you hit a wall. We checked every number below against Anthropic's own pages on **8 October 2026**, including a help-center change that went live the same day.
+
+## How much does Claude Code cost on each plan?
+
+Here's what Anthropic lists for the plans that include Claude Code. Prices are USD before tax.
+
+<div class="table-wrap">
+
+| Plan | Monthly billing | Annual billing | Claude Code | Usage allowance |
+| --- | --- | --- | --- | --- |
+| Free | $0 | $0 | Not included | Below Pro |
+| Pro | $20 | $17/mo ($200 up front) | Included | Baseline |
+| Max 5x | $100 | Monthly only | Included | 5x Pro |
+| Max 20x | $200 | Monthly only | Included | 20x Pro |
+| Team Standard seat | $25/seat | $20/seat | Included | Standard seat |
+| Team Premium seat | $125/seat | $100/seat | Included | 5x Standard |
+| Enterprise | Sales quote | $20/seat plus usage at API rates | Included | Billed at API rates |
+
+</div>
+
+Sources: [Claude pricing](https://claude.com/pricing), [Team pricing](https://claude.com/pricing/team), and the [Max plan help article](https://support.claude.com/en/articles/11049741-what-is-the-max-plan). Team plans cover 2 to 150 people.
+
+<Figure
+  src={plansFigure}
+  alt="Bar chart of monthly cost for Claude plans that include Claude Code: Pro 17 to 20 dollars, Max 5x 100 dollars, Max 20x 200 dollars, Team Standard 20 to 25 dollars, Team Premium 100 to 125 dollars, against Anthropic's 150 to 250 dollar typical API spend band."
+  caption="Monthly cost per person for plans that include Claude Code, versus Anthropic's typical enterprise API spend per developer. Data: claude.com/pricing and code.claude.com/docs/en/costs, checked 8 Oct 2026."
+/>
+
+One quirk worth knowing: the main pricing page says Max is "from $100." The two tiers, 5x and 20x, are spelled out in the help center. Max has no annual discount.
+
+## What do you actually get for the money?
+
+A share of compute, measured in sessions. Anthropic doesn't publish token counts for each plan, so nobody can tell you "Pro gets X messages" with a straight face.
+
+Here's what Anthropic does say:
+
+- **One pool for everything.** Claude Code and the Claude apps draw from the same allowance. A long refactor in the terminal leaves less for chat that afternoon.
+- **5-hour rolling windows.** Your session allowance resets on a rolling 5-hour clock. Paid plans also have weekly limits on top.
+- **Relative sizes.** Pro gives at least 5 times the Free allowance per session. Max 5x and Max 20x give 5 and 20 times Pro.
+- **Fable is rationed.** On Pro, Fable 5.1 only runs on paid usage credits. Max and Team Premium can spend up to half of their weekly limits on it.
+- **Extra usage costs API rates.** When you run out, you can buy usage credits and keep going. Those are billed at standard API prices.
+
+The model you pick matters as much as the plan. If you leave Claude Code on Fable at High effort, a Max 5x pool drains faster than it would on Sonnet. Our breakdown of [Claude Fable effort levels and cost](/ai-tools/claude-fable-effort-levels-cost/) covers that trade.
+
+## What does Claude Code cost on the API instead?
+
+If you sign in with a Claude Console API key, you skip the plans and pay per token. These are the current rates per million tokens (MTok):
+
+<div class="table-wrap">
+
+| Model | Input | Output | Cache read | Cache write |
+| --- | --- | --- | --- | --- |
+| Fable 5.1 | $10 | $50 | $0.25 | $12.50 |
+| Opus 5.5 | $4 | $20 | $0.20 | $5 |
+| Sonnet 5.5 | $2 | $10 | $0.10 | $2.50 |
+| Haiku 5.5 (prompts up to 100K tokens) | $0.10 | $0.50 | See pricing page | See pricing page |
+| Haiku 5.5 (prompts over 100K tokens) | $0.50 | $2.50 | See pricing page | See pricing page |
+
+</div>
+
+Source: [Claude pricing](https://claude.com/pricing), checked 8 Oct 2026. US-only inference costs 1.1x these rates.
+
+A quick sense check on Sonnet 5.5: 1 million input tokens and 100,000 output tokens cost $2 plus $1, so $3. Agent sessions read a lot of files, which is why cache reads matter. A cache read on Sonnet is $0.10 per MTok, a twentieth of a fresh input token.
+
+### What does Anthropic say a typical developer spends?
+
+Anthropic's [costs page](https://code.claude.com/docs/en/costs) gives enterprise averages: about **$13 per developer per active day**, **$150 to $250 per developer per month**, and under $30 per active day for 90% of users.
+
+Those are Anthropic's numbers from enterprise deployments. We haven't measured our own spend against them, so treat them as a reference point.
+
+## Is a subscription or the API cheaper for Claude Code?
+
+For anyone coding with Claude most weekdays, a subscription usually wins. Max 5x at $100 sits below the bottom of Anthropic's $150 to $250 monthly API range. Pro at $20 is far below it, if its limits hold up for your work.
+
+The API wins in two cases:
+
+1. **You use Claude Code a few days a month.** Paying $13 on the days you work beats $100 for a month you mostly skip.
+2. **You run it unattended.** Scripts, CI jobs, and headless runs with `claude -p` are easier to budget per token, and they don't burn the pool you need for interactive work.
+
+There's one more difference people miss. Anthropic's costs page says prompt caches last **1 hour on a subscription** and **5 minutes on the API** or on usage credits. Long, start-and-stop sessions get more cache hits on a plan.
+
+## What changed on 8 October 2026: monthly API credits for Max and Team
+
+Anthropic published a help article on 8 October 2026 that adds monthly Claude Platform credits to Max and Team.
+
+<div class="table-wrap">
+
+| Plan | Monthly API credit |
+| --- | --- |
+| Max 5x | $100 |
+| Max 20x | $200 |
+| Team Standard seat | $20 per seat |
+| Team Premium seat | $100 per seat |
+
+</div>
+
+Team credits pool into one balance capped at **$500 a month**. Free, Pro, and Enterprise aren't eligible. You need 7 days on the plan, and you link one Claude Console organization to receive the credit.
+
+Read the fine print before you count this as free Claude Code:
+
+- The credits **don't cover interactive Claude Code** in the terminal, IDE, desktop, or web. They don't cover extra usage after you hit limits either.
+- They **do cover** the Claude API, the Console Playground, Managed Agents, the Agent SDK, and `claude -p` run with an API key from the linked organization.
+- They don't roll over, and they're spent before any credits you bought.
+
+So a Max 20x subscriber now gets $200 of API spend each month for side projects, scripts, and agents, alongside the same Claude Code limits as before. Source: [Monthly API credits for Max and Team plans](https://support.claude.com/en/articles/17154008-monthly-api-credits-for-max-and-team-plans).
+
+## How do you keep Claude Code costs down?
+
+These come from Anthropic's [Manage costs effectively](https://code.claude.com/docs/en/costs) page:
+
+- Run `/usage` to see where your allowance went.
+- Use `/clear` between unrelated tasks, and `/compact` when a long session bloats.
+- Default to Sonnet. Save Opus and Fable for the hard parts.
+- Turn effort down with `/effort` for routine edits.
+- Be careful with agent teams. Anthropic says they use roughly 7 times more tokens than a single session.
+
+Background usage (summaries, small helper calls) is typically under $0.04 per session, per the same page. The big spend comes from model choice and context size.
+
+## Which Claude Code plan should a solo builder pick?
+
+Start on **Pro**. It's the cheapest way to find out how much Claude Code you actually use, and annual billing drops it to $17.
+
+Move to **Max 5x** when the 5-hour limit is stopping real work more than a couple of times a week. That's our rule of thumb, and you'll know when you hit it. Max 20x is for people who run Claude Code most of the day, or who want headroom for Fable.
+
+Pick **Team** when two or more people need central billing and admin controls. A Premium seat costs the same as Max 5x on annual billing, and it gets 5 times the usage of a Standard seat.
+
+Still deciding between tools? Our [Cursor vs Claude Code](/ai-tools/cursor-vs-claude-code-2026/) comparison covers the editor side, and [ChatGPT Plus vs Claude Pro vs Google AI Pro](/ai-tools/chatgpt-plus-vs-claude-pro-vs-google-ai-pro/) compares the $20 tier across vendors.
+
+## What we couldn't verify
+
+- **Exact limits.** Anthropic doesn't publish message or token counts per 5-hour window. Any number you see for that comes from user reports.
+- **Our own spend.** We haven't published MorningStacks usage data here, so the cost figures above are Anthropic's.
+- **Regional prices.** Everything here is USD. Local pricing and taxes vary by country.

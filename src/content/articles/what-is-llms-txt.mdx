@@ -1,0 +1,201 @@
+---
+type: explainer
+title: "What is llms.txt? The file, the spec, and Google's answer"
+description: "llms.txt is a Markdown file that points AI agents to a site's best pages. The v2 spec, how to write one, and why Google Search ignores it. Checked 8 Oct 2026."
+answer: "llms.txt is a Markdown file, usually at a site's root, that gives AI tools a short summary of the site and a curated list of links to its most useful pages. Jeremy Howard proposed it in September 2024 and published v2 in August 2026. Google said in June 2026 that Google Search ignores it, so it won't help or hurt rankings. Coding assistants and AI agents still use it."
+eyebrow: Sourced explainer
+category: marketing
+author: dipen
+date: 2026-10-08
+og: ../../assets/og/what-is-llms-txt/og.png
+heroAlt: "Open journal filled with handwritten notes beside a wooden pen."
+hero: ../../assets/articles/what-is-llms-txt/hero.png
+ogAlt: "What is llms.txt? The file, the spec, and Google's answer"
+ogTitle: "What is llms.txt, and does Google use it?"
+products: []
+faq:
+  - q: What is llms.txt used for?
+    a: It gives AI agents and coding assistants a short, curated map of a website, written in Markdown, so they can find the right pages without crawling the whole site. It's used most for software documentation.
+  - q: Does llms.txt help SEO?
+    a: Not for Google. Google's AI optimization guide says Google Search doesn't use llms.txt files and that having one will neither harm nor help your visibility or rankings. Other AI services may read it, which is the main reason to keep one.
+  - q: Where do I put an llms.txt file?
+    a: At the root of your site, so it loads at yourdomain.com/llms.txt. The v2 spec also allows a file at a subpath, like /docs/llms.txt, which covers only the pages under that path.
+  - q: What's the difference between llms.txt and robots.txt?
+    a: robots.txt tells crawlers what they're allowed to access. llms.txt tells an AI agent what's worth reading and where to find clean versions of it. One is about permission, the other is a reading list.
+  - q: Is llms.txt an official standard?
+    a: No. It's a community proposal hosted at llmstxt.org with a public GitHub repository. It isn't an IETF or W3C standard, though many documentation platforms generate it automatically.
+sources:
+  - title: "The /llms.txt file, v2 (llmstxt.org)"
+    url: https://llmstxt.org/
+    checked: 2026-10-08
+  - title: "Optimizing your website for generative AI features on Google Search"
+    url: https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+    checked: 2026-10-08
+  - title: "Latest Google Search documentation updates"
+    url: https://developers.google.com/search/updates
+    checked: 2026-10-08
+  - title: "MorningStacks llms.txt"
+    url: https://www.morningstacks.com/llms.txt
+    checked: 2026-10-08
+related:
+  - get-site-indexed-google-search-console
+  - faq-schema
+  - best-ai-coding-tools-solo-founders-2026
+featured: false
+seed: false
+template: false
+status: published
+draft: false
+---
+import anatomyFigure from '../../assets/articles/what-is-llms-txt/anatomy.png';
+
+llms.txt is a plain Markdown file that tells AI agents what a website is and which pages are worth reading. Think of it as a reading list for machines, kept at a predictable address.
+
+It has picked up a lot of SEO hype since 2024. Some of that is earned, and some of it Google shot down directly in June 2026. We read the current spec, Google's guidance, and a handful of real files on **8 October 2026**, including the one on this site.
+
+## What is llms.txt, exactly?
+
+It's a file named `llms.txt` that lives at a site's root (`/llms.txt`) or under a path such as `/docs/llms.txt`. Jeremy Howard proposed it on 3 September 2024 and published a revised v2 on 10 August 2026 at [llmstxt.org](https://llmstxt.org/).
+
+The problem it solves is simple. Web pages are built for people, wrapped in navigation, scripts, and ads. An agent trying to answer a question about your product wastes tokens digging through all that. llms.txt hands it a short, clean summary and links to the pages that matter.
+
+Per the v2 proposal, it's used most heavily for software documentation. A coding agent that needs the right API call reads the library's llms.txt, follows a link, and gets a clean Markdown page.
+
+## What goes inside an llms.txt file?
+
+The spec is short. Sections must appear in this order:
+
+1. **An H1 with the site or project name.** This is the only required part.
+2. **A blockquote** with a short summary.
+3. **Optional details**: paragraphs or lists, but no headings.
+4. **H2 sections with file lists.** Each item is a Markdown link, `[name](url)`, optionally followed by a colon and a note.
+5. **An "Optional" H2**, by convention, for links an agent can skip when it needs a shorter context.
+
+<Figure
+  src={anatomyFigure}
+  alt="Annotated diagram of an llms.txt file based on MorningStacks' own file: an H1 title marked required, a blockquote summary, a details paragraph, H2 file lists of Markdown links with notes, and an Optional section."
+  caption="The parts of an llms.txt file, in the order the v2 spec requires. Example lines adapted from morningstacks.com/llms.txt; structure from llmstxt.org, checked 8 Oct 2026."
+/>
+
+v2 also proposes two extras. Pages can offer a clean Markdown copy at the same URL with `.md` added. And sites can point to those copies with `rel="alternate" type="text/markdown"` and to the llms.txt with `rel="describedby"`, either as HTML link tags or as an HTTP `Link:` header.
+
+## What does a real llms.txt look like?
+
+Here's the top of ours, served at [morningstacks.com/llms.txt](https://www.morningstacks.com/llms.txt) as plain text:
+
+```
+# MorningStacks
+
+> Straight answers on the software you pay for.
+
+Sourced briefings, comparisons, and reviews of the SaaS, AI, and
+developer tools operators and founders pay for. Prices checked.
+Affiliate links labeled.
+
+## Site
+
+- Home: https://www.morningstacks.com/
+- Archive: https://www.morningstacks.com/archive/
+
+## Published articles
+
+- [How to get a new site indexed in Google Search Console](https://www.morningstacks.com/marketing/get-site-indexed-google-search-console/): Verify the property, submit a sitemap...
+```
+
+One honest note from reading our own file against the spec: the "Site" and "Sections" lists use `Name: URL` lines instead of `[name](url)` links. A strict parser would skip those items. The "Published articles" list follows the spec exactly.
+
+Other files we checked, all returning 200 on 8 October 2026:
+
+- [Stripe docs](https://docs.stripe.com/llms.txt) serve theirs as `text/markdown` and open with install guidance for agents.
+- [Supabase](https://supabase.com/llms.txt) links to a single-file `llms-full.txt` with the whole documentation.
+- [Claude Code docs](https://code.claude.com/docs/llms.txt), [Cloudflare developer docs](https://developers.cloudflare.com/llms.txt), and [Vercel](https://vercel.com/llms.txt) all publish one.
+
+## How is llms.txt different from robots.txt and sitemap.xml?
+
+All three sit at the root of a site, which is why people mix them up. They do different jobs:
+
+<div class="table-wrap">
+
+| File | Who reads it | What it says | Size |
+| --- | --- | --- | --- |
+| robots.txt | Crawlers | What automated tools may and may not access | Short rules |
+| sitemap.xml | Search engines | Every indexable URL on the site | As large as the site |
+| llms.txt | AI agents, on demand | What the site is and which pages are worth reading | Small enough to fit in an LLM's context |
+
+</div>
+
+The spec makes the sitemap point directly. A sitemap often won't list Markdown versions of pages, won't include useful external links, and is usually too big to fit in a model's context. llms.txt is a curated shortlist. It also says nothing about permissions, so it can't replace robots.txt.
+
+## What changed in llms.txt v2?
+
+Jeremy Howard's [v2 changes page](https://llmstxt.org/changes.html), dated August 2026, lists 4 practical updates:
+
+1. **Discovery.** Pages can point to their Markdown version and to the llms.txt that covers them, using standard link relations in HTML or an HTTP `Link:` header.
+2. **Two Markdown URL forms.** Both `page.html.md` and `page.md` are now allowed.
+3. **Subpath files are defined.** A file covers the pages under its path, and the most specific file wins. That lets a site that only controls a path, like a GitHub Pages project, take part.
+4. **The "Optional" section lost its special meaning.** v1 tooling used it to decide what to drop. In v2 it's just a convention for secondary links.
+
+v2 also states how agents are expected to use the file: read or search it, then follow the links that matter. That's why links should point to clean, LLM-friendly pages.
+
+## Does llms.txt help with Google rankings or AI Overviews?
+
+No. Google is unusually direct about this.
+
+Its [guide to optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says you don't need machine-readable files, AI text files, markup, or Markdown to appear in Google Search, "as Google Search itself doesn't use them." It adds that keeping an llms.txt for other services is fine and "will neither harm nor help your site's visibility or rankings in Google Search, as Google Search ignores them."
+
+Google added that note on **15 June 2026**, per its [documentation changelog](https://developers.google.com/search/updates), to address community questions. The same guide lists "creating unnecessary AI text files (like llms.txt)" among the "AEO/GEO hacks" you can ignore for Google Search.
+
+So if an agency is selling you llms.txt as a ranking boost for Google, you now have a link to send them.
+
+## Who does use llms.txt, then?
+
+The case for it rests on agents and tools outside Google Search. According to the v2 proposal:
+
+- Thousands of sites publish one.
+- Chrome's Lighthouse checks for it as part of its agentic browsing audits.
+- OpenAI, Anthropic, and Google's Gemini team publish llms.txt files for their own developer docs.
+- Mintlify, GitBook, Yoast SEO, AIOSEO, and Wix can generate one automatically.
+
+Those are claims from the spec's author. We haven't measured how often any specific AI product fetches llms.txt, and we haven't seen an AI vendor publish those numbers.
+
+Where the file clearly earns its keep is developer documentation. If people use coding assistants with your API (see our roundup of [AI coding tools for solo founders](/ai-tools/best-ai-coding-tools-solo-founders-2026/)), a clean llms.txt plus Markdown pages makes your docs easier for those tools to read.
+
+## How do you create an llms.txt file?
+
+<h3 class="how-to-step">1. Write the H1 and one-line summary</h3>
+
+Use your site or product name as the H1. Put a one or two sentence summary in a blockquote. Say what the site is, plainly.
+
+<h3 class="how-to-step">2. Add the context an agent needs</h3>
+
+A short paragraph or list: what you cover, what you don't, and any gotchas. Stripe uses this space to tell agents to check npm for the latest package version.
+
+<h3 class="how-to-step">3. List your most useful pages under H2s</h3>
+
+Group by purpose (Docs, Guides, Pricing). Use `[Page title](https://full-url): one-line note` for every item. Keep it curated. Your sitemap already lists everything.
+
+<h3 class="how-to-step">4. Put secondary links under "Optional"</h3>
+
+Changelogs, archives, and long references go here so an agent with a tight context can skip them.
+
+<h3 class="how-to-step">5. Serve it at /llms.txt and test it</h3>
+
+Make sure it returns 200 as plain text or Markdown. The spec's own test: give an agent only your llms.txt and ask it questions about your site.
+
+If you're on Next.js, a route handler that builds the file from your content is the easiest way to keep it current. That's how this site does it, so new articles show up without anyone editing the file by hand.
+
+## What mistakes should you avoid?
+
+Most bad llms.txt files make one of these errors, each of which runs against the spec:
+
+- **Pasting your whole sitemap.** The file is meant to be small and curated. Hundreds of links defeat the purpose.
+- **Linking only to heavy HTML pages.** The spec says links should point to LLM-friendly content. If you can serve Markdown versions, link those.
+- **Skipping the notes.** A bare link tells an agent little. A short note after the colon tells it when that page is useful.
+- **Letting it go stale.** A file that lists retired pages or old prices sends agents to wrong answers. Generate it from your content if you can.
+- **Expecting Google traffic from it.** Google has said it ignores the file.
+
+## Should you bother with llms.txt?
+
+Yes, if you publish documentation, an API, or a product people ask AI assistants about. It's a small job, it costs nothing, and Google confirms it can't hurt you in Search.
+
+For a typical blog or marketing site, it's a low-priority nice-to-have. Your time is better spent on the basics that do affect Google, like [getting indexed in Search Console](/marketing/get-site-indexed-google-search-console/). And if you're also weighing structured data for AI search, read our piece on [what FAQ schema still does in 2026](/marketing/faq-schema/).
